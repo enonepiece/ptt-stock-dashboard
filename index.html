@@ -679,22 +679,40 @@
     .search-wrap {
       padding: 10px;
       border-bottom: 1px solid var(--border-dim);
-      flex-shrink: 0;
+      display: flex;
+      gap: 6px;
+      align-items: center;
     }
     .search-input {
-      width: 100%;
-      padding: 7px 10px;
-      background: var(--bg-raised);
+      flex: 1;
+      min-width: 0;
+      background: var(--bg-surface);
       border: 1px solid var(--border-dim);
       border-radius: var(--radius-sm);
+      padding: 6px 10px;
       color: var(--text-primary);
       font-size: 0.8rem;
       font-family: 'Inter', sans-serif;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.15s;
     }
-    .search-input::placeholder { color: var(--text-muted); }
     .search-input:focus { border-color: var(--accent); }
+    .time-range-select {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-sm);
+      padding: 6px 6px;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .time-range-select:focus, .time-range-select:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
 
     /* Article List */
     #articleList {
@@ -1176,6 +1194,12 @@
           placeholder="搜尋文章標題..."
           aria-label="搜尋文章標題"
         >
+        <select id="timeRangeSelect" class="time-range-select" title="選擇抓取文章的時間頁數範圍">
+          <option value="4" selected>近 1 天 (4頁)</option>
+          <option value="10">近 3 天 (10頁)</option>
+          <option value="20">近 7 天 (20頁)</option>
+          <option value="50">近 30 天 (50頁)</option>
+        </select>
       </div>
 
       <div id="articleList" role="list" aria-label="文章列表">
@@ -1257,7 +1281,10 @@
       </div>
 
       <div class="modal-chart-section">
-        <div class="chart-header">📈 即時分時走勢圖</div>
+        <div class="chart-header">
+          <span>📈 即時分時走勢圖</span>
+          <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400">💡 移動滑鼠可檢視逐分時價格與成交量</span>
+        </div>
         <div class="chart-canvas-wrap">
           <canvas id="modalChartCanvas" width="650" height="270"></canvas>
         </div>

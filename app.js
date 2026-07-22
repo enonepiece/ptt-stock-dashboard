@@ -28,6 +28,7 @@ let state = {
   isFirstPushLoad:  true,
   currentKeyword:   '盤中',      // 無括號，直接搜尋標題中的文字
   currentModalCode: null,        // 當前開啟 Modal 的股票代號
+  chartHoverIndex:  null,        // 當前滑鼠懸停於走勢圖的數據 Index
 };
 
 /* ════════════════════════════════════════════════════════
@@ -50,6 +51,7 @@ const dom = {
   stocksEmptyState:     $('stocksEmptyState'),
   articleList:          $('articleList'),
   searchInput:          $('searchInput'),
+  timeRangeSelect:      $('timeRangeSelect'),
   pushStream:           $('pushStream'),
   pushTotalCount:       $('pushTotalCount'),
   newPushBadge:         $('newPushBadge'),
@@ -132,6 +134,15 @@ function bindEvents() {
   });
 
   dom.searchInput.addEventListener('input', e => filterAndRenderArticles(e.target.value));
+
+  // 可抓取文章的時間範圍下拉選單變更事件
+  if (dom.timeRangeSelect) {
+    dom.timeRangeSelect.addEventListener('change', () => {
+      loadArticles(state.currentKeyword);
+      showToast(`已切換文章抓取範圍：${dom.timeRangeSelect.options[dom.timeRangeSelect.selectedIndex].text}`, 'info');
+    });
+  }
+
   dom.monitorToggle.addEventListener('click', toggleMonitoring);
   dom.refreshArticles.addEventListener('click', () => {
     loadArticles(state.currentKeyword);
@@ -190,6 +201,35 @@ function bindEvents() {
       closeStockModal();
     }
   });
+
+  // Modal Chart Canvas 互動十字線與 Tooltip 事件
+  dom.modalChartCanvas.addEventListener('mousemove', e => {
+    if (!state.currentModalCode) return;
+    const rect   = dom.modalChartCanvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+
+    const pad    = { left: 10, right: 75 };
+    const chartW = dom.modalChartCanvas.width - pad.left - pad.right;
+    const TOTAL_PTS = 135;
+
+    if (mouseX >= pad.left && mouseX <= pad.left + chartW) {
+      const idx = Math.round(((mouseX - pad.left) / chartW) * (TOTAL_PTS - 1));
+      state.chartHoverIndex = Math.max(0, Math.min(TOTAL_PTS - 1, idx));
+    } else {
+      state.chartHoverIndex = null;
+    }
+
+    const entry = state.stocks.get(state.currentModalCode);
+    if (entry) drawYahooStyleChart(dom.modalChartCanvas, entry);
+  });
+
+  dom.modalChartCanvas.addEventListener('mouseleave', () => {
+    state.chartHoverIndex = null;
+    if (state.currentModalCode) {
+      const entry = state.stocks.get(state.currentModalCode);
+      if (entry) drawYahooStyleChart(dom.modalChartCanvas, entry);
+    }
+  });
 }
 
 /* ════════════════════════════════════════════════════════
@@ -200,6 +240,7 @@ function openStockModal(code) {
   if (!entry) return;
 
   state.currentModalCode = code;
+  state.chartHoverIndex  = null;
 
   const { name, price, change, changePct, prevClose, open, high, low, volume, mentionCount, mentions } = entry;
   const hasPrice  = price !== null && price > 0;
@@ -246,10 +287,12 @@ function openStockModal(code) {
 function closeStockModal() {
   dom.stockModal.style.display = 'none';
   state.currentModalCode = null;
+  state.chartHoverIndex  = null;
 }
 
 /**
  * 繪製與 Yahoo 奇摩股市 (Yahoo Stock) 100% 格式一致的台股 09:00~13:30 即時分時走勢圖 + 成交量柱
+ * 支援 Crosshair 十字網格與動態 Hover 數據 Tooltip
  */
 function drawYahooStyleChart(canvas, entry) {
   const ctx = canvas.getContext('2d');
@@ -280,18 +323,15 @@ function drawYahooStyleChart(canvas, entry) {
     return x - Math.floor(x);
   };
 
-  // 判斷是否鎖漲停/強勢拉升 (如 欣興 876開盤 -> 907極速攻頂鎖死)
   const isLockedUp   = currPrice === highP && (highP - basePrice) / basePrice > 0.07;
   const isLockedDown = currPrice === lowP  && (basePrice - lowP) / basePrice > 0.07;
 
-  // 09:00 開盤
   prices[0] = openP;
 
   for (let i = 1; i < TOTAL_PTS; i++) {
     const progress = i / (TOTAL_PTS - 1);
 
     if (isLockedUp) {
-      // 09:00 ~ 09:20 快速拉升至最高價鎖死，隨後保持水平橫盤
       if (progress < 0.12) {
         prices[i] = openP + (highP - openP) * (progress / 0.12);
       } else {
@@ -304,7 +344,6 @@ function drawYahooStyleChart(canvas, entry) {
         prices[i] = lowP;
       }
     } else {
-      // 標準分時走勢：按時間軸演進
       let t = openP + (currPrice - openP) * progress;
       if (progress > 0.1 && progress < 0.5) {
         t += (highP - Math.max(openP, currPrice)) * Math.sin((progress - 0.1) * Math.PI * 2.5);
@@ -315,7 +354,6 @@ function drawYahooStyleChart(canvas, entry) {
       prices[i] = Math.min(highP, Math.max(lowP, t + noise));
     }
 
-    // 成交量：09:00 開盤與拉升段爆量
     let volFactor = 1;
     if (i < 15) volFactor = 3.5 - (i / 15) * 2;
     else if (i > TOTAL_PTS - 10) volFactor = 2.5;
@@ -323,10 +361,9 @@ function drawYahooStyleChart(canvas, entry) {
 
     volumes[i] = Math.round(((entry.volume || 8000) / TOTAL_PTS) * volFactor);
   }
-  prices[TOTAL_PTS - 1] = currPrice; // 確保當前最新價無誤
+  prices[TOTAL_PTS - 1] = currPrice;
 
   // 2. 台股 Y 軸價格邊界規範：頂部固定為漲停價 (+10%)，底部固定為跌停價 (-10%)
-  // 昨收 basePrice 定於精確幾何正中央 (50%)
   const maxDev = basePrice * 0.10; // 台股漲跌停幅度 ±10%
   const yMax   = basePrice + maxDev; // 漲停價 (Limit Up)
   const yMin   = basePrice - maxDev; // 跌停價 (Limit Down)
@@ -334,7 +371,7 @@ function drawYahooStyleChart(canvas, entry) {
   const toX = i => pad.left + (i / (TOTAL_PTS - 1)) * chartW;
   const toY = v => pad.top + ((yMax - Math.min(yMax, Math.max(yMin, v))) / (2 * maxDev)) * chartH;
 
-  // 3. 繪製 Yahoo 經典 5 個交替時間區塊背景 (Vertical Time Blocks: 09, 10, 11, 12, 13)
+  // 3. 繪製 5 個交替時間區塊背景 (09, 10, 11, 12, 13)
   const timeLabels = ['09', '10', '11', '12', '13'];
   const blockW = chartW / 5;
 
@@ -346,7 +383,7 @@ function drawYahooStyleChart(canvas, entry) {
     }
   }
 
-  // 4. 繪製 5 條台股標準水平刻度線 (頂部漲停 +10%、+5%、平盤 0%、-5%、底部跌停 -10%)
+  // 4. 繪製 5 條台股標準水平刻度線 (漲停 +10%、+5%、平盤 0%、-5%、跌停 -10%)
   const gridSteps = 4;
   ctx.lineWidth = 1;
 
@@ -363,7 +400,6 @@ function drawYahooStyleChart(canvas, entry) {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // 右側 Y 軸價格數字（頂部為漲停價、底部為跌停價）
     if (!isCenter) {
       ctx.fillStyle    = yVal > basePrice ? '#ff4455' : '#00e87a';
       ctx.font         = '11px JetBrains Mono, monospace';
@@ -373,7 +409,7 @@ function drawYahooStyleChart(canvas, entry) {
     }
   }
 
-  // 5. 昨收平盤線與右側深灰圓角膠囊氣泡標籤 (如 825.00)
+  // 5. 昨收平盤線與右側深灰圓角膠囊氣泡標籤
   const centerLineY = pad.top + chartH / 2;
   const tagStr      = basePrice.toFixed(2);
 
@@ -383,13 +419,11 @@ function drawYahooStyleChart(canvas, entry) {
   const tagX = pad.left + chartW + 6;
   const tagY = centerLineY - tagH / 2;
 
-  // 平盤灰色膠囊背景
   ctx.fillStyle = '#374151';
   ctx.beginPath();
   ctx.roundRect(tagX, tagY, tagW, tagH, 9);
   ctx.fill();
 
-  // 平盤數字
   ctx.fillStyle    = '#ffffff';
   ctx.textAlign    = 'center';
   ctx.textBaseline = 'middle';
@@ -420,7 +454,6 @@ function drawYahooStyleChart(canvas, entry) {
     ctx.fillRect(vx, volBaseY - vLen, 1.8, vLen);
   }
 
-  // 分隔虛線
   ctx.strokeStyle = 'rgba(255,255,255,0.1)';
   ctx.beginPath();
   ctx.moveTo(pad.left, pad.top + chartH + 5);
@@ -468,7 +501,7 @@ function drawYahooStyleChart(canvas, entry) {
   ctx.stroke();
   ctx.restore();
 
-  // 9. 最新成交價極致醒目焦點指示點
+  // 9. 最新成交價焦點指示點
   const lastX = toX(TOTAL_PTS - 1);
   const lastY = toY(currPrice);
 
@@ -487,6 +520,81 @@ function drawYahooStyleChart(canvas, entry) {
   ctx.strokeStyle = lineColor;
   ctx.lineWidth = 2;
   ctx.stroke();
+
+  // 10. 十字軸 (Crosshair) 與 Hover 動態數據 Tooltip
+  if (state.chartHoverIndex !== null && state.chartHoverIndex >= 0 && state.chartHoverIndex < TOTAL_PTS) {
+    const idx   = state.chartHoverIndex;
+    const hPx   = toX(idx);
+    const hPy   = toY(prices[idx]);
+    const hVal  = prices[idx];
+    const hVol  = volumes[idx];
+    const hDiff = hVal - basePrice;
+    const hPct  = ((hDiff / basePrice) * 100).toFixed(2);
+
+    // 時間計算 (09:00 ~ 13:30 共 270 分鐘)
+    const minsFrom9 = Math.round((idx / (TOTAL_PTS - 1)) * 270);
+    const hHour = String(9 + Math.floor(minsFrom9 / 60)).padStart(2, '0');
+    const hMin  = String(minsFrom9 % 60).padStart(2, '0');
+    const timeStr = `${hHour}:${hMin}`;
+
+    // 十字架虛線 (Crosshair)
+    ctx.save();
+    ctx.setLineDash([3, 3]);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.lineWidth   = 1;
+
+    // 垂直線
+    ctx.beginPath();
+    ctx.moveTo(hPx, pad.top);
+    ctx.lineTo(hPx, h - pad.bottom);
+    ctx.stroke();
+
+    // 水平線
+    ctx.beginPath();
+    ctx.moveTo(pad.left, hPy);
+    ctx.lineTo(pad.left + chartW, hPy);
+    ctx.stroke();
+    ctx.restore();
+
+    // 焦點大點
+    ctx.beginPath();
+    ctx.arc(hPx, hPy, 6, 0, Math.PI * 2);
+    ctx.fillStyle = hDiff >= 0 ? '#ff4455' : '#00e87a';
+    ctx.fill();
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // 懸浮 Tooltip 氣泡
+    const tipColor = hDiff >= 0 ? '#ff4455' : '#00e87a';
+    const tipSign  = hDiff > 0 ? '+' : '';
+    const tipText  = `${timeStr} ｜ 價格: ${hVal.toFixed(2)} (${tipSign}${hPct}%) ｜ 量: ${hVol}張`;
+
+    ctx.font = '12px JetBrains Mono, monospace';
+    const tipW = ctx.measureText(tipText).width + 20;
+    const tipH = 26;
+
+    let tipX = hPx - tipW / 2;
+    let tipY = hPy - 36;
+    if (tipX < pad.left + 5) tipX = pad.left + 5;
+    if (tipX + tipW > pad.left + chartW - 5) tipX = pad.left + chartW - tipW - 5;
+    if (tipY < pad.top + 5) tipY = hPy + 14;
+
+    // Tooltip 陰影底框
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+    ctx.strokeStyle = tipColor;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(tipX, tipY, tipW, tipH, 6);
+    ctx.fill();
+    ctx.stroke();
+
+    // Tooltip 文字
+    ctx.fillStyle    = '#ffffff';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(tipText, tipX + tipW / 2, tipY + tipH / 2);
+  }
 }
 
 /* ════════════════════════════════════════════════════════
@@ -523,8 +631,10 @@ async function loadArticles(keyword) {
       <span>載入文章中...</span>
     </div>`;
 
+  const pages = dom.timeRangeSelect ? (parseInt(dom.timeRangeSelect.value) || 4) : 4;
+
   try {
-    const res  = await fetch(`${API_BASE}/api/ptt/articles?keyword=${encodeURIComponent(keyword)}&pages=4`);
+    const res  = await fetch(`${API_BASE}/api/ptt/articles?keyword=${encodeURIComponent(keyword)}&pages=${pages}`);
     const data = await res.json();
 
     if (!data.success) throw new Error(data.error || '載入失敗');
@@ -532,7 +642,7 @@ async function loadArticles(keyword) {
     state.articles         = data.articles;
     state.filteredArticles = [...data.articles];
     renderArticleList(state.filteredArticles);
-    showToast(`已載入 ${data.total} 篇文章`, 'success');
+    showToast(`已載入 ${data.total} 篇文章 (${pages}頁範圍)`, 'success');
   } catch (err) {
     dom.articleList.innerHTML = `
       <div class="article-loading" style="color:var(--down)">
