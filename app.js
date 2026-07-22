@@ -115,28 +115,31 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * 動態產生近 7 天日期下拉選單 (例如: 07/22 今日, 07/21 昨日...)
+ * 動態產生近 7 天日期下拉選單，value 包含完整年份 (YYYY/MM/DD) 以精確排除往年舊文
  */
 function initDateSelect() {
   if (!dom.dateSelect) return;
 
   const options = [];
   const now = new Date();
+  const year = now.getFullYear();
 
   for (let i = 0; i < 7; i++) {
     const d = new Date(now);
     d.setDate(d.getDate() - i);
 
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    const dateVal = `${mm}/${dd}`;
+    const yyyy = d.getFullYear();
+    const mm   = String(d.getMonth() + 1).padStart(2, '0');
+    const dd   = String(d.getDate()).padStart(2, '0');
+    const fullDateVal = `${yyyy}/${mm}/${dd}`; // 例如: 2026/07/22
+    const displayVal  = `${mm}/${dd}`;         // 例如: 07/22
 
-    let label = dateVal;
+    let label = displayVal;
     if (i === 0) label += ' (今日)';
     else if (i === 1) label += ' (昨日)';
     else if (i === 2) label += ' (前天)';
 
-    options.push(`<option value="${dateVal}" ${i === 0 ? 'selected' : ''}>${label}</option>`);
+    options.push(`<option value="${fullDateVal}" ${i === 0 ? 'selected' : ''}>${label}</option>`);
   }
 
   dom.dateSelect.innerHTML = options.join('');
@@ -144,22 +147,28 @@ function initDateSelect() {
 }
 
 /**
- * 組合精確搜尋關鍵字：日期在前，標籤在後 (例如: "07/22 盤中", "07/22 盤後", "07/22")
- * PTT 原生搜尋引擎要求日期在前的格式才能精確命中閒聊文章
+ * 組合精確搜尋關鍵字：
+ * - 當「盤中」或「盤後」時，組合 "2026/07/22 盤中"，精確抓取今年當年度閒聊
+ * - 當「全部」時，回傳空字串 (不搜尋，直接列出最新 50 筆文章)
  */
 function getSearchKeyword() {
   const tab = state.currentTabKeyword || '';
   const date = state.currentDateStr || '';
 
   if (tab && date) return `${date} ${tab}`;
-  if (date) return date;
   if (tab) return tab;
-  return '';
+  return ''; // 全部頁籤：不用日期搜尋，直接爬取最新文章
 }
 
 function triggerArticleSearch() {
+  const isAllTab = !state.currentTabKeyword;
+  if (dom.dateSelect) {
+    dom.dateSelect.style.display = isAllTab ? 'none' : 'inline-block';
+  }
+
   const kw = getSearchKeyword();
-  loadArticles(kw);
+  const pages = isAllTab ? 3 : 2; // 全部頁籤抓 3 頁 (約 50~60 筆文章)
+  loadArticles(kw, pages);
 }
 
 /* ════════════════════════════════════════════════════════
@@ -639,15 +648,16 @@ async function fetchMarketIndex() {
 /* ════════════════════════════════════════════════════════
    ARTICLE LOADING
 ════════════════════════════════════════════════════════ */
-async function loadArticles(keyword) {
+async function loadArticles(keyword, pages = 2) {
+  const loadingText = keyword ? `搜尋 PTT 文章 (${escHtml(keyword)})...` : '載入最新 PTT 文章...';
   dom.articleList.innerHTML = `
     <div class="article-loading">
       <div class="spinner"></div>
-      <span>搜尋 PTT 文章中 (${escHtml(keyword)})...</span>
+      <span>${loadingText}</span>
     </div>`;
 
   try {
-    const res  = await fetch(`${API_BASE}/api/ptt/articles?keyword=${encodeURIComponent(keyword)}&pages=2`);
+    const res  = await fetch(`${API_BASE}/api/ptt/articles?keyword=${encodeURIComponent(keyword)}&pages=${pages}`);
     const data = await res.json();
 
     if (!data.success) throw new Error(data.error || '載入失敗');
@@ -655,7 +665,7 @@ async function loadArticles(keyword) {
     state.articles         = data.articles;
     state.filteredArticles = [...data.articles];
     renderArticleList(state.filteredArticles);
-    showToast(`已成功搜尋並載入 ${data.total} 篇 PTT 文章`, 'success');
+    showToast(`已載入 ${data.total} 篇 PTT 文章`, 'success');
   } catch (err) {
     dom.articleList.innerHTML = `
       <div class="article-loading" style="color:var(--down)">
