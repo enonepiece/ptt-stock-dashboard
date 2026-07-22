@@ -559,6 +559,69 @@
       display: block;
       touch-action: pan-y;
     }
+
+    @media (max-width: 640px) {
+      .modal-overlay {
+        align-items: stretch;
+        padding: 8px;
+      }
+      .modal-card {
+        max-height: calc(100dvh - 16px);
+        border-radius: 12px;
+      }
+      .modal-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px;
+      }
+      .modal-stock-title {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .modal-stock-name {
+        max-width: calc(100vw - 120px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 1.08rem;
+      }
+      .modal-stock-price-group {
+        order: 3;
+        width: 100%;
+        margin: 0;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .modal-stock-price { font-size: 1.3rem; }
+      .modal-stock-change {
+        min-width: 0;
+        text-align: right;
+        overflow-wrap: anywhere;
+      }
+      .modal-body {
+        padding: 12px;
+        gap: 12px;
+      }
+      .modal-metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 10px;
+      }
+      .modal-chart-section { padding: 10px; }
+      .chart-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.78rem;
+      }
+      .chart-header span:last-child {
+        font-size: 0.68rem !important;
+        line-height: 1.4;
+      }
+      .chart-canvas-wrap {
+        height: clamp(205px, 62vw, 250px);
+      }
+    }
     .modal-mentions-section {
       display: flex;
       flex-direction: column;
@@ -1105,6 +1168,139 @@
     @keyframes toastOut {
       from { opacity: 1; transform: translateX(0); }
       to   { opacity: 0; transform: translateX(20px); }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       MOBILE NAV BAR & RESPONSIVE BREAKPOINTS
+    ════════════════════════════════════════════════════════ */
+    .mobile-nav-bar {
+      display: none;
+      background: #091222;
+      border-bottom: 1px solid var(--border-dim);
+      padding: 6px 10px;
+      gap: 6px;
+      flex-shrink: 0;
+      z-index: 90;
+    }
+    .mobile-nav-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 6px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mobile-nav-btn.active {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(91,156,246,0.15);
+    }
+    .mobile-stock-badge {
+      font-size: 0.65rem;
+      padding: 0 5px;
+      height: 16px;
+      min-width: 16px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 860px) {
+      body {
+        height: 100vh;
+        height: 100dvh;
+      }
+      .topbar {
+        padding: 0 10px;
+        gap: 8px;
+        height: 48px;
+      }
+      .logo {
+        font-size: 0.88rem;
+        gap: 6px;
+      }
+      .logo-icon {
+        width: 26px; height: 26px;
+        font-size: 0.85rem;
+      }
+      .topbar-sep {
+        display: none;
+      }
+      .market-index-bar {
+        padding: 3px 8px;
+        font-size: 0.72rem;
+        gap: 4px;
+      }
+      .index-price {
+        font-size: 0.78rem;
+      }
+      .status-group {
+        padding: 3px 8px;
+        font-size: 0.72rem;
+      }
+      #statusText {
+        display: none;
+      }
+      .countdown-wrap, #lastUpdated {
+        display: none;
+      }
+      .topbar-right {
+        gap: 6px;
+      }
+      .topbar-right .btn {
+        padding: 4px 8px;
+        font-size: 0.72rem;
+      }
+
+      /* Show Mobile Navigation Bar */
+      .mobile-nav-bar {
+        display: flex;
+      }
+
+      /* Mobile Dashboard Layout */
+      .dashboard {
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .stocks-panel,
+      .ptt-panel,
+      .articles-subpanel,
+      .pushes-subpanel {
+        width: 100% !important;
+        height: 100% !important;
+        border-right: none !important;
+      }
+
+      .dashboard[data-mobile-view="pushes"] .stocks-panel { display: none !important; }
+      .dashboard[data-mobile-view="pushes"] .articles-subpanel { display: none !important; }
+      .dashboard[data-mobile-view="pushes"] .pushes-subpanel { display: flex !important; flex: 1; }
+
+      .dashboard[data-mobile-view="articles"] .stocks-panel { display: none !important; }
+      .dashboard[data-mobile-view="articles"] .pushes-subpanel { display: none !important; }
+      .dashboard[data-mobile-view="articles"] .articles-subpanel { display: flex !important; flex: 1; }
+
+      .dashboard[data-mobile-view="stocks"] .ptt-panel { display: none !important; }
+      .dashboard[data-mobile-view="stocks"] .stocks-panel { display: flex !important; flex: 1; }
+
+      .push-userid {
+        min-width: 65px;
+      }
+      .card-name {
+        font-size: 0.95rem;
+      }
+      .card-price {
+        font-size: 1.3rem;
+      }
     }
   </style>
 </head>

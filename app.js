@@ -30,6 +30,7 @@ let state = {
   currentDateStr:   '',          // 如 "07/22"
   currentModalCode: null,        // 當前開啟 Modal 的股票代號
   chartHoverIndex:  null,        // 當前滑鼠懸停於走勢圖的數據 Index
+  mobileTab:        'pushes',    // 行動端分頁：pushes, articles, stocks
 };
 
 /* ════════════════════════════════════════════════════════
@@ -39,6 +40,11 @@ const $  = id  => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 
 const dom = {
+  dashboard:            $('dashboard'),
+  mobileTabPushes:      $('mobileTabPushes'),
+  mobileTabArticles:    $('mobileTabArticles'),
+  mobileTabStocks:      $('mobileTabStocks'),
+  mobileStockBadge:     $('mobileStockBadge'),
   statusDot:            $('statusDot'),
   statusText:           $('statusText'),
   countdown:            $('countdown'),
@@ -172,9 +178,28 @@ function triggerArticleSearch() {
 }
 
 /* ════════════════════════════════════════════════════════
+   MOBILE NAV HELPER
+════════════════════════════════════════════════════════ */
+function setMobileTab(tabName) {
+  state.mobileTab = tabName;
+  if (dom.dashboard) {
+    dom.dashboard.dataset.mobileView = tabName;
+  }
+  $$('.mobile-nav-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  });
+}
+
+/* ════════════════════════════════════════════════════════
    EVENT BINDING
 ════════════════════════════════════════════════════════ */
 function bindEvents() {
+  $$('.mobile-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setMobileTab(btn.dataset.tab);
+    });
+  });
+
   $$('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       $$('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -724,6 +749,9 @@ async function selectArticle(article) {
   state.prevPushTotal   = 0;
   state.isFirstPushLoad = true;
 
+  // 在手機模式下自動切換至「即時推文」分頁
+  setMobileTab('pushes');
+
   state.stocks.clear();
   renderStockCards();
   renderTopMentionedChips([]);
@@ -1023,6 +1051,9 @@ function renderStockCards() {
   const entries = [...state.stocks.values()];
 
   dom.stockCount.textContent = entries.length;
+  if (dom.mobileStockBadge) {
+    dom.mobileStockBadge.textContent = entries.length;
+  }
 
   if (entries.length === 0) {
     dom.stocksEmptyState.style.display = 'flex';
