@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PTT 輿情 × 台股即時看板</title>
+  <meta name="description" content="即時監測 PTT Stock 板推文，自動偵測股票名稱並顯示即時股價走勢">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ════════════════════════════════════════════════════════
+       DESIGN TOKENS
+    ════════════════════════════════════════════════════════ */
+    :root {
+      --bg-base:      #060b14;
+      --bg-surface:   #0d1525;
+      --bg-raised:    #111e33;
+      --bg-overlay:   rgba(13, 21, 37, 0.9);
+      --border-dim:   rgba(255,255,255,0.06);
+      --border-light: rgba(255,255,255,0.12);
+
+      --text-primary:   #edf4ff;
+      --text-secondary: #94a3b8;
+      --text-muted:     #64748b;
+      --text-accent:    #5b9cf6;
+
+      --up:           #ff4455;
+      --up-dim:       rgba(255,68,85,0.15);
+      --up-glow:      rgba(255,68,85,0.4);
+      --down:         #00e87a;
+      --down-dim:     rgba(0,232,122,0.15);
+      --down-glow:    rgba(0,232,122,0.4);
+      --neutral:      #7a8ea8;
+
+      --accent:       #5b9cf6;
+      --accent-dim:   rgba(91,156,246,0.15);
+      --accent-glow:  rgba(91,156,246,0.35);
+
+      --push-up:      #ff4455;
+      --push-down:    #00e87a;
+      --push-neutral: #7a8ea8;
+      --push-new-bg:  rgba(91,156,246,0.08);
+
+      --radius-sm:  6px;
+      --radius-md:  10px;
+      --radius-lg:  16px;
+
+      --topbar-h: 56px;
+      --stocks-w: 390px;
+      --articles-w: 310px;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESET & BASE
+    ════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+    /* ════════════════════════════════════════════════════════
+       TOP BAR
+    ════════════════════════════════════════════════════════ */
+    .topbar {
+      height: var(--topbar-h);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+      background: linear-gradient(90deg, #08111e 0%, #0d1a2e 100%);
+      border-bottom: 1px solid var(--border-dim);
+      backdrop-filter: blur(20px);
+      z-index: 100;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #5b9cf6, #a78bf6);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 0 16px rgba(91,156,246,0.4);
+    }
+    .logo span { color: var(--accent); }
+
+    .topbar-sep { width: 1px; height: 24px; background: var(--border-dim); margin: 0 4px; }
+
+    /* Status indicator */
+    .status-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-dim);
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--up);
+      box-shadow: 0 0 8px var(--up-glow);
+      animation: pulse 2s infinite;
+    }
+    .status-dot.paused { background: var(--neutral); box-shadow: none; animation: none; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--up-glow); }
+      50%       { opacity: 0.5; box-shadow: 0 0 4px var(--up-glow); }
+    }
+    #statusText { color: var(--text-secondary); }
+
+    /* Countdown timer */
+    .countdown-wrap {
+      display: flex; align-items: center; gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    #countdown {
+      color: var(--accent);
+      min-width: 16px;
+      text-align: right;
+    }
+    .countdown-ring {
+      width: 16px; height: 16px;
+      position: relative;
+    }
+    .countdown-ring svg { transform: rotate(-90deg); }
+    .countdown-ring circle {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s linear;
+    }
+    .countdown-ring .bg-circle { stroke: rgba(91,156,246,0.15); }
+
+    /* Time display */
+    #lastUpdated {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.05);
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn:hover { background: rgba(255,255,255,0.09); color: var(--text-primary); border-color: var(--border-light); }
+    .btn.active, .btn:active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+    .btn-danger:hover { background: var(--down-dim); color: var(--down); border-color: var(--down); }
+
+    /* ════════════════════════════════════════════════════════
+       DASHBOARD LAYOUT
+    ════════════════════════════════════════════════════════ */
+    .dashboard {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* ── Market Index Ticker ──────────────────────────────── */
+    .market-index-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-dim);
+      border-radius: 20px;
+      font-size: 0.78rem;
+    }
+    .index-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .index-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+    }
+    .index-change {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+    .index-change.up   { color: var(--up); }
+    .index-change.down { color: var(--down); }
+    .index-change.flat { color: var(--neutral); }
+
+    /* ── Stocks Panel (Left) ─────────────────────────────── */
+    .stocks-panel {
+      width: var(--stocks-w);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-dim);
+      background: var(--bg-base);
+      min-height: 0;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border-dim);
+      flex-shrink: 0;
+    }
+    .panel-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+    }
+    .badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 20px; height: 20px; padding: 0 6px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .panel-header .btn { margin-left: auto; padding: 4px 10px; font-size: 0.72rem; }
+
+    .sort-bar {
+      display: flex;
+      padding: 8px 12px;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-dim);
+      flex-shrink: 0;
+    }
+    .sort-btn {
+      flex: 1;
+      padding: 5px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .sort-btn.active { background: var(--accent-dim); color: var(--accent); border-color: rgba(91,156,246,0.3); }
+    .sort-btn:hover:not(.active) { color: var(--text-secondary); background: rgba(255,255,255,0.04); }
+
+    /* Stock Cards Container */
+    .stock-cards-wrap {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+
+    /* Empty State */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 40px 20px;
+      gap: 12px;
+    }
+    .empty-icon { font-size: 2.5rem; opacity: 0.4; }
+    .empty-state p { font-size: 0.82rem; line-height: 1.6; }
+
+    /* Stock Card */
+    .stock-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      animation: cardIn 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .stock-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      border-radius: 3px 0 0 3px;
+    }
+    .stock-card.up::before   { background: var(--up); }
+    .stock-card.down::before { background: var(--down); }
+    .stock-card.flat::before { background: var(--neutral); }
+    .stock-card:hover { border-color: var(--border-light); background: var(--bg-raised); transform: translateX(2px); }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateX(-12px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 10px;
+    }
+    .card-name-wrap { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+    .card-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+    }
+    .card-price-wrap { text-align: right; flex-shrink: 0; }
+    .card-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.55rem;
+      font-weight: 700;
+      line-height: 1;
+      transition: color 0.3s;
+    }
+    .card-price.up   { color: var(--up); }
+    .card-price.down { color: var(--down); }
+    .card-price.flat { color: var(--text-primary); }
+    .card-price.flash-up   { animation: flashUp 0.5s; }
+    .card-price.flash-down { animation: flashDown 0.5s; }
+    @keyframes flashUp   { 0%,100% { text-shadow: none; } 50% { text-shadow: 0 0 20px var(--up-glow); } }
+    @keyframes flashDown { 0%,100% { text-shadow: none; } 50% { text-shadow: 0 0 20px var(--down-glow); } }
+
+    .card-change {
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 4px;
+    }
+    .card-change.up   { color: var(--up); }
+    .card-change.down { color: var(--down); }
+    .card-change.flat { color: var(--neutral); }
+
+    .card-click-hint {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      font-size: 0.7rem;
+      color: var(--text-accent);
+      margin-top: 4px;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .stock-card:hover .card-click-hint { opacity: 1; text-decoration: underline; }
+
+    /* ════════════════════════════════════════════════════════
+       STOCK DETAIL MODAL POPUP
+    ════════════════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(4, 8, 16, 0.75);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: modalFadeIn 0.25s ease;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .modal-card {
+      width: 100%;
+      max-width: 720px;
+      max-height: 92vh;
+      background: #0e1726;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalZoom 0.25s ease;
+    }
+    @keyframes modalZoom {
+      from { transform: scale(0.94); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-dim);
+      background: var(--bg-surface);
+    }
+    .modal-stock-title {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .modal-stock-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .modal-stock-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .modal-stock-price-group {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-left: auto;
+      margin-right: 16px;
+    }
+    .modal-stock-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .modal-stock-price.up   { color: var(--up); }
+    .modal-stock-price.down { color: var(--down); }
+    .modal-stock-price.flat { color: var(--text-primary); }
+
+    .modal-stock-change {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .modal-stock-change.up   { color: var(--up); }
+    .modal-stock-change.down { color: var(--down); }
+    .modal-stock-change.flat { color: var(--text-primary); }
+    .modal-close-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border-dim);
+      color: var(--text-secondary);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .modal-close-btn:hover {
+      background: rgba(255,255,255,0.15);
+      color: var(--text-primary);
+    }
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .modal-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+    }
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-align: center;
+    }
+    .metric-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .metric-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .modal-chart-section {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+    .chart-header {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chart-canvas-wrap {
+      width: 100%;
+      height: 270px;
+      position: relative;
+    }
+    .chart-canvas-wrap canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .modal-mentions-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mentions-header {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .modal-mentions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+    .modal-mention-item {
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      background: rgba(255,255,255,0.03);
+      border-left: 2px solid var(--accent);
+      border-radius: 4px;
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Sparkline */
+    .sparkline-wrap {
+      margin: 8px 0;
+      height: 36px;
+      position: relative;
+    }
+    .sparkline-wrap canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 4px;
+    }
+    .no-chart-msg {
+      display: flex; align-items: center; justify-content: center;
+      height: 100%;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    .mention-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-radius: 10px;
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+    .card-latest-mention {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* No data overlay */
+    .no-data-badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-dim);
+      border-radius: 10px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    /* ── PTT Panel (Right) ───────────────────────────────── */
+    .ptt-panel {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      background: var(--bg-base);
+    }
+
+    /* Articles Sub-panel */
+    .articles-subpanel {
+      width: var(--articles-w);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-dim);
+    }
+    .tab-bar {
+      display: flex;
+      gap: 2px;
+      padding: 10px 10px 0;
+      border-bottom: 1px solid var(--border-dim);
+      flex-shrink: 0;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 7px 4px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-btn:hover:not(.active) { color: var(--text-secondary); }
+
+    .search-wrap {
+      padding: 10px;
+      border-bottom: 1px solid var(--border-dim);
+      flex-shrink: 0;
+    }
+    .search-input {
+      width: 100%;
+      padding: 7px 10px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: var(--accent); }
+
+    /* Article List */
+    #articleList {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .article-loading {
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px 20px;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .article-item {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-dim);
+      cursor: pointer;
+      transition: background 0.15s;
+      position: relative;
+    }
+    .article-item:hover { background: rgba(255,255,255,0.03); }
+    .article-item.selected { background: var(--accent-dim); }
+    .article-item.selected::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+      background: var(--accent);
+    }
+    .article-title {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 5px;
+    }
+    .article-item.selected .article-title { color: var(--accent); }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .article-nrec {
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+    .article-nrec.hot { background: rgba(255,100,0,0.15); color: #ff6400; }
+    .article-nrec.normal { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+
+    /* Pushes Sub-panel */
+    .pushes-subpanel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .article-header-bar {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-dim);
+      flex-shrink: 0;
+      background: var(--bg-surface);
+    }
+    .article-header-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+    .article-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 5px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .placeholder-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      gap: 8px;
+    }
+
+    /* Push Stream */
+    #pushStream {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+
+    .push-item {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      padding: 5px 16px;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      transition: background 0.2s;
+      border-radius: 0;
+    }
+    .push-item:hover { background: rgba(255,255,255,0.03); }
+    .push-item.new {
+      background: var(--push-new-bg);
+      animation: pushSlideIn 0.4s ease;
+    }
+    @keyframes pushSlideIn {
+      from { opacity: 0; transform: translateX(8px); background: rgba(91,156,246,0.2); }
+      to   { opacity: 1; transform: translateX(0); background: var(--push-new-bg); }
+    }
+    .push-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      flex-shrink: 0;
+      width: 16px;
+      text-align: center;
+    }
+    .push-tag.up   { color: var(--push-up); }
+    .push-tag.down { color: var(--push-down); }
+    .push-tag.neutral { color: var(--push-neutral); }
+    .push-userid {
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+      min-width: 80px;
+    }
+    .push-content {
+      flex: 1;
+      color: var(--text-primary);
+      word-break: break-all;
+    }
+    .push-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* Stock tag highlight in pushes */
+    mark.stock-tag {
+      background: rgba(91,156,246,0.18);
+      color: var(--accent);
+      border-radius: 3px;
+      padding: 0 3px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    mark.stock-tag:hover { background: rgba(91,156,246,0.35); }
+
+    /* Push Status Bar */
+    .push-status-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-top: 1px solid var(--border-dim);
+      background: var(--bg-surface);
+      flex-shrink: 0;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    #pushTotalCount { color: var(--text-muted); }
+    #newPushBadge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-radius: 10px;
+      font-size: 0.68rem;
+      transition: all 0.3s;
+    }
+    #newPushBadge.hidden { display: none; }
+
+    .push-stats-right { margin-left: auto; color: var(--text-muted); }
+
+    /* Sentiment bar */
+    .sentiment-bar {
+      display: flex;
+      height: 3px;
+      width: 80px;
+      border-radius: 3px;
+      overflow: hidden;
+      background: var(--border-dim);
+      gap: 1px;
+    }
+    .sentiment-up   { height: 100%; background: var(--up);   transition: width 0.5s; }
+    .sentiment-down { height: 100%; background: var(--down); transition: width 0.5s; }
+
+    /* Push loading placeholder */
+    .push-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 14px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    .placeholder-icon { font-size: 3rem; opacity: 0.25; }
+
+    /* Stock card bottom */
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      gap: 6px;
+    }
+    .mention-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-radius: 10px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .card-latest-mention {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .no-chart-msg {
+      display: flex; align-items: center; justify-content: center;
+      height: 100%;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+    .sparkline-wrap {
+      margin: 6px 0 4px;
+      height: 36px;
+    }
+    .sparkline-wrap canvas { width: 100%; height: 100%; display: block; }
+
+    /* Live / prevClose badge */
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 5px;
+      background: var(--up-dim);
+      color: var(--up);
+      border-radius: 4px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      vertical-align: middle;
+    }
+    .prev-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 5px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      border-radius: 4px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      vertical-align: middle;
+    }
+
+    /* Top Mentioned Chips */
+    .top-mentioned-bar {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border-dim);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .top-mentioned-title {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    .top-mentioned-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      max-height: 52px;
+      overflow-y: auto;
+    }
+    .top-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      background: rgba(91,156,246,0.12);
+      border: 1px solid rgba(91,156,246,0.25);
+      border-radius: 12px;
+      font-size: 0.68rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .top-chip:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .top-chip .chip-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(0,0,0,0.3);
+      padding: 0 4px;
+      border-radius: 8px;
+      font-size: 0.65rem;
+    }
+    .top-chip:hover .chip-count {
+      color: #fff;
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* Highlight mention badge when sorting by mentions */
+    .mention-badge.highlight-sort {
+      background: var(--accent-glow) !important;
+      border: 1px solid var(--accent) !important;
+      color: #fff !important;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       TOAST NOTIFICATIONS
+    ════════════════════════════════════════════════════════ */
+    #toastContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 9999;
+    }
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      animation: toastIn 0.3s ease;
+      max-width: 320px;
+    }
+    .toast.success { border-left: 3px solid var(--up); }
+    .toast.error   { border-left: 3px solid var(--down); }
+    .toast.info    { border-left: 3px solid var(--accent); }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(20px); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+  TOP BAR
+═══════════════════════════════════════════════════════════ -->
+<header class="topbar" role="banner">
+  <div class="logo">
+    <div class="logo-icon">📡</div>
+    PTT 輿情 &times; <span>台股看板</span>
+  </div>
+
+  <div class="topbar-sep"></div>
+
+  <div class="market-index-bar" id="marketIndexBar" title="大盤加權指數">
+    <span class="index-label">加權指數</span>
+    <span class="index-price" id="indexPrice">─</span>
+    <span class="index-change" id="indexChange">─</span>
+  </div>
+
+  <div class="topbar-sep"></div>
+
+  <div class="status-group" role="status" aria-live="polite">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">即時監測中</span>
+  </div>
+
+  <div class="countdown-wrap" title="距離下次更新">
+    <svg class="countdown-ring" viewBox="0 0 16 16" width="16" height="16">
+      <circle class="bg-circle" cx="8" cy="8" r="6"/>
+      <circle id="countdownCircle" cx="8" cy="8" r="6"
+        stroke-dasharray="37.7" stroke-dashoffset="0"/>
+    </svg>
+    <span id="countdown">30</span>s
+  </div>
+
+  <div class="topbar-sep"></div>
+
+  <span id="lastUpdated">─</span>
+
+  <div class="topbar-right">
+    <button class="btn" id="monitorToggle" aria-label="切換監測狀態">⏸ 暫停監測</button>
+    <button class="btn" id="refreshArticles" aria-label="重新載入文章列表">↺ 重新載入</button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════
+  DASHBOARD
+═══════════════════════════════════════════════════════════ -->
+<main class="dashboard" role="main">
+
+  <!-- ─── Left: Stocks Panel ─────────────────────────────── -->
+  <aside class="stocks-panel" aria-label="偵測到的股票">
+    <div class="panel-header">
+      <span class="panel-title">偵測股票</span>
+      <span class="badge" id="stockCount">0</span>
+      <button class="btn btn-danger" id="clearStocks" aria-label="清空所有股票">✕ 清空</button>
+    </div>
+
+    <div class="sort-bar" role="toolbar" aria-label="排序方式">
+      <button class="sort-btn active" id="sortMentions" data-sort="mentions">💬 提及次數</button>
+      <button class="sort-btn" id="sortChange" data-sort="change">📈 漲跌幅</button>
+      <button class="sort-btn" id="sortCode" data-sort="code">🔢 代號</button>
+    </div>
+
+    <div class="stock-cards-wrap" id="stockCardsWrap">
+      <div class="empty-state" id="stocksEmptyState">
+        <div class="empty-icon">🔍</div>
+        <p>尚未偵測到股票<br>請先選擇一篇 PTT 文章<br>系統將自動掃描推文</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── Right: PTT Panel ───────────────────────────────── -->
+  <section class="ptt-panel" aria-label="PTT Stock 板">
+
+    <!-- Articles Sub-panel -->
+    <div class="articles-subpanel">
+      <div class="tab-bar" role="tablist" aria-label="文章篩選">
+        <button class="tab-btn active" role="tab" data-keyword="盤中" id="tab-盤中">盤中</button>
+        <button class="tab-btn" role="tab" data-keyword="盤後" id="tab-盤後">盤後</button>
+        <button class="tab-btn" role="tab" data-keyword="" id="tab-全部">全部</button>
+      </div>
+
+      <div class="search-wrap">
+        <input
+          type="text"
+          class="search-input"
+          id="searchInput"
+          placeholder="搜尋文章標題..."
+          aria-label="搜尋文章標題"
+        >
+      </div>
+
+      <div id="articleList" role="list" aria-label="文章列表">
+        <div class="article-loading">
+          <div class="spinner"></div>
+          <span>載入文章中...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pushes Sub-panel -->
+    <div class="pushes-subpanel">
+
+      <div class="article-header-bar" id="articleHeaderBar">
+        <div class="placeholder-bar" id="articlePlaceholder">
+          <span>👈</span>
+          <span>請選擇一篇文章開始監測</span>
+        </div>
+        <div id="articleHeaderContent" style="display:none">
+          <div class="article-header-title" id="articleHeaderTitle"></div>
+          <div class="article-header-meta" id="articleHeaderMeta"></div>
+          <div class="top-mentioned-bar" id="topMentionedBar" style="display:none">
+            <span class="top-mentioned-title">🔥 文章提及 Top 20 股票：</span>
+            <div class="top-mentioned-chips" id="topMentionedChips"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pushStream" role="log" aria-live="polite" aria-label="推文串流">
+        <div class="push-placeholder" id="pushPlaceholder">
+          <div class="placeholder-icon">💬</div>
+          <span>選擇文章後，推文將即時顯示於此</span>
+        </div>
+      </div>
+
+      <div class="push-status-bar">
+        <span id="pushTotalCount">0 則推文</span>
+        <span class="badge" id="newPushBadge" style="display:none">+0 新推文</span>
+        <div class="push-stats-right" id="sentimentWrap" style="display:none">
+          <div class="sentiment-bar" title="正負評比">
+            <div class="sentiment-up" id="sentimentUp" style="width:50%"></div>
+            <div class="sentiment-down" id="sentimentDown" style="width:50%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<!-- Toast Container -->
+<div id="toastContainer" aria-live="assertive"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+  STOCK DETAIL MODAL POPUP
+═══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="stockModal" style="display:none" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-stock-title">
+        <span class="modal-stock-name" id="modalStockName">─</span>
+        <span class="modal-stock-code" id="modalStockCode">─</span>
+      </div>
+      <div class="modal-stock-price-group">
+        <span class="modal-stock-price" id="modalStockPrice">─</span>
+        <span class="modal-stock-change" id="modalStockChange">─</span>
+      </div>
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="關閉視窗">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-metrics-grid">
+        <div class="metric-item"><span class="metric-label">昨收</span><span class="metric-val" id="modalPrevClose">─</span></div>
+        <div class="metric-item"><span class="metric-label">開盤</span><span class="metric-val" id="modalOpen">─</span></div>
+        <div class="metric-item"><span class="metric-label">最高</span><span class="metric-val" id="modalHigh">─</span></div>
+        <div class="metric-item"><span class="metric-label">最低</span><span class="metric-val" id="modalLow">─</span></div>
+        <div class="metric-item"><span class="metric-label">成交量</span><span class="metric-val" id="modalVolume">─</span></div>
+        <div class="metric-item"><span class="metric-label">PTT提及</span><span class="metric-val" id="modalMentionsCount">0 次</span></div>
+      </div>
+
+      <div class="modal-chart-section">
+        <div class="chart-header">📈 即時分時走勢圖</div>
+        <div class="chart-canvas-wrap">
+          <canvas id="modalChartCanvas" width="650" height="270"></canvas>
+        </div>
+      </div>
+
+      <div class="modal-mentions-section">
+        <div class="mentions-header">💬 PTT 提及此股票的推文</div>
+        <div class="modal-mentions-list" id="modalMentionsList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="stockDict.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+name = "ptt-stock-dashboard"
+main = "worker.js"
+compatibility_date = "2026-07-22"
+
+[site]
+bucket = "./"

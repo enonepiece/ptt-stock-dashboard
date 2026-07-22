@@ -1,0 +1,22 @@
+{
+  "name": "ptt-stock-dashboard",
+  "version": "1.0.0",
+  "description": "PTT輿情分析 × 台股市場即時看板",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": ["ptt", "stock", "dashboard", "taiwan"],
+  "author": "",
+  "license": "MIT"
+}
