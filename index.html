@@ -37,8 +37,8 @@
       --accent-dim:   rgba(91,156,246,0.15);
       --accent-glow:  rgba(91,156,246,0.35);
 
-      --push-up:      #ff4455;
-      --push-down:    #00e87a;
+      --push-up:      #ff9a2e;
+      --push-down:    #a78bf6;
       --push-neutral: #7a8ea8;
       --push-new-bg:  rgba(91,156,246,0.08);
 
@@ -914,16 +914,18 @@
       to   { opacity: 1; transform: translateX(0); background: var(--push-new-bg); }
     }
     .push-tag {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
       font-family: 'JetBrains Mono', monospace;
       flex-shrink: 0;
-      width: 16px;
+      min-width: 20px;
+      padding: 1px 4px;
+      border-radius: 4px;
       text-align: center;
     }
-    .push-tag.up   { color: var(--push-up); }
-    .push-tag.down { color: var(--push-down); }
-    .push-tag.neutral { color: var(--push-neutral); }
+    .push-tag.up      { color: var(--push-up); background: rgba(255,154,46,0.12); }
+    .push-tag.down    { color: var(--push-down); background: rgba(167,139,246,0.12); }
+    .push-tag.neutral { color: var(--push-neutral); background: rgba(122,142,168,0.1); }
     .push-userid {
       font-size: 0.72rem;
       font-family: 'JetBrains Mono', monospace;
@@ -992,8 +994,8 @@
       background: var(--border-dim);
       gap: 1px;
     }
-    .sentiment-up   { height: 100%; background: var(--up);   transition: width 0.5s; }
-    .sentiment-down { height: 100%; background: var(--down); transition: width 0.5s; }
+    .sentiment-up   { height: 100%; background: var(--push-up);   transition: width 0.5s; }
+    .sentiment-down { height: 100%; background: var(--push-down); transition: width 0.5s; }
 
     /* Push loading placeholder */
     .push-placeholder {
@@ -1213,35 +1215,50 @@
       min-width: 16px;
       border-radius: 8px;
     }
+    .mobile-back-btn {
+      display: none;
+    }
 
     @media (max-width: 860px) {
       body {
         height: 100vh;
         height: 100dvh;
+        overflow: hidden;
       }
       .topbar {
-        padding: 0 10px;
-        gap: 8px;
-        height: 48px;
+        padding: 0 8px;
+        gap: 6px;
+        height: 46px;
       }
       .logo {
-        font-size: 0.88rem;
-        gap: 6px;
+        font-size: 0.85rem;
+        gap: 5px;
+      }
+      .logo span {
+        display: none; /* Hide '台股看板' text on mobile header to save space */
       }
       .logo-icon {
-        width: 26px; height: 26px;
-        font-size: 0.85rem;
+        width: 24px; height: 24px;
+        font-size: 0.8rem;
       }
       .topbar-sep {
-        display: none;
+        display: none !important;
       }
       .market-index-bar {
-        padding: 3px 8px;
-        font-size: 0.72rem;
+        padding: 2px 6px;
+        font-size: 0.7rem;
         gap: 4px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .index-label {
+        display: none; /* Hide '加權指數' text on mobile so values fit on 1 line */
       }
       .index-price {
         font-size: 0.78rem;
+      }
+      .index-change {
+        font-size: 0.7rem;
       }
       .status-group {
         padding: 3px 8px;
@@ -1352,7 +1369,23 @@
 <!-- ═══════════════════════════════════════════════════════════
   DASHBOARD
 ═══════════════════════════════════════════════════════════ -->
-<main class="dashboard" role="main">
+<nav class="mobile-nav-bar" id="mobileNav" role="navigation" aria-label="行動端選單">
+  <button class="mobile-nav-btn active" id="mobileTabArticles" data-tab="articles">
+    <span class="mobile-nav-icon">📄</span>
+    <span class="mobile-nav-text">PTT 文章</span>
+  </button>
+  <button class="mobile-nav-btn" id="mobileTabPushes" data-tab="pushes">
+    <span class="mobile-nav-icon">💬</span>
+    <span class="mobile-nav-text">即時推文</span>
+  </button>
+  <button class="mobile-nav-btn" id="mobileTabStocks" data-tab="stocks">
+    <span class="mobile-nav-icon">📈</span>
+    <span class="mobile-nav-text">偵測股票</span>
+    <span class="badge mobile-stock-badge" id="mobileStockBadge">0</span>
+  </button>
+</nav>
+
+<main class="dashboard" id="dashboard" data-mobile-view="articles" role="main">
 
   <!-- ─── Left: Stocks Panel ─────────────────────────────── -->
   <aside class="stocks-panel" aria-label="偵測到的股票">

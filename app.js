@@ -29,8 +29,9 @@ let state = {
   currentTabKeyword:'盤中',      // 盤中, 盤後, 全部
   currentDateStr:   '',          // 如 "07/22"
   currentModalCode: null,        // 當前開啟 Modal 的股票代號
+  tempModalEntry:   null,        // 獨立 Modal 暫存（不污染左側偵測股票列表）
   chartHoverIndex:  null,        // 當前滑鼠懸停於走勢圖的數據 Index
-  mobileTab:        'pushes',    // 行動端分頁：pushes, articles, stocks
+  mobileTab:        'articles',  // 行動端分頁：pushes, articles, stocks
 };
 
 /* ════════════════════════════════════════════════════════
@@ -45,6 +46,7 @@ const dom = {
   mobileTabArticles:    $('mobileTabArticles'),
   mobileTabStocks:      $('mobileTabStocks'),
   mobileStockBadge:     $('mobileStockBadge'),
+  mobileBackToArticles: $('mobileBackToArticles'),
   statusDot:            $('statusDot'),
   statusText:           $('statusText'),
   countdown:            $('countdown'),
@@ -200,6 +202,12 @@ function bindEvents() {
     });
   });
 
+  if (dom.mobileBackToArticles) {
+    dom.mobileBackToArticles.addEventListener('click', () => {
+      setMobileTab('articles');
+    });
+  }
+
   $$('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       $$('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -307,32 +315,70 @@ function bindEvents() {
    STOCK DETAIL MODAL POPUP
 ════════════════════════════════════════════════════════ */
 function openStockModal(code) {
-  const entry = state.stocks.get(code);
-  if (!entry) return;
+  if (!code) return;
+
+  let entry = state.stocks.get(code);
+  if (!entry) {
+    // 獨立 Modal 暫存物件（避免污染左側「偵測股票」面板）
+    const stockInfo = typeof CODE_INDEX !== 'undefined' ? CODE_INDEX.get(code) : null;
+    entry = {
+      code,
+      name:         stockInfo ? stockInfo.names[0] : code,
+      market:       stockInfo ? stockInfo.market : 'tse',
+      price:        null,
+      isLive:       false,
+      prevClose:    0,
+      change:       0,
+      changePct:    0,
+      mentionCount: 0,
+      mentions:     [],
+      priceHistory: [],
+    };
+    state.tempModalEntry = entry;
+  } else {
+    state.tempModalEntry = null;
+  }
 
   state.currentModalCode = code;
   state.chartHoverIndex  = null;
 
-  const { name, price, change, changePct, prevClose, open, high, low, volume, mentionCount, mentions } = entry;
+  // 若股價資料尚未載入，維護即時價位查詢
+  if (entry.price === null) {
+    fetchStockPrices([code]);
+  }
+
+  updateStockModalUI(entry);
+
+  dom.stockModal.style.display = 'flex';
+
+  requestAnimationFrame(() => {
+    drawYahooStyleChart(dom.modalChartCanvas, entry);
+  });
+}
+
+function updateStockModalUI(entry) {
+  if (!entry) return;
+
+  const { name, code, price, change, changePct, prevClose, open, high, low, volume, mentionCount, mentions } = entry;
   const hasPrice  = price !== null && price > 0;
   
   const { dir, symbol, dirSign } = getStockDirInfo(change, changePct);
 
   dom.modalStockName.textContent  = name;
   dom.modalStockCode.textContent  = code;
-  dom.modalStockPrice.textContent = hasPrice ? price.toFixed(2) : '─';
+  dom.modalStockPrice.textContent = hasPrice ? price.toFixed(2) : '載入中...';
   dom.modalStockPrice.className   = `modal-stock-price ${hasPrice ? dir : 'flat'}`;
-  dom.modalStockChange.textContent= hasPrice ? `${symbol} ${dirSign}${change.toFixed(2)} (${dirSign}${changePct}%)` : '盤後 / 收盤';
+  dom.modalStockChange.textContent= hasPrice ? `${symbol} ${dirSign}${change.toFixed(2)} (${dirSign}${changePct}%)` : '─';
   dom.modalStockChange.className  = `modal-stock-change ${hasPrice ? dir : 'flat'}`;
 
-  dom.modalPrevClose.textContent    = prevClose ? prevClose.toFixed(2) : '─';
-  dom.modalOpen.textContent         = open ? open.toFixed(2) : '─';
-  dom.modalHigh.textContent         = high ? high.toFixed(2) : '─';
-  dom.modalLow.textContent          = low ? low.toFixed(2) : '─';
-  dom.modalVolume.textContent       = volume ? volume.toLocaleString('zh-TW') : '─';
-  dom.modalMentionsCount.textContent = `${mentionCount} 次`;
+  dom.modalPrevClose.textContent     = prevClose ? prevClose.toFixed(2) : '─';
+  dom.modalOpen.textContent          = open ? open.toFixed(2) : '─';
+  dom.modalHigh.textContent          = high ? high.toFixed(2) : '─';
+  dom.modalLow.textContent           = low ? low.toFixed(2) : '─';
+  dom.modalVolume.textContent        = volume ? volume.toLocaleString('zh-TW') : '─';
+  dom.modalMentionsCount.textContent = `${mentionCount || 0} 次`;
 
-  if (mentions.length === 0) {
+  if (!mentions || mentions.length === 0) {
     dom.modalMentionsList.innerHTML = `<div style="color:var(--text-muted);font-size:0.8rem">尚無推文提及紀錄</div>`;
   } else {
     dom.modalMentionsList.innerHTML = mentions.slice(-10).reverse().map(m => {
@@ -345,17 +391,12 @@ function openStockModal(code) {
         </div>`;
     }).join('');
   }
-
-  dom.stockModal.style.display = 'flex';
-
-  requestAnimationFrame(() => {
-    drawYahooStyleChart(dom.modalChartCanvas, entry);
-  });
 }
 
 function closeStockModal() {
   dom.stockModal.style.display = 'none';
   state.currentModalCode = null;
+  state.tempModalEntry   = null;
   state.chartHoverIndex  = null;
 }
 
@@ -1004,8 +1045,11 @@ async function fetchStockPrices(codes) {
 
     const now = Date.now();
     for (const s of data.stocks) {
-      if (!state.stocks.has(s.code)) continue;
-      const entry = state.stocks.get(s.code);
+      let entry = state.stocks.get(s.code);
+      if (!entry && state.currentModalCode === s.code && state.tempModalEntry) {
+        entry = state.tempModalEntry;
+      }
+      if (!entry) continue;
 
       const prevPrice = entry.price;
       entry.name      = s.name || entry.name;
@@ -1036,8 +1080,12 @@ async function fetchStockPrices(codes) {
 
     renderStockCards();
 
-    if (state.currentModalCode && state.stocks.has(state.currentModalCode)) {
-      openStockModal(state.currentModalCode);
+    if (state.currentModalCode) {
+      const activeModalEntry = state.stocks.get(state.currentModalCode) || state.tempModalEntry;
+      if (activeModalEntry) {
+        updateStockModalUI(activeModalEntry);
+        drawYahooStyleChart(dom.modalChartCanvas, activeModalEntry);
+      }
     }
   } catch (err) {
     console.error('[fetchStockPrices]', err);
