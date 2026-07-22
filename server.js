@@ -41,14 +41,30 @@ async function fetchPTT(url) {
 app.get('/api/ptt/articles', async (req, res) => {
   try {
     const keyword = req.query.keyword || '';
-    const pages   = Math.min(parseInt(req.query.pages) || 3, 10);
+    const pages   = Math.min(parseInt(req.query.pages) || 2, 5);
 
     const articles = [];
-    let pageUrl = 'https://www.ptt.cc/bbs/Stock/index.html';
+    
+    // 如果有關鍵字 (例如 "盤中 07/22" 或 "07/22")，優先使用 PTT 原生搜尋 URL
+    let pageUrl = keyword
+      ? `https://www.ptt.cc/bbs/Stock/search?q=${encodeURIComponent(keyword)}`
+      : 'https://www.ptt.cc/bbs/Stock/index.html';
 
     for (let i = 0; i < pages; i++) {
-      const html = await fetchPTT(pageUrl);
-      const $    = cheerio.load(html);
+      let html;
+      try {
+        html = await fetchPTT(pageUrl);
+      } catch (e) {
+        // 若搜尋無結果或失敗，退回預設首頁
+        if (i === 0 && keyword) {
+          pageUrl = 'https://www.ptt.cc/bbs/Stock/index.html';
+          html    = await fetchPTT(pageUrl);
+        } else {
+          break;
+        }
+      }
+
+      const $ = cheerio.load(html);
 
       $('.r-ent').each((_, el) => {
         const $el    = $(el);
@@ -61,16 +77,13 @@ app.get('/api/ptt/articles', async (req, res) => {
 
         if (!href) return;
 
-        // 關鍵字篩選（不分大小寫，不需要完整符合方括號）
-        if (!keyword || title.includes(keyword)) {
-          articles.push({
-            title,
-            url:       'https://www.ptt.cc' + href,
-            author,
-            date,
-            pushCount: nrec || '0',
-          });
-        }
+        articles.push({
+          title,
+          url:       'https://www.ptt.cc' + href,
+          author,
+          date,
+          pushCount: nrec || '0',
+        });
       });
 
       // 取得上一頁連結
@@ -81,7 +94,7 @@ app.get('/api/ptt/articles', async (req, res) => {
       if (!prevHref || i >= pages - 1) break;
       pageUrl = 'https://www.ptt.cc' + prevHref;
 
-      await new Promise(r => setTimeout(r, 400));
+      await new Promise(r => setTimeout(r, 200));
     }
 
     res.json({ success: true, articles, total: articles.length });

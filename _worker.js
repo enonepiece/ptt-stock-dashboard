@@ -85,21 +85,30 @@ async function parsePTTPushes(html) {
 async function handlePttArticles(request) {
   const url     = new URL(request.url);
   const keyword = url.searchParams.get('keyword') || '';
-  const pages   = Math.min(parseInt(url.searchParams.get('pages') || '4'), 8);
+  const pages   = Math.min(parseInt(url.searchParams.get('pages') || '2'), 5);
 
   const articles = [];
-  let pageUrl = 'https://www.ptt.cc/bbs/Stock/index.html';
+  let pageUrl = keyword
+    ? `https://www.ptt.cc/bbs/Stock/search?q=${encodeURIComponent(keyword)}`
+    : 'https://www.ptt.cc/bbs/Stock/index.html';
 
   for (let i = 0; i < pages; i++) {
-    const resp = await fetch(pageUrl, { headers: PTT_HEADERS });
-    const html = await resp.text();
+    try {
+      const resp = await fetch(pageUrl, { headers: PTT_HEADERS });
+      if (!resp.ok && i === 0 && keyword) {
+        pageUrl = 'https://www.ptt.cc/bbs/Stock/index.html';
+        continue;
+      }
+      const html = await resp.text();
+      const pageArticles = await parsePTTArticles(html, '');
+      articles.push(...pageArticles);
 
-    const pageArticles = await parsePTTArticles(html, keyword);
-    articles.push(...pageArticles);
-
-    const prevMatch = html.match(/href="(\/bbs\/Stock\/index\d+\.html)"[^>]*>上頁<\/a>/);
-    if (!prevMatch || i >= pages - 1) break;
-    pageUrl = 'https://www.ptt.cc' + prevMatch[1];
+      const prevMatch = html.match(/href="(\/bbs\/Stock\/search\?[^"]*|\/bbs\/Stock\/index\d+\.html)"[^>]*>上頁<\/a>/);
+      if (!prevMatch || i >= pages - 1) break;
+      pageUrl = 'https://www.ptt.cc' + prevMatch[1];
+    } catch {
+      break;
+    }
   }
 
   return jsonResponse({ success: true, articles, total: articles.length });
