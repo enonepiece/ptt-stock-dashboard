@@ -216,6 +216,202 @@
       font-size: 0.85rem;
       color: var(--text-primary);
     }
+<style>
+      --text-secondary: #94a3b8;
+      --text-muted:     #64748b;
+      --text-accent:    #5b9cf6;
+
+      --up:           #ff4455;
+      --up-dim:       rgba(255,68,85,0.15);
+      --up-glow:      rgba(255,68,85,0.4);
+      --down:         #00e87a;
+      --down-dim:     rgba(0,232,122,0.15);
+      --down-glow:    rgba(0,232,122,0.4);
+      --neutral:      #7a8ea8;
+
+      --accent:       #5b9cf6;
+      --accent-dim:   rgba(91,156,246,0.15);
+      --accent-glow:  rgba(91,156,246,0.35);
+
+      --push-up:      #ff9a2e;
+      --push-down:    #a78bf6;
+      --push-neutral: #7a8ea8;
+      --push-new-bg:  rgba(91,156,246,0.08);
+
+      --radius-sm:  6px;
+      --radius-md:  10px;
+      --radius-lg:  16px;
+
+      --topbar-h: 56px;
+      --stocks-w: 390px;
+      --articles-w: 310px;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       RESET & BASE
+    ════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+    /* ════════════════════════════════════════════════════════
+       TOP BAR
+    ════════════════════════════════════════════════════════ */
+    .topbar {
+      height: var(--topbar-h);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+      background: linear-gradient(90deg, #08111e 0%, #0d1a2e 100%);
+      border-bottom: 1px solid var(--border-dim);
+      backdrop-filter: blur(20px);
+      z-index: 100;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #5b9cf6, #a78bf6);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 0 16px rgba(91,156,246,0.4);
+    }
+    .logo span { color: var(--accent); }
+
+    .topbar-sep { width: 1px; height: 24px; background: var(--border-dim); margin: 0 4px; }
+
+    /* Status indicator */
+    .status-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-dim);
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--up);
+      box-shadow: 0 0 8px var(--up-glow);
+      animation: pulse 2s infinite;
+    }
+    .status-dot.paused { background: var(--neutral); box-shadow: none; animation: none; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--up-glow); }
+      50%       { opacity: 0.5; box-shadow: 0 0 4px var(--up-glow); }
+    }
+    #statusText { color: var(--text-secondary); }
+
+    /* Countdown timer */
+    .countdown-wrap {
+      display: flex; align-items: center; gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    #countdown {
+      color: var(--accent);
+      min-width: 16px;
+      text-align: right;
+    }
+    .countdown-ring {
+      width: 16px; height: 16px;
+      position: relative;
+    }
+    .countdown-ring svg { transform: rotate(-90deg); }
+    .countdown-ring circle {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s linear;
+    }
+    .countdown-ring .bg-circle { stroke: rgba(91,156,246,0.15); }
+
+    /* Time display */
+    #lastUpdated {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.05);
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn:hover { background: rgba(255,255,255,0.09); color: var(--text-primary); border-color: var(--border-light); }
+    .btn.active, .btn:active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent); }
+    .btn-danger:hover { background: var(--down-dim); color: var(--down); border-color: var(--down); }
+
+    /* ════════════════════════════════════════════════════════
+       DASHBOARD LAYOUT
+    ════════════════════════════════════════════════════════ */
+    .dashboard {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* ── Market Index Ticker ──────────────────────────────── */
+    .market-index-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-dim);
+      border-radius: 20px;
+      font-size: 0.78rem;
+    }
+    .index-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .index-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+    }
     .index-change {
       font-family: 'JetBrains Mono', monospace;
       font-weight: 600;
@@ -224,6 +420,9 @@
     .index-change.up   { color: var(--up); }
     .index-change.down { color: var(--down); }
     .index-change.flat { color: var(--neutral); }
+    .index-price.up    { color: var(--up); }
+    .index-price.down  { color: var(--down); }
+    .index-price.flat  { color: var(--neutral); }
 
     /* ── Stocks Panel (Left) ─────────────────────────────── */
     .stocks-panel {
@@ -1234,8 +1433,8 @@
         font-size: 0.85rem;
         gap: 5px;
       }
-      .logo span {
-        display: none; /* Hide '台股看板' text on mobile header to save space */
+      .logo .logo-text {
+        display: none;
       }
       .logo-icon {
         width: 24px; height: 24px;
@@ -1330,26 +1529,9 @@
   
     @media (max-width: 860px) {
       .mobile-nav-bar { order: 3 !important; }
-      .market-index-bar { display: none !important; }
     }
   </style>
 
-
-</head>
-<body>
-
-<!-- ═══════════════════════════════════════════════════════════
-  TOP BAR
-═══════════════════════════════════════════════════════════ -->
-<header class="topbar" role="banner">
-  <div class="logo">
-    <div class="logo-icon">📡</div>
-    PTT 輿情 &times; <span>台股看板</span>
-  </div>
-
-  <div class="topbar-sep"></div>
-
-  <div class="market-index-bar" id="marketIndexBar" title="大盤加權指數">
     <span class="index-label">加權指數</span>
     <span class="index-price" id="indexPrice">─</span>
     <span class="index-change" id="indexChange">─</span>
