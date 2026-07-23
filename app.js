@@ -814,6 +814,7 @@ async function fetchMarketIndex() {
     const changePctAbsStr = changePct !== undefined && changePct !== null ? formatNum(Math.abs(changePct)) : '0';
 
     dom.indexPrice.textContent = price.toLocaleString('zh-TW', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    dom.indexPrice.className    = `index-price ${dir}`;
     dom.indexChange.className   = `index-change ${dir}`;
     dom.indexChange.textContent  = `${symbol} ${dirSign}${changeAbsStr} (${dirSign}${changePctAbsStr}%)`;
   } catch (err) {
