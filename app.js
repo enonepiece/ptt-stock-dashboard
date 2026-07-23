@@ -9,7 +9,7 @@
 const API_BASE      = '';
 const REFRESH_MS    = 30_000;       // 30 秒刷新一次
 const MAX_PRICE_PTS = 90;
-const MAX_CARDS     = 20;           // 保留 Top 20 股票卡片
+const MAX_CARDS     = 30;           // 保留 Top 30 股票卡片
 
 /* ════════════════════════════════════════════════════════
    STATE
@@ -95,10 +95,17 @@ const dom = {
 };
 
 /* ════════════════════════════════════════════════════════
-   TAIWAN STOCK SYMBOL HELPER
+   TAIWAN STOCK SYMBOL & NUMBER HELPER
 ════════════════════════════════════════════════════════ */
+function formatNum(val, decimals = 2) {
+  if (val === null || val === undefined || isNaN(val)) return '─';
+  const num = Number(val);
+  if (Number.isInteger(num)) return num.toString();
+  return num.toFixed(decimals).replace(/\.00$/, '');
+}
+
 function getStockDirInfo(change, changePct) {
-  if (!change || change === 0) {
+  if (change === 0 || change === null || change === undefined || isNaN(change)) {
     return { dir: 'flat', symbol: '─', dirSign: '' };
   }
   const pct = Math.abs(changePct || 0);
@@ -284,33 +291,39 @@ function bindEvents() {
 
   dom.modalChartCanvas.addEventListener('mousemove', e => {
     if (!state.currentModalCode) return;
+    const entry  = state.stocks.get(state.currentModalCode) || state.tempModalEntry;
+    if (!entry) return;
+
     const rect   = dom.modalChartCanvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
 
-    const pad    = { left: 10, right: 75 };
-    const chartW = dom.modalChartCanvas.width - pad.left - pad.right;
-    const TOTAL_PTS = 135;
+    const pad      = { left: 10, right: 75 };
+    const chartW   = dom.modalChartCanvas.width - pad.left - pad.right;
+    const totalPts = (entry.chartPoints && entry.chartPoints.length > 0) ? entry.chartPoints.length : 135;
 
     if (mouseX >= pad.left && mouseX <= pad.left + chartW) {
-      const idx = Math.round(((mouseX - pad.left) / chartW) * (TOTAL_PTS - 1));
-      state.chartHoverIndex = Math.max(0, Math.min(TOTAL_PTS - 1, idx));
+      const ratio = (mouseX - pad.left) / chartW;
+      const idx   = Math.round(ratio * (totalPts - 1));
+      state.chartHoverIndex = Math.max(0, Math.min(totalPts - 1, idx));
     } else {
       state.chartHoverIndex = null;
     }
 
-    const entry = state.stocks.get(state.currentModalCode);
-    if (entry) drawYahooStyleChart(dom.modalChartCanvas, entry);
+    drawYahooStyleChart(dom.modalChartCanvas, entry);
   });
 
   dom.modalChartCanvas.addEventListener('mouseleave', () => {
     state.chartHoverIndex = null;
     if (state.currentModalCode) {
-      const entry = state.stocks.get(state.currentModalCode);
+      const entry = state.stocks.get(state.currentModalCode) || state.tempModalEntry;
       if (entry) drawYahooStyleChart(dom.modalChartCanvas, entry);
     }
   });
 }
 
+/* ════════════════════════════════════════════════════════
+   STOCK DETAIL MODAL POPUP
+════════════════════════════════════════════════════════ */
 /* ════════════════════════════════════════════════════════
    STOCK DETAIL MODAL POPUP
 ════════════════════════════════════════════════════════ */
@@ -348,12 +361,42 @@ function openStockModal(code) {
   }
 
   updateStockModalUI(entry);
-
   dom.stockModal.style.display = 'flex';
+
+  // 取得真實 1 分鐘 K 線 / 走勢圖數據
+  fetchStockChartData(code);
 
   requestAnimationFrame(() => {
     drawYahooStyleChart(dom.modalChartCanvas, entry);
   });
+}
+
+async function fetchStockChartData(code) {
+  try {
+    const res  = await fetch(`${API_BASE}/api/stock-chart?code=${encodeURIComponent(code)}`);
+    const data = await res.json();
+    if (data.success && data.points && data.points.length > 0) {
+      const entry = state.stocks.get(code) || state.tempModalEntry;
+      if (entry && state.currentModalCode === code) {
+        entry.chartPoints = data.points;
+        if (data.prevClose) entry.prevClose = data.prevClose;
+        if (data.high)      entry.high      = data.high;
+        if (data.low)       entry.low       = data.low;
+        if (data.open)      entry.open      = data.open;
+        if (data.currentPrice) entry.price  = data.currentPrice;
+
+        if (entry.prevClose && entry.price) {
+          entry.change    = +(entry.price - entry.prevClose).toFixed(2);
+          entry.changePct = +((entry.change / entry.prevClose) * 100).toFixed(2);
+        }
+
+        updateStockModalUI(entry);
+        drawYahooStyleChart(dom.modalChartCanvas, entry);
+      }
+    }
+  } catch (err) {
+    console.warn('[fetchStockChartData Error]', err);
+  }
 }
 
 function updateStockModalUI(entry) {
@@ -363,18 +406,20 @@ function updateStockModalUI(entry) {
   const hasPrice  = price !== null && price > 0;
   
   const { dir, symbol, dirSign } = getStockDirInfo(change, changePct);
+  const changeAbsStr    = hasPrice && change !== null && change !== undefined ? formatNum(Math.abs(change)) : '0';
+  const changePctAbsStr = changePct !== undefined && changePct !== null ? formatNum(Math.abs(changePct)) : '0';
 
   dom.modalStockName.textContent  = name;
   dom.modalStockCode.textContent  = code;
-  dom.modalStockPrice.textContent = hasPrice ? price.toFixed(2) : '載入中...';
+  dom.modalStockPrice.textContent = hasPrice ? formatNum(price) : '載入中...';
   dom.modalStockPrice.className   = `modal-stock-price ${hasPrice ? dir : 'flat'}`;
-  dom.modalStockChange.textContent= hasPrice ? `${symbol} ${dirSign}${change.toFixed(2)} (${dirSign}${changePct}%)` : '─';
+  dom.modalStockChange.textContent= hasPrice ? `${symbol} ${dirSign}${changeAbsStr} (${dirSign}${changePctAbsStr}%)` : '─';
   dom.modalStockChange.className  = `modal-stock-change ${hasPrice ? dir : 'flat'}`;
 
-  dom.modalPrevClose.textContent     = prevClose ? prevClose.toFixed(2) : '─';
-  dom.modalOpen.textContent          = open ? open.toFixed(2) : '─';
-  dom.modalHigh.textContent          = high ? high.toFixed(2) : '─';
-  dom.modalLow.textContent           = low ? low.toFixed(2) : '─';
+  dom.modalPrevClose.textContent     = prevClose ? formatNum(prevClose) : '─';
+  dom.modalOpen.textContent          = open ? formatNum(open) : '─';
+  dom.modalHigh.textContent          = high ? formatNum(high) : '─';
+  dom.modalLow.textContent           = low ? formatNum(low) : '─';
   dom.modalVolume.textContent        = volume ? volume.toLocaleString('zh-TW') : '─';
   dom.modalMentionsCount.textContent = `${mentionCount || 0} 次`;
 
@@ -401,7 +446,7 @@ function closeStockModal() {
 }
 
 /**
- * 繪製 Yahoo 股市風格分時走勢圖
+ * 繪製 Yahoo 股市風格分時走勢圖（具備動態高低縮放與真實1分鐘數據）
  */
 function drawYahooStyleChart(canvas, entry) {
   const ctx = canvas.getContext('2d');
@@ -410,7 +455,7 @@ function drawYahooStyleChart(canvas, entry) {
 
   ctx.clearRect(0, 0, w, h);
 
-  const pad = { top: 20, right: 75, bottom: 30, left: 10 };
+  const pad = { top: 24, right: 75, bottom: 30, left: 10 };
   const volumeH = 45;
   const chartW  = w - pad.left - pad.right;
   const chartH  = h - pad.top - pad.bottom - volumeH;
@@ -421,76 +466,130 @@ function drawYahooStyleChart(canvas, entry) {
   const highP     = entry.high  || Math.max(basePrice, openP, currPrice);
   const lowP      = entry.low   || Math.min(basePrice, openP, currPrice);
 
-  const TOTAL_PTS = 135;
-  const prices  = new Array(TOTAL_PTS);
-  const volumes = new Array(TOTAL_PTS);
+  let activePoints = [];
 
-  const seed = (entry.code ? parseInt(entry.code.slice(-3)) || 123 : 123) + Math.round(basePrice);
-  const pseudoRand = n => {
-    const x = Math.sin(seed + n * 99) * 10000;
-    return x - Math.floor(x);
-  };
+  // 1. 判斷是否有 Yahoo 實時 1 分鐘走勢點位數據
+  if (entry.chartPoints && entry.chartPoints.length > 0) {
+    for (const pt of entry.chartPoints) {
+      const d = new Date(pt.ts * 1000);
+      const twTimeStr = d.toLocaleString('en-US', { timeZone: 'Asia/Taipei' });
+      const twDate    = new Date(twTimeStr);
+      const minsFrom9 = (twDate.getHours() - 9) * 60 + twDate.getMinutes();
+      const clampedM  = Math.max(0, Math.min(270, minsFrom9));
+      
+      const hh = String(twDate.getHours()).padStart(2, '0');
+      const mm = String(twDate.getMinutes()).padStart(2, '0');
 
-  const isLockedUp   = currPrice === highP && (highP - basePrice) / basePrice > 0.07;
-  const isLockedDown = currPrice === lowP  && (basePrice - lowP) / basePrice > 0.07;
+      activePoints.push({
+        xRatio:  clampedM / 270,
+        price:   pt.price,
+        volume:  pt.volume,
+        timeStr: `${hh}:${mm}`,
+      });
+    }
+  } else {
+    // 2. 若無 API 歷史點位，根據目前盤中時間與高低價，模擬具備自然波動的擬真曲線
+    const TOTAL_PTS = 135;
+    let activePts   = TOTAL_PTS;
 
-  prices[0] = openP;
+    const now = new Date();
+    const twTimeStr = now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' });
+    const twDate    = new Date(twTimeStr);
 
-  for (let i = 1; i < TOTAL_PTS; i++) {
-    const progress = i / (TOTAL_PTS - 1);
+    const yyyy = twDate.getFullYear();
+    const mm   = String(twDate.getMonth() + 1).padStart(2, '0');
+    const dd   = String(twDate.getDate()).padStart(2, '0');
+    const todayDateStr = `${yyyy}/${mm}/${dd}`;
 
-    if (isLockedUp) {
-      if (progress < 0.12) {
-        prices[i] = openP + (highP - openP) * (progress / 0.12);
+    const isToday = !state.currentDateStr || state.currentDateStr === todayDateStr || state.currentTabKeyword === '盤中';
+
+    if (isToday) {
+      const currentMins = twDate.getHours() * 60 + twDate.getMinutes();
+      const startMins   = 9 * 60;
+      const endMins     = 13 * 60 + 30;
+
+      if (currentMins < startMins) {
+        activePts = 1;
+      } else if (currentMins <= endMins) {
+        const elapsed = currentMins - startMins;
+        activePts = Math.max(1, Math.min(TOTAL_PTS, Math.floor((elapsed / 270) * (TOTAL_PTS - 1)) + 1));
       } else {
-        prices[i] = highP;
+        activePts = TOTAL_PTS;
       }
-    } else if (isLockedDown) {
-      if (progress < 0.12) {
-        prices[i] = openP - (openP - lowP) * (progress / 0.12);
-      } else {
-        prices[i] = lowP;
-      }
-    } else {
-      let t = openP + (currPrice - openP) * progress;
-      if (progress > 0.1 && progress < 0.5) {
-        t += (highP - Math.max(openP, currPrice)) * Math.sin((progress - 0.1) * Math.PI * 2.5);
-      } else if (progress >= 0.5 && progress < 0.85) {
-        t += (lowP - Math.min(openP, currPrice)) * Math.sin((progress - 0.5) * Math.PI * 2.5);
-      }
-      const noise = (pseudoRand(i) - 0.48) * (basePrice * 0.002);
-      prices[i] = Math.min(highP, Math.max(lowP, t + noise));
     }
 
-    let volFactor = 1;
-    if (i < 15) volFactor = 3.5 - (i / 15) * 2;
-    else if (i > TOTAL_PTS - 10) volFactor = 2.5;
-    else volFactor = 0.8 + pseudoRand(i + 40) * 0.6;
+    const seed = (entry.code ? parseInt(entry.code.slice(-3)) || 123 : 123) + Math.round(basePrice);
+    const pseudoRand = n => {
+      const x = Math.sin(seed + n * 99) * 10000;
+      return x - Math.floor(x);
+    };
 
-    volumes[i] = Math.round(((entry.volume || 8000) / TOTAL_PTS) * volFactor);
+    for (let i = 0; i < activePts; i++) {
+      const progress = activePts > 1 ? i / (activePts - 1) : 1;
+      let priceVal = openP + (currPrice - openP) * progress;
+
+      if (progress > 0.1 && progress < 0.5) {
+        priceVal += (highP - Math.max(openP, currPrice)) * Math.sin((progress - 0.1) * Math.PI * 2.5);
+      } else if (progress >= 0.5 && progress < 0.85) {
+        priceVal += (lowP - Math.min(openP, currPrice)) * Math.sin((progress - 0.5) * Math.PI * 2.5);
+      }
+      const noise = (pseudoRand(i) - 0.48) * (basePrice * 0.003);
+      priceVal = Math.min(highP, Math.max(lowP, priceVal + noise));
+
+      let volFactor = 1;
+      if (i < 15) volFactor = 3.5 - (i / 15) * 2;
+      else if (i > TOTAL_PTS - 10) volFactor = 2.5;
+      else volFactor = 0.8 + pseudoRand(i + 40) * 0.6;
+      const volVal = Math.round(((entry.volume || 5000) / TOTAL_PTS) * volFactor);
+
+      const minsFrom9 = Math.round(progress * 270);
+      const hh = String(9 + Math.floor(minsFrom9 / 60)).padStart(2, '0');
+      const mm = String(minsFrom9 % 60).padStart(2, '0');
+
+      activePoints.push({
+        xRatio:  progress,
+        price:   priceVal,
+        volume:  volVal,
+        timeStr: `${hh}:${mm}`,
+      });
+    }
+    if (activePoints.length > 0) {
+      activePoints[activePoints.length - 1].price = currPrice;
+    }
   }
-  prices[TOTAL_PTS - 1] = currPrice;
 
-  const maxDev = basePrice * 0.10;
-  const yMax   = basePrice + maxDev;
-  const yMin   = basePrice - maxDev;
+  // 3. 【核心優化】動態 Y 軸高度縮放（讓波幅呈現顯著且生動）
+  let maxDiff = 0;
+  for (const pt of activePoints) {
+    maxDiff = Math.max(maxDiff, Math.abs(pt.price - basePrice));
+  }
 
-  const toX = i => pad.left + (i / (TOTAL_PTS - 1)) * chartW;
+  // 保留適當邊界 margin（讓真實波動填滿圖表高度，平盤或微幅波動亦可清晰辨識）
+  const minDev = Math.max(basePrice * 0.005, 0.3);
+  const maxDev = Math.max(maxDiff * 1.25, minDev);
+
+  const yMax = basePrice + maxDev;
+  const yMin = basePrice - maxDev;
+
+  const toX = xRatio => pad.left + xRatio * chartW;
   const toY = v => pad.top + ((yMax - Math.min(yMax, Math.max(yMin, v))) / (2 * maxDev)) * chartH;
 
-  const timeLabels = ['09', '10', '11', '12', '13'];
-  const blockW = chartW / 5;
+  // 4. 背景時間網格（09, 10, 11, 12, 13）
+  const timeLabels = ['09:00', '10:00', '11:00', '12:00', '13:00', '13:30'];
+  const timeRatios = [0, 60/270, 120/270, 180/270, 240/270, 1];
 
-  for (let i = 0; i < 5; i++) {
-    const bx = pad.left + i * blockW;
+  for (let i = 0; i < timeRatios.length - 1; i++) {
+    const bx = toX(timeRatios[i]);
+    const bw = toX(timeRatios[i+1]) - bx;
     if (i % 2 === 1) {
       ctx.fillStyle = 'rgba(255,255,255,0.025)';
-      ctx.fillRect(bx, pad.top, blockW, chartH + volumeH);
+      ctx.fillRect(bx, pad.top, bw, chartH + volumeH);
     }
   }
 
+  // 5. Y 軸水平網格與平盤虛線
   const gridSteps = 4;
-  ctx.lineWidth = 1;
+  ctx.lineWidth   = 1;
 
   for (let i = 0; i <= gridSteps; i++) {
     const yVal = yMax - (i / gridSteps) * (2 * maxDev);
@@ -510,12 +609,13 @@ function drawYahooStyleChart(canvas, entry) {
       ctx.font         = '11px JetBrains Mono, monospace';
       ctx.textAlign    = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillText(yVal.toFixed(2), pad.left + chartW + 8, y);
+      ctx.fillText(formatNum(yVal), pad.left + chartW + 8, y);
     }
   }
 
+  // 6. 平盤價 (Previous Close) 右側標籤
   const centerLineY = pad.top + chartH / 2;
-  const tagStr      = basePrice.toFixed(2);
+  const tagStr      = formatNum(basePrice);
 
   ctx.font = '11px JetBrains Mono, monospace';
   const tagW = ctx.measureText(tagStr).width + 12;
@@ -533,27 +633,32 @@ function drawYahooStyleChart(canvas, entry) {
   ctx.textBaseline = 'middle';
   ctx.fillText(tagStr, tagX + tagW / 2, centerLineY);
 
+  // 7. X 軸時間標籤
   ctx.fillStyle    = 'rgba(255,255,255,0.5)';
   ctx.font         = '11px Inter, sans-serif';
-  ctx.textAlign    = 'left';
+  ctx.textAlign    = 'center';
   ctx.textBaseline = 'top';
 
-  for (let i = 0; i < 5; i++) {
-    const tx = pad.left + i * blockW + 2;
+  for (let i = 0; i < timeRatios.length; i++) {
+    const tx = toX(timeRatios[i]);
     const ty = h - pad.bottom + 6;
     ctx.fillText(timeLabels[i], tx, ty);
   }
 
+  // 8. 繪製成交量直條圖
+  const volumes  = activePoints.map(p => p.volume);
   const volMax   = Math.max(...volumes, 1);
   const volBaseY = h - pad.bottom;
 
-  for (let i = 0; i < TOTAL_PTS; i++) {
-    const vx   = toX(i);
-    const vLen = (volumes[i] / volMax) * (volumeH - 8);
-    const isUpBar = prices[i] >= (prices[i - 1] || prices[i]);
+  for (let i = 0; i < activePoints.length; i++) {
+    const pt   = activePoints[i];
+    const vx   = toX(pt.xRatio);
+    const vLen = (pt.volume / volMax) * (volumeH - 8);
+    const prevP = i > 0 ? activePoints[i - 1].price : pt.price;
+    const isUpBar = pt.price >= prevP;
 
     ctx.fillStyle = isUpBar ? 'rgba(255,68,85,0.65)' : 'rgba(0,232,122,0.65)';
-    ctx.fillRect(vx, volBaseY - vLen, 1.8, vLen);
+    ctx.fillRect(vx - 0.9, volBaseY - vLen, 1.8, vLen);
   }
 
   ctx.strokeStyle = 'rgba(255,255,255,0.1)';
@@ -562,16 +667,21 @@ function drawYahooStyleChart(canvas, entry) {
   ctx.lineTo(pad.left + chartW, pad.top + chartH + 5);
   ctx.stroke();
 
-  const isUp      = currPrice >= basePrice;
-  const lineColor = isUp ? '#ff4455' : '#00e87a';
+  // 9. 繪製分時折線與漸層區域
+  if (activePoints.length === 0) return;
+
+  const latestPrice = activePoints[activePoints.length - 1].price;
+  const isUp        = latestPrice >= basePrice;
+  const lineColor   = isUp ? '#ff4455' : '#00e87a';
 
   ctx.beginPath();
-  prices.forEach((p, i) => {
-    const x = toX(i), y = toY(p);
+  for (let i = 0; i < activePoints.length; i++) {
+    const x = toX(activePoints[i].xRatio);
+    const y = toY(activePoints[i].price);
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-  });
-  ctx.lineTo(toX(TOTAL_PTS - 1), centerLineY);
-  ctx.lineTo(toX(0), centerLineY);
+  }
+  ctx.lineTo(toX(activePoints[activePoints.length - 1].xRatio), centerLineY);
+  ctx.lineTo(toX(activePoints[0].xRatio), centerLineY);
   ctx.closePath();
 
   const areaGrad = ctx.createLinearGradient(0, isUp ? pad.top : centerLineY, 0, isUp ? centerLineY : pad.top + chartH);
@@ -587,21 +697,24 @@ function drawYahooStyleChart(canvas, entry) {
 
   ctx.save();
   ctx.beginPath();
-  prices.forEach((p, i) => {
-    const x = toX(i), y = toY(p);
+  for (let i = 0; i < activePoints.length; i++) {
+    const x = toX(activePoints[i].xRatio);
+    const y = toY(activePoints[i].price);
     i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-  });
+  }
   ctx.strokeStyle = lineColor;
-  ctx.lineWidth   = 2.8;
+  ctx.lineWidth   = 2.6;
   ctx.lineJoin    = 'round';
   ctx.lineCap     = 'round';
   ctx.shadowColor = lineColor;
-  ctx.shadowBlur  = 10;
+  ctx.shadowBlur  = 8;
   ctx.stroke();
   ctx.restore();
 
-  const lastX = toX(TOTAL_PTS - 1);
-  const lastY = toY(currPrice);
+  // 最新價亮點
+  const lastPt = activePoints[activePoints.length - 1];
+  const lastX  = toX(lastPt.xRatio);
+  const lastY  = toY(lastPt.price);
 
   ctx.beginPath();
   ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
@@ -620,19 +733,15 @@ function drawYahooStyleChart(canvas, entry) {
   ctx.stroke();
 
   // 10. 十字軸 (Crosshair) 與 Hover 動態數據 Tooltip
-  if (state.chartHoverIndex !== null && state.chartHoverIndex >= 0 && state.chartHoverIndex < TOTAL_PTS) {
-    const idx   = state.chartHoverIndex;
-    const hPx   = toX(idx);
-    const hPy   = toY(prices[idx]);
-    const hVal  = prices[idx];
-    const hVol  = volumes[idx];
+  if (state.chartHoverIndex !== null && state.chartHoverIndex >= 0 && state.chartHoverIndex < activePoints.length) {
+    const pt    = activePoints[state.chartHoverIndex];
+    const hPx   = toX(pt.xRatio);
+    const hPy   = toY(pt.price);
+    const hVal  = pt.price;
+    const hVol  = pt.volume;
     const hDiff = hVal - basePrice;
     const hPct  = ((hDiff / basePrice) * 100).toFixed(2);
-
-    const minsFrom9 = Math.round((idx / (TOTAL_PTS - 1)) * 270);
-    const hHour = String(9 + Math.floor(minsFrom9 / 60)).padStart(2, '0');
-    const hMin  = String(minsFrom9 % 60).padStart(2, '0');
-    const timeStr = `${hHour}:${hMin}`;
+    const tipSign = hDiff > 0 ? '+' : '';
 
     ctx.save();
     ctx.setLineDash([3, 3]);
@@ -659,8 +768,7 @@ function drawYahooStyleChart(canvas, entry) {
     ctx.stroke();
 
     const tipColor = hDiff >= 0 ? '#ff4455' : '#00e87a';
-    const tipSign  = hDiff > 0 ? '+' : '';
-    const tipText  = `${timeStr} ｜ 價格: ${hVal.toFixed(2)} (${tipSign}${hPct}%) ｜ 量: ${hVol}張`;
+    const tipText  = `${pt.timeStr} ｜ 價格: ${formatNum(hVal)} (${tipSign}${hPct}%) ｜ 量: ${hVol.toLocaleString('zh-TW')}張`;
 
     ctx.font = '12px JetBrains Mono, monospace';
     const tipW = ctx.measureText(tipText).width + 20;
@@ -702,10 +810,12 @@ async function fetchMarketIndex() {
 
     const { price, change, changePct } = taiex;
     const { dir, symbol, dirSign } = getStockDirInfo(change, changePct);
+    const changeAbsStr = change ? formatNum(Math.abs(change)) : '0';
+    const changePctAbsStr = changePct !== undefined && changePct !== null ? formatNum(Math.abs(changePct)) : '0';
 
     dom.indexPrice.textContent = price.toLocaleString('zh-TW', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     dom.indexChange.className   = `index-change ${dir}`;
-    dom.indexChange.textContent  = `${symbol} ${dirSign}${change.toFixed(2)} (${dirSign}${changePct}%)`;
+    dom.indexChange.textContent  = `${symbol} ${dirSign}${changeAbsStr} (${dirSign}${changePctAbsStr}%)`;
   } catch (err) {
     console.warn('[Market Index Error]', err.message);
   }
@@ -1052,7 +1162,13 @@ async function fetchStockPrices(codes) {
       if (!entry) continue;
 
       const prevPrice = entry.price;
-      entry.name      = s.name || entry.name;
+
+      if (s.name && !/^\d+$/.test(s.name)) {
+        entry.name = s.name;
+      } else if (!entry.name || /^\d+$/.test(entry.name)) {
+        const stockInfo = typeof CODE_INDEX !== 'undefined' ? CODE_INDEX.get(s.code) : null;
+        if (stockInfo) entry.name = stockInfo.names[0];
+      }
       entry.price     = s.price;
       entry.isLive    = s.isLive;
       entry.prevClose = s.prevClose;
@@ -1068,7 +1184,7 @@ async function fetchStockPrices(codes) {
         if (entry.priceHistory.length > MAX_PRICE_PTS) entry.priceHistory.shift();
       }
 
-      if (prevPrice !== null && prevPrice !== s.price && s.price) {
+      if (prevPrice !== null && prevPrice !== undefined && prevPrice !== s.price && s.price) {
         const card = document.querySelector(`.stock-card[data-code="${s.code}"] .card-price`);
         if (card) {
           const cls = s.price > prevPrice ? 'flash-up' : 'flash-down';
@@ -1154,10 +1270,12 @@ function updateStockCardDOM(card, entry) {
 
   const { dir, symbol, dirSign } = getStockDirInfo(change, changePct);
 
-  const hasPrice  = price !== null && price > 0;
-  const priceStr  = hasPrice ? price.toFixed(2) : '─';
+  const hasPrice     = price !== null && price > 0;
+  const priceStr     = hasPrice ? formatNum(price) : '─';
+  const changeAbsStr = hasPrice && change !== null && change !== undefined ? formatNum(Math.abs(change)) : '0';
+  const changePctAbsStr = changePct !== undefined && changePct !== null ? formatNum(Math.abs(changePct)) : '0';
   const changeStr = hasPrice
-    ? `${symbol} ${dirSign}${change.toFixed(2)} (${dirSign}${changePct}%)`
+    ? `${symbol} ${dirSign}${changeAbsStr} (${dirSign}${changePctAbsStr}%)`
     : '─';
 
   const latestMention = entry.mentions.at(-1);

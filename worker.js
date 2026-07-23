@@ -186,46 +186,182 @@ async function ensureTWSECookie() {
   }
 }
 
+async function fetchStockFromYahoo(code) {
+  const isOtcHint = code.startsWith('6') || code.startsWith('8') || code === '6547';
+  const suffixes  = isOtcHint ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
+
+  for (const suffix of suffixes) {
+    try {
+      const url  = `https://query1.finance.yahoo.com/v8/finance/chart/${code}${suffix}?interval=1m&range=1d&includePrePost=true&_=${Date.now()}`;
+      const resp = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' } });
+      const data = await resp.json();
+      if (data.chart && data.chart.result && data.chart.result[0]) {
+        const result    = data.chart.result[0];
+        const meta      = result.meta;
+        const quotes    = result.indicators?.quote?.[0];
+        const closes    = quotes?.close ? quotes.close.filter(c => c !== null) : [];
+
+        const price     = closes.length > 0 ? +(closes[closes.length - 1]).toFixed(2) : meta.regularMarketPrice;
+        const prevClose = meta.previousClose || meta.chartPreviousClose;
+
+        if (price && prevClose) {
+          const change    = +(price - prevClose).toFixed(2);
+          const changePct = +((change / prevClose) * 100).toFixed(2);
+          return {
+            code,
+            name:        code,
+            price,
+            isLive:      true,
+            prevClose,
+            open:        meta.regularMarketOpen || meta.chartPreviousClose || price,
+            high:        meta.regularMarketDayHigh || price,
+            low:         meta.regularMarketDayLow || price,
+            volume:      meta.regularMarketVolume || 0,
+            change,
+            changePct,
+            tradeTime:   new Date((meta.regularMarketTime || Date.now() / 1000) * 1000).toLocaleTimeString('zh-TW', { hour12: false }),
+            hasLiveData: true,
+          };
+        }
+      }
+    } catch (e) {}
+  }
+  return null;
+}
+
+function extractStockPrice(s) {
+  const z         = parseFloat(s.z);
+  const pz        = parseFloat(s.pz);
+  const topAsk    = parseFloat((s.a || '').split('_')[0]);
+  const topBid    = parseFloat((s.b || '').split('_')[0]);
+  const open      = parseFloat(s.o);
+  const prevClose = parseFloat(s.y) || 0;
+
+  let price  = null;
+  let isLive = false;
+
+  if (!isNaN(z) && z > 0) {
+    price  = z;
+    isLive = true;
+  } else if (!isNaN(pz) && pz > 0) {
+    price  = pz;
+    isLive = true;
+  } else if (!isNaN(topAsk) && topAsk > 0) {
+    price  = topAsk;
+    isLive = true;
+  } else if (!isNaN(topBid) && topBid > 0) {
+    price  = topBid;
+    isLive = true;
+  } else if (!isNaN(open) && open > 0) {
+    price  = open;
+    isLive = true;
+  }
+
+  const finalPrice = isLive ? price : (prevClose > 0 ? prevClose : null);
+  const change     = (isLive && prevClose > 0) ? +(finalPrice - prevClose).toFixed(2) : 0;
+  const changePct  = (isLive && prevClose > 0) ? +((change / prevClose) * 100).toFixed(2) : 0;
+
+  return {
+    price: finalPrice,
+    isLive,
+    prevClose,
+    change,
+    changePct,
+  };
+}
+
 async function handleStock(request) {
   const url   = new URL(request.url);
   const codes = (url.searchParams.get('codes') || '').split(',').filter(Boolean);
 
   if (codes.length === 0) return jsonResponse({ success: true, stocks: [] });
 
-  const cookie = await ensureTWSECookie();
-  const exCh   = codes.flatMap(c => [`tse_${c}.tw`, `otc_${c}.tw`]).join('|');
-  const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=${encodeURIComponent(exCh)}&_=${Date.now()}`;
+  const yahooStocks = await Promise.all(codes.map(c => fetchStockFromYahoo(c)));
+  const stocksMap   = new Map();
 
-  const resp   = await fetch(apiUrl, {
-    headers: {
-      'Cookie':  cookie,
-      'Referer': 'https://mis.twse.com.tw/stock/fibest.jsp',
-      'User-Agent': 'Mozilla/5.0',
-    },
+  yahooStocks.forEach(s => {
+    if (s) stocksMap.set(s.code, s);
   });
 
-  const data     = await resp.json();
-  const msgArray = data.msgArray || [];
-  const seen     = new Set();
-  const stocks   = [];
+  const missingCodes = codes.filter(c => !stocksMap.has(c));
 
-  for (const s of msgArray) {
-    if (!s.c || !s.n || seen.has(s.c)) continue;
-    seen.add(s.c);
-    const price     = parseFloat(s.z) || 0;
-    const prevClose = parseFloat(s.y) || 0;
-    const change    = price > 0 && prevClose > 0 ? +(price - prevClose).toFixed(2) : 0;
-    const changePct = prevClose > 0 ? +((change / prevClose) * 100).toFixed(2) : 0;
-    stocks.push({ code: s.c, name: s.n, price: price || null, prevClose, open: parseFloat(s.o) || 0,
-                  high: parseFloat(s.h) || 0, low: parseFloat(s.l) || 0,
-                  volume: parseInt(s.v) || 0, change, changePct,
-                  tradeTime: s.t || '', hasLiveData: price > 0 });
+  if (missingCodes.length > 0) {
+    const cookie = await ensureTWSECookie();
+    const exCh   = missingCodes.flatMap(c => [`tse_${c}.tw`, `otc_${c}.tw`]).join('|');
+    const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=${encodeURIComponent(exCh)}&_=${Date.now()}`;
+
+    try {
+      const resp   = await fetch(apiUrl, {
+        headers: {
+          'Cookie':     cookie,
+          'Referer':    'https://mis.twse.com.tw/stock/fibest.jsp',
+          'User-Agent': 'Mozilla/5.0',
+        },
+      });
+
+      const data     = await resp.json();
+      const msgArray = data.msgArray || [];
+
+      for (const s of msgArray) {
+        if (!s.c || stocksMap.has(s.c)) continue;
+        const parsed = extractStockPrice(s);
+        stocksMap.set(s.c, {
+          code:        s.c,
+          name:        s.n,
+          price:       parsed.price,
+          isLive:      parsed.isLive,
+          prevClose:   parsed.prevClose,
+          open:        parseFloat(s.o) || 0,
+          high:        parseFloat(s.h) || 0,
+          low:         parseFloat(s.l) || 0,
+          volume:      parseInt(s.v) || 0,
+          change:      parsed.change,
+          changePct:   parsed.changePct,
+          tradeTime:   s.t || '',
+          hasLiveData: parsed.isLive,
+        });
+      }
+    } catch (e) {}
   }
 
-  return jsonResponse({ success: true, stocks, timestamp: Date.now() });
+  const resultStocks = codes.map(c => stocksMap.get(c)).filter(Boolean);
+  return jsonResponse({ success: true, stocks: resultStocks, timestamp: Date.now() });
 }
 
 async function handleMarketIndex(request) {
+  const [twiiRes, twoiiRes] = await Promise.all([
+    fetch('https://query1.finance.yahoo.com/v8/finance/chart/^TWII?interval=1m&range=1d', { headers: { 'User-Agent': 'Mozilla/5.0' } }).then(r => r.json()).catch(() => null),
+    fetch('https://query1.finance.yahoo.com/v8/finance/chart/^TWOII?interval=1m&range=1d', { headers: { 'User-Agent': 'Mozilla/5.0' } }).then(r => r.json()).catch(() => null),
+  ]);
+
+  const indices = [];
+
+  if (twiiRes?.chart?.result?.[0]?.meta) {
+    const meta = twiiRes.chart.result[0].meta;
+    const price = meta.regularMarketPrice;
+    const prevClose = meta.previousClose || meta.chartPreviousClose;
+    if (price && prevClose) {
+      const change    = +(price - prevClose).toFixed(2);
+      const changePct = +((change / prevClose) * 100).toFixed(2);
+      indices.push({ key: 't00', name: '發行量加權股價指數', price, prevClose, change, changePct, isLive: true, tradeTime: '' });
+    }
+  }
+
+  if (twoiiRes?.chart?.result?.[0]?.meta) {
+    const meta = twoiiRes.chart.result[0].meta;
+    const price = meta.regularMarketPrice;
+    const prevClose = meta.previousClose || meta.chartPreviousClose;
+    if (price && prevClose) {
+      const change    = +(price - prevClose).toFixed(2);
+      const changePct = +((change / prevClose) * 100).toFixed(2);
+      indices.push({ key: 'o00', name: '櫃買指數', price, prevClose, change, changePct, isLive: true, tradeTime: '' });
+    }
+  }
+
+  if (indices.length > 0) {
+    return jsonResponse({ success: true, indices, timestamp: Date.now() });
+  }
+
   const cookie = await ensureTWSECookie();
   const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=tse_t00.tw|otc_o00.tw&_=${Date.now()}`;
 
@@ -240,25 +376,20 @@ async function handleMarketIndex(request) {
   const data     = await resp.json();
   const msgArray = data.msgArray || [];
 
-  const indices = msgArray.map(s => {
-    const livePrice = parseFloat(s.z);
-    const prevClose = parseFloat(s.y) || 0;
-    const hasLive   = !isNaN(livePrice) && livePrice > 0;
-    const price     = hasLive ? livePrice : prevClose;
-    const change    = hasLive ? +(livePrice - prevClose).toFixed(2) : 0;
-    const changePct = prevClose > 0 && hasLive ? +((change / prevClose) * 100).toFixed(2) : 0;
+  const twseIndices = msgArray.map(s => {
+    const parsed = extractStockPrice(s);
 
     return {
       key:       s.c || 't00',
       name:      s.n || (s.c === 't00' ? '加權指數' : '櫃買指數'),
-      price:     price > 0 ? price : null,
-      prevClose,
-      change,
-      changePct,
+      price:     parsed.price,
+      prevClose: parsed.prevClose,
+      change:    parsed.change,
+      changePct: parsed.changePct,
     };
   });
 
-  return jsonResponse({ success: true, indices, timestamp: Date.now() });
+  return jsonResponse({ success: true, indices: twseIndices, timestamp: Date.now() });
 }
 
 // ── Worker 入口 ───────────────────────────────────────────────

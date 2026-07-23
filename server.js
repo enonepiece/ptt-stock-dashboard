@@ -153,7 +153,7 @@ async function ensureTWSESession() {
   try {
     const resp = await fetch('https://mis.twse.com.tw/stock/index.jsp', {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/120.0.0.0',
         'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
       },
       redirect: 'follow',
@@ -176,6 +176,124 @@ async function ensureTWSESession() {
   }
 }
 
+// ── 輔助函式：解析股票價格與漲跌 ────────────────────────
+const { CODE_INDEX } = require('./stockDict');
+
+function getStockName(code) {
+  if (CODE_INDEX && CODE_INDEX.has(code)) {
+    return CODE_INDEX.get(code).names[0];
+  }
+  return code;
+}
+
+// ── 輔助函式：Yahoo 股市台灣 (tw.stock.yahoo.com) 即時價位與漲跌 ────
+async function fetchStockFromYahoo(code) {
+  const isOtcHint = code.startsWith('6') || code.startsWith('8') || code === '6547';
+  const suffixes  = isOtcHint ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
+
+  for (const suffix of suffixes) {
+    try {
+      const symbol = code + suffix;
+      const url    = `https://tw.stock.yahoo.com/quote/${encodeURIComponent(symbol)}`;
+      const resp   = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        },
+      });
+
+      if (!resp.ok) continue;
+
+      const html = await resp.text();
+      const idx  = html.indexOf('Fz(32px)');
+      if (idx === -1) continue;
+
+      const block = html.slice(idx - 50, idx + 450);
+
+      const priceMatch = block.match(/Fz\(32px\)[^>]*>([^<]+)</);
+      if (!priceMatch) continue;
+
+      const price  = parseFloat(priceMatch[1].replace(/,/g, '').trim());
+      const isUp   = block.includes('C($c-trend-up)');
+      const isDown = block.includes('C($c-trend-down)');
+
+      const changeMatch = block.match(/Fz\(20px\)[^>]*>(?:<span[^>]*><\/span>)?\s*([0-9.,]+)</);
+      const pctMatch    = block.match(/\(([0-9.,]+)%\)/);
+
+      let change    = changeMatch ? parseFloat(changeMatch[1].replace(/,/g, '')) : 0;
+      let changePct = pctMatch ? parseFloat(pctMatch[1].replace(/,/g, '')) : 0;
+
+      if (isDown) {
+        change    = -change;
+        changePct = -changePct;
+      }
+
+      const prevClose = isUp ? +(price - Math.abs(change)).toFixed(2) : (isDown ? +(price + Math.abs(change)).toFixed(2) : price);
+      const stockName = getStockName(code);
+
+      if (!isNaN(price) && price > 0) {
+        return {
+          code,
+          name:        stockName,
+          price,
+          isLive:      true,
+          prevClose,
+          open:        price,
+          high:        price,
+          low:         price,
+          volume:      0,
+          change:      +change.toFixed(2),
+          changePct:   +changePct.toFixed(2),
+          tradeTime:   new Date().toLocaleTimeString('zh-TW', { hour12: false }),
+        };
+      }
+    } catch (e) {}
+  }
+  return null;
+}
+
+// ── 輔助函式：解析 TWSE 股票價格與漲跌 (當 Yahoo 查無資料時備援) ─
+function extractStockPrice(s) {
+  const z         = parseFloat(s.z);
+  const pz        = parseFloat(s.pz);
+  const topAsk    = parseFloat((s.a || '').split('_')[0]);
+  const topBid    = parseFloat((s.b || '').split('_')[0]);
+  const open      = parseFloat(s.o);
+  const prevClose = parseFloat(s.y) || 0;
+
+  let price  = null;
+  let isLive = false;
+
+  if (!isNaN(z) && z > 0) {
+    price  = z;
+    isLive = true;
+  } else if (!isNaN(pz) && pz > 0) {
+    price  = pz;
+    isLive = true;
+  } else if (!isNaN(topAsk) && topAsk > 0) {
+    price  = topAsk;
+    isLive = true;
+  } else if (!isNaN(topBid) && topBid > 0) {
+    price  = topBid;
+    isLive = true;
+  } else if (!isNaN(open) && open > 0) {
+    price  = open;
+    isLive = true;
+  }
+
+  const finalPrice = isLive ? price : (prevClose > 0 ? prevClose : null);
+  const change     = (isLive && prevClose > 0) ? +(finalPrice - prevClose).toFixed(2) : 0;
+  const changePct  = (isLive && prevClose > 0) ? +((change / prevClose) * 100).toFixed(2) : 0;
+
+  return {
+    price: finalPrice,
+    isLive,
+    prevClose,
+    change,
+    changePct,
+  };
+}
+
 // ── 路由：TWSE 即時股價 ────────────────────────────────────
 // GET /api/stock?codes=2330,2317,0050
 app.get('/api/stock', async (req, res) => {
@@ -186,90 +304,225 @@ app.get('/api/stock', async (req, res) => {
     const codes = [...new Set(rawCodes.split(',').map(c => c.trim()).filter(Boolean))];
     if (codes.length === 0) return res.json({ success: true, stocks: [] });
 
-    const cookie = await ensureTWSESession();
+    // 1. 優先使用 Yahoo 股市台灣網頁 實時報價 (100% 與 Yahoo 股市網頁一致)
+    const yahooStocks = await Promise.all(codes.map(c => fetchStockFromYahoo(c)));
+    const stocksMap   = new Map();
 
-    // 分批查詢避免 URL 過長（每批最多 10 支）
-    const BATCH = 10;
-    let allStocks = [];
+    yahooStocks.forEach(s => {
+      if (s) stocksMap.set(s.code, s);
+    });
 
-    for (let i = 0; i < codes.length; i += BATCH) {
-      const batch = codes.slice(i, i + BATCH);
-      const exCh  = batch.flatMap(c => [`tse_${c}.tw`, `otc_${c}.tw`]).join('|');
-      const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=${encodeURIComponent(exCh)}&_=${Date.now()}`;
+    const missingCodes = codes.filter(c => !stocksMap.has(c));
 
-      try {
-        const resp = await fetch(apiUrl, {
-          headers: {
-            'Cookie':    cookie || '',
-            'User-Agent':'Mozilla/5.0',
-            'Referer':   'https://mis.twse.com.tw/stock/fibest.jsp',
-            'Accept':    'application/json, text/plain, */*',
-          },
-        });
+    // 2. 對於備援個股，由 TWSE MIS API 提供
+    if (missingCodes.length > 0) {
+      const cookie = await ensureTWSESession();
+      const BATCH  = 10;
+      let allStocks = [];
 
-        if (!resp.ok) {
-          console.warn(`[TWSE API] batch ${i / BATCH} 回應錯誤：${resp.status}`);
-          continue;
+      for (let i = 0; i < missingCodes.length; i += BATCH) {
+        const batch  = missingCodes.slice(i, i + BATCH);
+        const exCh   = batch.flatMap(c => [`tse_${c}.tw`, `otc_${c}.tw`]).join('|');
+        const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=${encodeURIComponent(exCh)}&_=${Date.now()}`;
+
+        try {
+          const resp = await fetch(apiUrl, {
+            headers: {
+              'Cookie':     cookie || '',
+              'User-Agent': 'Mozilla/5.0',
+              'Referer':    'https://mis.twse.com.tw/stock/fibest.jsp',
+              'Accept':     'application/json, text/plain, */*',
+            },
+          });
+
+          if (resp.ok) {
+            const text = await resp.text();
+            let data;
+            try { data = JSON.parse(text); } catch { data = {}; }
+            if (data.msgArray) allStocks = allStocks.concat(data.msgArray);
+          }
+        } catch (batchErr) {
+          console.warn(`[TWSE API] fallback batch 失敗：${batchErr.message}`);
         }
+      }
 
-        const text = await resp.text();
-        let data;
-        try { data = JSON.parse(text); } catch { continue; }
-
-        const msgArray = data.msgArray || [];
-        allStocks = allStocks.concat(msgArray);
-      } catch (batchErr) {
-        console.warn(`[TWSE API] batch ${i / BATCH} 失敗：${batchErr.message}`);
+      for (const s of allStocks) {
+        if (!s.c || stocksMap.has(s.c)) continue;
+        const parsed = extractStockPrice(s);
+        stocksMap.set(s.c, {
+          code:        s.c,
+          name:        getStockName(s.c),
+          price:       parsed.price,
+          isLive:      parsed.isLive,
+          prevClose:   parsed.prevClose,
+          open:        parseFloat(s.o) || 0,
+          high:        parseFloat(s.h) || 0,
+          low:         parseFloat(s.l) || 0,
+          volume:      parseInt(s.v)  || 0,
+          change:      parsed.change,
+          changePct:   parsed.changePct,
+          tradeTime:   s.t || '',
+        });
       }
     }
 
-    // 去重 + 解析
-    const seen   = new Set();
-    const stocks = [];
-
-    for (const s of allStocks) {
-      if (!s.c || !s.n || seen.has(s.c)) continue;
-      seen.add(s.c);
-
-      const livePrice = parseFloat(s.z);          // z = 當盤成交價，無成交時為 '-'
-      const prevClose = parseFloat(s.y) || 0;      // y = 昨收
-      const hasLive   = !isNaN(livePrice) && livePrice > 0;
-
-      // 盤後顯示昨收；盤中顯示即時價
-      const displayPrice = hasLive ? livePrice : prevClose;
-      const change       = hasLive ? +(livePrice - prevClose).toFixed(2) : 0;
-      const changePct    = prevClose > 0 && hasLive
-        ? +((change / prevClose) * 100).toFixed(2)
-        : 0;
-
-      stocks.push({
-        code:        s.c,
-        name:        s.n,
-        price:       displayPrice > 0 ? displayPrice : null,
-        isLive:      hasLive,               // true = 盤中即時價，false = 昨收
-        prevClose,
-        open:        parseFloat(s.o) || 0,
-        high:        parseFloat(s.h) || 0,
-        low:         parseFloat(s.l) || 0,
-        volume:      parseInt(s.v)  || 0,
-        change,
-        changePct,
-        tradeTime:   s.t || '',
-      });
-    }
-
-    console.log(`[TWSE] 查詢 ${codes.length} 支，回傳 ${stocks.length} 支`);
-    res.json({ success: true, stocks, timestamp: Date.now() });
+    const resultStocks = codes.map(c => stocksMap.get(c)).filter(Boolean);
+    console.log(`[Stock API] 查詢 ${codes.length} 支，回傳 ${resultStocks.length} 支`);
+    res.json({ success: true, stocks: resultStocks, timestamp: Date.now() });
   } catch (err) {
     console.error('[Stock API Error]', err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
+// ── 路由：股票分時走勢圖數據 (1分鐘實時與歷史走勢) ───────
+// GET /api/stock-chart?code=2330
+app.get('/api/stock-chart', async (req, res) => {
+  try {
+    const { code } = req.query;
+    if (!code) return res.status(400).json({ success: false, error: '未提供股票代號' });
+
+    const isOtcHint = code.startsWith('6') || code.startsWith('8') || code === '6547';
+    const suffixes  = isOtcHint ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
+
+    for (const suffix of suffixes) {
+      try {
+        const symbol = code.includes('.') ? code : `${code}${suffix}`;
+        const url    = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1m&range=1d`;
+        const resp   = await fetch(url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          },
+        });
+
+        if (!resp.ok) continue;
+
+        const data   = await resp.json();
+        const result = data.chart?.result?.[0];
+        if (!result) continue;
+
+        const meta       = result.meta || {};
+        const prevClose  = meta.chartPreviousClose || meta.regularMarketPreviousClose || meta.previousClose || 0;
+        const timestamps = result.timestamp || [];
+        const quote      = result.indicators?.quote?.[0] || {};
+        const closes     = quote.close || [];
+        const volumes    = quote.volume || [];
+
+        const points = [];
+        let cumVolume = 0;
+        for (let i = 0; i < timestamps.length; i++) {
+          const price = closes[i];
+          const vol   = volumes[i] || 0;
+          if (price !== null && price !== undefined && !isNaN(price)) {
+            cumVolume += vol;
+            points.push({
+              ts: timestamps[i],
+              price: +price.toFixed(2),
+              volume: vol,
+              cumVolume,
+            });
+          }
+        }
+
+        if (points.length > 0) {
+          const pricesArr = points.map(p => p.price);
+          const highP = Math.max(...pricesArr);
+          const lowP  = Math.min(...pricesArr);
+
+          return res.json({
+            success: true,
+            code,
+            symbol,
+            prevClose: +prevClose.toFixed(2),
+            open: points[0].price,
+            high: +highP.toFixed(2),
+            low: +lowP.toFixed(2),
+            currentPrice: points.at(-1).price,
+            points,
+          });
+        }
+      } catch (e) {}
+    }
+
+    res.json({ success: false, error: '無法取得分時走勢圖資料' });
+  } catch (err) {
+    console.error('[Stock Chart API Error]', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
+// ── 輔助函式：Yahoo 股市台灣大盤指數 ────────────────────
+async function fetchIndexFromYahoo(symbol, name) {
+  try {
+    const url  = `https://tw.stock.yahoo.com/quote/${encodeURIComponent(symbol)}`;
+    const resp = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      },
+    });
+
+    if (!resp.ok) return null;
+
+    const html = await resp.text();
+    const idx  = html.indexOf('Fz(32px)');
+    if (idx === -1) return null;
+
+    const block = html.slice(idx - 50, idx + 450);
+
+    const priceMatch = block.match(/Fz\(32px\)[^>]*>([^<]+)</);
+    if (!priceMatch) return null;
+
+    const price  = parseFloat(priceMatch[1].replace(/,/g, '').trim());
+    const isUp   = block.includes('C($c-trend-up)');
+    const isDown = block.includes('C($c-trend-down)');
+
+    const changeMatch = block.match(/Fz\(20px\)[^>]*>(?:<span[^>]*><\/span>)?\s*([0-9.,]+)</);
+    const pctMatch    = block.match(/\(([0-9.,]+)%\)/);
+
+    let change    = changeMatch ? parseFloat(changeMatch[1].replace(/,/g, '')) : 0;
+    let changePct = pctMatch ? parseFloat(pctMatch[1].replace(/,/g, '')) : 0;
+
+    if (isDown) {
+      change    = -change;
+      changePct = -changePct;
+    }
+
+    const prevClose = isUp ? +(price - Math.abs(change)).toFixed(2) : (isDown ? +(price + Math.abs(change)).toFixed(2) : price);
+
+    if (!isNaN(price) && price > 0) {
+      return {
+        key:       symbol === '^TWII' ? 't00' : 'o00',
+        name,
+        price,
+        prevClose,
+        change:    +change.toFixed(2),
+        changePct: +changePct.toFixed(2),
+        isLive:    true,
+        tradeTime: '',
+      };
+    }
+  } catch (e) {}
+  return null;
+}
+
 // ── 路由：TWSE 大盤指數 ──────────────────────────────────
 // GET /api/market-index
 app.get('/api/market-index', async (req, res) => {
   try {
+    // 優先查詢 Yahoo 股市台灣網頁 ^TWII (加權) 與 ^TWOII (櫃買)
+    const [twii, twoii] = await Promise.all([
+      fetchIndexFromYahoo('^TWII', '發行量加權股價指數'),
+      fetchIndexFromYahoo('^TWOII', '櫃買指數'),
+    ]);
+
+    const indices = [twii, twoii].filter(Boolean);
+
+    if (indices.length > 0) {
+      return res.json({ success: true, indices, timestamp: Date.now() });
+    }
+
+    // TWSE 備援
     const cookie = await ensureTWSESession();
     const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=tse_t00.tw|otc_o00.tw&_=${Date.now()}`;
 
@@ -287,27 +540,22 @@ app.get('/api/market-index', async (req, res) => {
     try { data = JSON.parse(text); } catch { data = {}; }
     const msgArray = data.msgArray || [];
 
-    const indices = msgArray.map(s => {
-      const livePrice = parseFloat(s.z);
-      const prevClose = parseFloat(s.y) || 0;
-      const hasLive   = !isNaN(livePrice) && livePrice > 0;
-      const price     = hasLive ? livePrice : prevClose;
-      const change    = hasLive ? +(livePrice - prevClose).toFixed(2) : 0;
-      const changePct = prevClose > 0 && hasLive ? +((change / prevClose) * 100).toFixed(2) : 0;
+    const twseIndices = msgArray.map(s => {
+      const parsed = extractStockPrice(s);
 
       return {
         key:       s.c || 't00',
         name:      s.n || (s.c === 't00' ? '加權指數' : '櫃買指數'),
-        price:     price > 0 ? price : null,
-        prevClose,
-        change,
-        changePct,
-        isLive:    hasLive,
+        price:     parsed.price,
+        prevClose: parsed.prevClose,
+        change:    parsed.change,
+        changePct: parsed.changePct,
+        isLive:    parsed.isLive,
         tradeTime: s.t || '',
       };
     });
 
-    res.json({ success: true, indices, timestamp: Date.now() });
+    res.json({ success: true, indices: twseIndices, timestamp: Date.now() });
   } catch (err) {
     console.error('[Market Index API Error]', err.message);
     res.status(500).json({ success: false, error: err.message });
