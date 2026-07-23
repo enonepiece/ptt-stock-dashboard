@@ -1319,7 +1319,16 @@
         font-size: 1.3rem;
       }
     }
+  
+    @media (max-width: 860px) {
+      .topbar-right .btn-text { display: none; }
+      .stocks-header .btn-text { display: none; }
+      .search-wrap { flex-wrap: wrap; }
+      .search-wrap .search-input, .search-wrap .time-range-select { flex: 1 1 100%; }
+      body { width: 100vw; overflow-x: hidden; }
+    }
   </style>
+
 </head>
 <body>
 
@@ -1361,8 +1370,8 @@
   <span id="lastUpdated">─</span>
 
   <div class="topbar-right">
-    <button class="btn" id="monitorToggle" aria-label="切換監測狀態">⏸ 暫停監測</button>
-    <button class="btn" id="refreshArticles" aria-label="重新載入文章列表">↺ 重新載入</button>
+    <button class="btn" id="monitorToggle" aria-label="切換監測狀態"><span class="btn-icon">⏸</span><span class="btn-text"> 暫停監測</span></button>
+    <button class="btn" id="refreshArticles" aria-label="重新載入文章列表"><span class="btn-icon">↺</span><span class="btn-text"> 重新載入</span></button>
   </div>
 </header>
 
@@ -1392,7 +1401,7 @@
     <div class="panel-header">
       <span class="panel-title">偵測股票</span>
       <span class="badge" id="stockCount">0</span>
-      <button class="btn btn-danger" id="clearStocks" aria-label="清空所有股票">✕ 清空</button>
+      <button class="btn btn-danger" id="clearStocks" aria-label="清空所有股票"><span class="btn-icon">✕</span><span class="btn-text"> 清空</span></button>
     </div>
 
     <div class="sort-bar" role="toolbar" aria-label="排序方式">
