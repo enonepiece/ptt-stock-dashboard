@@ -194,7 +194,8 @@ const STOCK_DICT = [
     "code": "1256",
     "market": "tse",
     "names": [
-      "鮮活果汁-KY"
+      "鮮活果汁-KY",
+      "鮮活果汁"
     ]
   },
   {
@@ -339,14 +340,16 @@ const STOCK_DICT = [
     "code": "1337",
     "market": "tse",
     "names": [
-      "再生-KY"
+      "再生-KY",
+      "再生"
     ]
   },
   {
     "code": "1338",
     "market": "tse",
     "names": [
-      "廣華-KY"
+      "廣華-KY",
+      "廣華"
     ]
   },
   {
@@ -360,14 +363,16 @@ const STOCK_DICT = [
     "code": "1340",
     "market": "tse",
     "names": [
-      "勝悅-KY"
+      "勝悅-KY",
+      "勝悅"
     ]
   },
   {
     "code": "1341",
     "market": "tse",
     "names": [
-      "富林-KY"
+      "富林-KY",
+      "富林"
     ]
   },
   {
@@ -979,14 +984,16 @@ const STOCK_DICT = [
     "code": "1589",
     "market": "tse",
     "names": [
-      "永冠-KY"
+      "永冠-KY",
+      "永冠"
     ]
   },
   {
     "code": "1590",
     "market": "tse",
     "names": [
-      "亞德客-KY"
+      "亞德客-KY",
+      "亞德客"
     ]
   },
   {
@@ -1098,7 +1105,8 @@ const STOCK_DICT = [
     "code": "1626",
     "market": "tse",
     "names": [
-      "艾美特-KY"
+      "艾美特-KY",
+      "艾美特"
     ]
   },
   {
@@ -1720,7 +1728,8 @@ const STOCK_DICT = [
     "code": "2115",
     "market": "tse",
     "names": [
-      "六暉-KY"
+      "六暉-KY",
+      "六暉"
     ]
   },
   {
@@ -1800,14 +1809,16 @@ const STOCK_DICT = [
     "code": "2236",
     "market": "tse",
     "names": [
-      "百達-KY"
+      "百達-KY",
+      "百達"
     ]
   },
   {
     "code": "2239",
     "market": "tse",
     "names": [
-      "英利-KY"
+      "英利-KY",
+      "英利"
     ]
   },
   {
@@ -1821,7 +1832,8 @@ const STOCK_DICT = [
     "code": "2243",
     "market": "tse",
     "names": [
-      "宏旭-KY"
+      "宏旭-KY",
+      "宏旭"
     ]
   },
   {
@@ -1835,14 +1847,16 @@ const STOCK_DICT = [
     "code": "2248",
     "market": "tse",
     "names": [
-      "華勝-KY"
+      "華勝-KY",
+      "華勝"
     ]
   },
   {
     "code": "2250",
     "market": "tse",
     "names": [
-      "IKKA-KY"
+      "IKKA-KY",
+      "IKKA"
     ]
   },
   {
@@ -3265,7 +3279,8 @@ const STOCK_DICT = [
     "code": "2637",
     "market": "tse",
     "names": [
-      "慧洋-KY"
+      "慧洋-KY",
+      "慧洋"
     ]
   },
   {
@@ -3349,7 +3364,8 @@ const STOCK_DICT = [
     "code": "2723",
     "market": "tse",
     "names": [
-      "美食-KY"
+      "美食-KY",
+      "美食"
     ]
   },
   {
@@ -3391,7 +3407,8 @@ const STOCK_DICT = [
     "code": "2762",
     "market": "tse",
     "names": [
-      "世界健身-KY"
+      "世界健身-KY",
+      "世界健身"
     ]
   },
   {
@@ -3629,7 +3646,8 @@ const STOCK_DICT = [
     "code": "2897",
     "market": "tse",
     "names": [
-      "王道銀行"
+      "王道銀行",
+      "王道銀"
     ]
   },
   {
@@ -3719,21 +3737,24 @@ const STOCK_DICT = [
     "code": "2923",
     "market": "tse",
     "names": [
-      "鼎固-KY"
+      "鼎固-KY",
+      "鼎固"
     ]
   },
   {
     "code": "2929",
     "market": "tse",
     "names": [
-      "淘帝-KY"
+      "淘帝-KY",
+      "淘帝"
     ]
   },
   {
     "code": "2939",
     "market": "tse",
     "names": [
-      "永邑-KY"
+      "永邑-KY",
+      "永邑"
     ]
   },
   {
@@ -4610,14 +4631,16 @@ const STOCK_DICT = [
     "code": "3665",
     "market": "tse",
     "names": [
-      "貿聯-KY"
+      "貿聯-KY",
+      "貿聯"
     ]
   },
   {
     "code": "3673",
     "market": "tse",
     "names": [
-      "TPK-KY"
+      "TPK-KY",
+      "TPK"
     ]
   },
   {
@@ -4776,7 +4799,8 @@ const STOCK_DICT = [
     "code": "4137",
     "market": "tse",
     "names": [
-      "麗豐-KY"
+      "麗豐-KY",
+      "麗豐"
     ]
   },
   {
@@ -4790,7 +4814,8 @@ const STOCK_DICT = [
     "code": "4148",
     "market": "tse",
     "names": [
-      "全宇生技-KY"
+      "全宇生技-KY",
+      "全宇生技"
     ]
   },
   {
@@ -4818,14 +4843,16 @@ const STOCK_DICT = [
     "code": "4178",
     "market": "tse",
     "names": [
-      "永笙-KY"
+      "永笙-KY",
+      "永笙"
     ]
   },
   {
     "code": "4190",
     "market": "tse",
     "names": [
-      "佐登-KY"
+      "佐登-KY",
+      "佐登"
     ]
   },
   {
@@ -4860,7 +4887,8 @@ const STOCK_DICT = [
     "code": "4439",
     "market": "tse",
     "names": [
-      "冠星-KY"
+      "冠星-KY",
+      "冠星"
     ]
   },
   {
@@ -4923,7 +4951,8 @@ const STOCK_DICT = [
     "code": "4552",
     "market": "tse",
     "names": [
-      "力達-KY"
+      "力達-KY",
+      "力達"
     ]
   },
   {
@@ -4937,14 +4966,16 @@ const STOCK_DICT = [
     "code": "4557",
     "market": "tse",
     "names": [
-      "永新-KY"
+      "永新-KY",
+      "永新"
     ]
   },
   {
     "code": "4560",
     "market": "tse",
     "names": [
-      "強信-KY"
+      "強信-KY",
+      "強信"
     ]
   },
   {
@@ -4972,14 +5003,16 @@ const STOCK_DICT = [
     "code": "4569",
     "market": "tse",
     "names": [
-      "六方科-KY"
+      "六方科-KY",
+      "六方科"
     ]
   },
   {
     "code": "4571",
     "market": "tse",
     "names": [
-      "鈞興-KY"
+      "鈞興-KY",
+      "鈞興"
     ]
   },
   {
@@ -5000,7 +5033,8 @@ const STOCK_DICT = [
     "code": "4581",
     "market": "tse",
     "names": [
-      "光隆精密-KY"
+      "光隆精密-KY",
+      "光隆精密"
     ]
   },
   {
@@ -5077,7 +5111,8 @@ const STOCK_DICT = [
     "code": "4763",
     "market": "tse",
     "names": [
-      "材料*-KY"
+      "材料*-KY",
+      "材料*"
     ]
   },
   {
@@ -5112,7 +5147,8 @@ const STOCK_DICT = [
     "code": "4807",
     "market": "tse",
     "names": [
-      "日成-KY"
+      "日成-KY",
+      "日成"
     ]
   },
   {
@@ -5135,7 +5171,8 @@ const STOCK_DICT = [
     "code": "4912",
     "market": "tse",
     "names": [
-      "聯德控股-KY"
+      "聯德控股-KY",
+      "聯德控股"
     ]
   },
   {
@@ -5163,7 +5200,8 @@ const STOCK_DICT = [
     "code": "4927",
     "market": "tse",
     "names": [
-      "泰鼎-KY"
+      "泰鼎-KY",
+      "泰鼎"
     ]
   },
   {
@@ -5185,7 +5223,8 @@ const STOCK_DICT = [
     "code": "4935",
     "market": "tse",
     "names": [
-      "茂林-KY"
+      "茂林-KY",
+      "茂林"
     ]
   },
   {
@@ -5209,7 +5248,8 @@ const STOCK_DICT = [
     "code": "4943",
     "market": "tse",
     "names": [
-      "康控-KY"
+      "康控-KY",
+      "康控"
     ]
   },
   {
@@ -5237,7 +5277,8 @@ const STOCK_DICT = [
     "code": "4958",
     "market": "tse",
     "names": [
-      "臻鼎-KY"
+      "臻鼎-KY",
+      "臻鼎"
     ]
   },
   {
@@ -5279,7 +5320,8 @@ const STOCK_DICT = [
     "code": "4977",
     "market": "tse",
     "names": [
-      "眾達-KY"
+      "眾達-KY",
+      "眾達"
     ]
   },
   {
@@ -5321,7 +5363,8 @@ const STOCK_DICT = [
     "code": "5215",
     "market": "tse",
     "names": [
-      "科嘉-KY"
+      "科嘉-KY",
+      "科嘉"
     ]
   },
   {
@@ -5335,7 +5378,8 @@ const STOCK_DICT = [
     "code": "5225",
     "market": "tse",
     "names": [
-      "東科-KY"
+      "東科-KY",
+      "東科"
     ]
   },
   {
@@ -5356,7 +5400,8 @@ const STOCK_DICT = [
     "code": "5243",
     "market": "tse",
     "names": [
-      "乙盛-KY"
+      "乙盛-KY",
+      "乙盛"
     ]
   },
   {
@@ -5391,7 +5436,8 @@ const STOCK_DICT = [
     "code": "5284",
     "market": "tse",
     "names": [
-      "jpp-KY"
+      "jpp-KY",
+      "jpp"
     ]
   },
   {
@@ -5405,7 +5451,8 @@ const STOCK_DICT = [
     "code": "5288",
     "market": "tse",
     "names": [
-      "豐祥-KY"
+      "豐祥-KY",
+      "豐祥"
     ]
   },
   {
@@ -5518,14 +5565,16 @@ const STOCK_DICT = [
     "code": "5538",
     "market": "tse",
     "names": [
-      "東明-KY"
+      "東明-KY",
+      "東明"
     ]
   },
   {
     "code": "5546",
     "market": "tse",
     "names": [
-      "永固-KY"
+      "永固-KY",
+      "永固"
     ]
   },
   {
@@ -5553,7 +5602,8 @@ const STOCK_DICT = [
     "code": "5871",
     "market": "tse",
     "names": [
-      "中租-KY"
+      "中租-KY",
+      "中租"
     ]
   },
   {
@@ -5577,14 +5627,16 @@ const STOCK_DICT = [
     "code": "5906",
     "market": "tse",
     "names": [
-      "台南-KY"
+      "台南-KY",
+      "台南"
     ]
   },
   {
     "code": "5907",
     "market": "tse",
     "names": [
-      "大洋-KY"
+      "大洋-KY",
+      "大洋"
     ]
   },
   {
@@ -6018,7 +6070,8 @@ const STOCK_DICT = [
     "code": "6415",
     "market": "tse",
     "names": [
-      "矽力*-KY"
+      "矽力*-KY",
+      "矽力*"
     ]
   },
   {
@@ -6039,7 +6092,8 @@ const STOCK_DICT = [
     "code": "6431",
     "market": "tse",
     "names": [
-      "光麗-KY"
+      "光麗-KY",
+      "光麗"
     ]
   },
   {
@@ -6081,14 +6135,16 @@ const STOCK_DICT = [
     "code": "6451",
     "market": "tse",
     "names": [
-      "訊芯-KY"
+      "訊芯-KY",
+      "訊芯"
     ]
   },
   {
     "code": "6456",
     "market": "tse",
     "names": [
-      "GIS-KY"
+      "GIS-KY",
+      "GIS"
     ]
   },
   {
@@ -6144,7 +6200,8 @@ const STOCK_DICT = [
     "code": "6525",
     "market": "tse",
     "names": [
-      "捷敏-KY"
+      "捷敏-KY",
+      "捷敏"
     ]
   },
   {
@@ -6174,14 +6231,16 @@ const STOCK_DICT = [
     "code": "6541",
     "market": "tse",
     "names": [
-      "泰福-KY"
+      "泰福-KY",
+      "泰福"
     ]
   },
   {
     "code": "6550",
     "market": "tse",
     "names": [
-      "北極星藥業-KY"
+      "北極星藥業-KY",
+      "北極星藥業"
     ]
   },
   {
@@ -6203,7 +6262,8 @@ const STOCK_DICT = [
     "code": "6573",
     "market": "tse",
     "names": [
-      "虹揚-KY"
+      "虹揚-KY",
+      "虹揚"
     ]
   },
   {
@@ -6245,7 +6305,8 @@ const STOCK_DICT = [
     "code": "6591",
     "market": "tse",
     "names": [
-      "動力-KY"
+      "動力-KY",
+      "動力"
     ]
   },
   {
@@ -6259,7 +6320,8 @@ const STOCK_DICT = [
     "code": "6598",
     "market": "tse",
     "names": [
-      "ABC-KY"
+      "ABC-KY",
+      "ABC"
     ]
   },
   {
@@ -6294,7 +6356,8 @@ const STOCK_DICT = [
     "code": "6641",
     "market": "tse",
     "names": [
-      "基士德-KY"
+      "基士德-KY",
+      "基士德"
     ]
   },
   {
@@ -6322,7 +6385,8 @@ const STOCK_DICT = [
     "code": "6666",
     "market": "tse",
     "names": [
-      "羅麗芬-KY"
+      "羅麗芬-KY",
+      "羅麗芬"
     ]
   },
   {
@@ -6352,14 +6416,16 @@ const STOCK_DICT = [
     "code": "6671",
     "market": "tse",
     "names": [
-      "三能-KY"
+      "三能-KY",
+      "三能"
     ]
   },
   {
     "code": "6672",
     "market": "tse",
     "names": [
-      "騰輝電子-KY"
+      "騰輝電子-KY",
+      "騰輝電子"
     ]
   },
   {
@@ -6471,7 +6537,8 @@ const STOCK_DICT = [
     "code": "6768",
     "market": "tse",
     "names": [
-      "志強-KY"
+      "志強-KY",
+      "志強"
     ]
   },
   {
@@ -6490,7 +6557,8 @@ const STOCK_DICT = [
     "code": "6781",
     "market": "tse",
     "names": [
-      "AES-KY"
+      "AES-KY",
+      "AES"
     ]
   },
   {
@@ -6553,7 +6621,8 @@ const STOCK_DICT = [
     "code": "6807",
     "market": "tse",
     "names": [
-      "峰源-KY"
+      "峰源-KY",
+      "峰源"
     ]
   },
   {
@@ -6602,14 +6671,16 @@ const STOCK_DICT = [
     "code": "6862",
     "market": "tse",
     "names": [
-      "三集瑞-KY"
+      "三集瑞-KY",
+      "三集瑞"
     ]
   },
   {
     "code": "6863",
     "market": "tse",
     "names": [
-      "永道-KY"
+      "永道-KY",
+      "永道"
     ]
   },
   {
@@ -6637,14 +6708,16 @@ const STOCK_DICT = [
     "code": "6887",
     "market": "tse",
     "names": [
-      "寶綠特-KY"
+      "寶綠特-KY",
+      "寶綠特"
     ]
   },
   {
     "code": "6890",
     "market": "tse",
     "names": [
-      "來億-KY"
+      "來億-KY",
+      "來億"
     ]
   },
   {
@@ -6728,7 +6801,8 @@ const STOCK_DICT = [
     "code": "6933",
     "market": "tse",
     "names": [
-      "AMAX-KY"
+      "AMAX-KY",
+      "AMAX"
     ]
   },
   {
@@ -6777,7 +6851,8 @@ const STOCK_DICT = [
     "code": "6957",
     "market": "tse",
     "names": [
-      "裕慶-KY"
+      "裕慶-KY",
+      "裕慶"
     ]
   },
   {
@@ -6791,14 +6866,16 @@ const STOCK_DICT = [
     "code": "6962",
     "market": "tse",
     "names": [
-      "奕力-KY"
+      "奕力-KY",
+      "奕力"
     ]
   },
   {
     "code": "6965",
     "market": "tse",
     "names": [
-      "中傑-KY"
+      "中傑-KY",
+      "中傑"
     ]
   },
   {
@@ -6854,7 +6931,8 @@ const STOCK_DICT = [
     "code": "7749",
     "market": "tse",
     "names": [
-      "意騰-KY"
+      "意騰-KY",
+      "意騰"
     ]
   },
   {
@@ -7189,14 +7267,16 @@ const STOCK_DICT = [
     "code": "8404",
     "market": "tse",
     "names": [
-      "百和興業-KY"
+      "百和興業-KY",
+      "百和興業"
     ]
   },
   {
     "code": "8411",
     "market": "tse",
     "names": [
-      "福貞-KY"
+      "福貞-KY",
+      "福貞"
     ]
   },
   {
@@ -7210,7 +7290,8 @@ const STOCK_DICT = [
     "code": "8429",
     "market": "tse",
     "names": [
-      "金麗-KY"
+      "金麗-KY",
+      "金麗"
     ]
   },
   {
@@ -7224,7 +7305,8 @@ const STOCK_DICT = [
     "code": "8442",
     "market": "tse",
     "names": [
-      "威宏-KY"
+      "威宏-KY",
+      "威宏"
     ]
   },
   {
@@ -7266,14 +7348,16 @@ const STOCK_DICT = [
     "code": "8466",
     "market": "tse",
     "names": [
-      "美吉吉-KY"
+      "美吉吉-KY",
+      "美吉吉"
     ]
   },
   {
     "code": "8467",
     "market": "tse",
     "names": [
-      "波力-KY"
+      "波力-KY",
+      "波力"
     ]
   },
   {
@@ -7308,21 +7392,24 @@ const STOCK_DICT = [
     "code": "8482",
     "market": "tse",
     "names": [
-      "商億-KY"
+      "商億-KY",
+      "商億"
     ]
   },
   {
     "code": "8488",
     "market": "tse",
     "names": [
-      "吉源-KY"
+      "吉源-KY",
+      "吉源"
     ]
   },
   {
     "code": "8499",
     "market": "tse",
     "names": [
-      "鼎炫-KY"
+      "鼎炫-KY",
+      "鼎炫"
     ]
   },
   {
@@ -7350,7 +7437,8 @@ const STOCK_DICT = [
     "code": "9802",
     "market": "tse",
     "names": [
-      "鈺齊-KY"
+      "鈺齊-KY",
+      "鈺齊"
     ]
   },
   {
@@ -7816,63 +7904,72 @@ const STOCK_DICT = [
     "code": "00400A",
     "market": "tse",
     "names": [
-      "主動國泰動能高息"
+      "主動國泰動能高息",
+      "400A"
     ]
   },
   {
     "code": "00401A",
     "market": "tse",
     "names": [
-      "主動摩根台灣鑫收"
+      "主動摩根台灣鑫收",
+      "401A"
     ]
   },
   {
     "code": "00402A",
     "market": "tse",
     "names": [
-      "主動安聯美國科技"
+      "主動安聯美國科技",
+      "402A"
     ]
   },
   {
     "code": "00403A",
     "market": "tse",
     "names": [
-      "主動統一升級50"
+      "主動統一升級50",
+      "403A"
     ]
   },
   {
     "code": "00404A",
     "market": "tse",
     "names": [
-      "主動聯博動能50"
+      "主動聯博動能50",
+      "404A"
     ]
   },
   {
     "code": "00405A",
     "market": "tse",
     "names": [
-      "主動富邦台灣龍耀"
+      "主動富邦台灣龍耀",
+      "405A"
     ]
   },
   {
     "code": "00406A",
     "market": "tse",
     "names": [
-      "主動中信台灣收益"
+      "主動中信台灣收益",
+      "406A"
     ]
   },
   {
     "code": "00407A",
     "market": "tse",
     "names": [
-      "主動凱基台灣"
+      "主動凱基台灣",
+      "407A"
     ]
   },
   {
     "code": "00408A",
     "market": "tse",
     "names": [
-      "主動第一金優股息"
+      "主動第一金優股息",
+      "408A"
     ]
   },
   {
@@ -7880,6 +7977,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "元大台灣50",
+      "50",
       "0050",
       "五十",
       "ETF50",
@@ -7891,28 +7989,32 @@ const STOCK_DICT = [
     "code": "0051",
     "market": "tse",
     "names": [
-      "元大中型100"
+      "元大中型100",
+      "51"
     ]
   },
   {
     "code": "0052",
     "market": "tse",
     "names": [
-      "富邦科技"
+      "富邦科技",
+      "52"
     ]
   },
   {
     "code": "0053",
     "market": "tse",
     "names": [
-      "元大電子"
+      "元大電子",
+      "53"
     ]
   },
   {
     "code": "0055",
     "market": "tse",
     "names": [
-      "元大MSCI金融"
+      "元大MSCI金融",
+      "55"
     ]
   },
   {
@@ -7920,6 +8022,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "元大高股息",
+      "56",
       "0056",
       "高股息",
       "ETF56"
@@ -7929,49 +8032,56 @@ const STOCK_DICT = [
     "code": "0057",
     "market": "tse",
     "names": [
-      "富邦摩台"
+      "富邦摩台",
+      "57"
     ]
   },
   {
     "code": "0061",
     "market": "tse",
     "names": [
-      "元大寶滬深"
+      "元大寶滬深",
+      "61"
     ]
   },
   {
     "code": "006203",
     "market": "tse",
     "names": [
-      "元大MSCI台灣"
+      "元大MSCI台灣",
+      "6203"
     ]
   },
   {
     "code": "006204",
     "market": "tse",
     "names": [
-      "永豐臺灣加權"
+      "永豐臺灣加權",
+      "6204"
     ]
   },
   {
     "code": "006205",
     "market": "tse",
     "names": [
-      "富邦上証"
+      "富邦上証",
+      "6205"
     ]
   },
   {
     "code": "006206",
     "market": "tse",
     "names": [
-      "元大上證50"
+      "元大上證50",
+      "6206"
     ]
   },
   {
     "code": "006207",
     "market": "tse",
     "names": [
-      "復華滬深"
+      "復華滬深",
+      "6207"
     ]
   },
   {
@@ -7979,6 +8089,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "富邦台50",
+      "6208",
       "富邦台灣50",
       "006208",
       "富邦50"
@@ -7988,7 +8099,8 @@ const STOCK_DICT = [
     "code": "00625K",
     "market": "tse",
     "names": [
-      "富邦上証+R"
+      "富邦上証+R",
+      "625K"
     ]
   },
   {
@@ -7996,6 +8108,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "元大台灣50正2",
+      "631L",
       "台灣50正2",
       "50正2",
       "正2",
@@ -8007,6 +8120,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "元大台灣50反1",
+      "632R",
       "台灣50反1",
       "50反1",
       "反1",
@@ -8017,252 +8131,288 @@ const STOCK_DICT = [
     "code": "00633L",
     "market": "tse",
     "names": [
-      "富邦上証正2"
+      "富邦上証正2",
+      "633L"
     ]
   },
   {
     "code": "00634R",
     "market": "tse",
     "names": [
-      "富邦上証反1"
+      "富邦上証反1",
+      "634R"
     ]
   },
   {
     "code": "00635U",
     "market": "tse",
     "names": [
-      "期元大S&P黃金"
+      "期元大S&P黃金",
+      "635U"
     ]
   },
   {
     "code": "00636",
     "market": "tse",
     "names": [
-      "國泰中國A50"
+      "國泰中國A50",
+      "636"
     ]
   },
   {
     "code": "00636K",
     "market": "tse",
     "names": [
-      "國泰中國A50+U"
+      "國泰中國A50+U",
+      "636K"
     ]
   },
   {
     "code": "00637L",
     "market": "tse",
     "names": [
-      "元大滬深300正2"
+      "元大滬深300正2",
+      "637L"
     ]
   },
   {
     "code": "00638R",
     "market": "tse",
     "names": [
-      "元大滬深300反1"
+      "元大滬深300反1",
+      "638R"
     ]
   },
   {
     "code": "00639",
     "market": "tse",
     "names": [
-      "富邦深100"
+      "富邦深100",
+      "639"
     ]
   },
   {
     "code": "00640L",
     "market": "tse",
     "names": [
-      "富邦日本正2"
+      "富邦日本正2",
+      "640L"
     ]
   },
   {
     "code": "00641R",
     "market": "tse",
     "names": [
-      "富邦日本反1"
+      "富邦日本反1",
+      "641R"
     ]
   },
   {
     "code": "00642U",
     "market": "tse",
     "names": [
-      "期元大S&P石油"
+      "期元大S&P石油",
+      "642U"
     ]
   },
   {
     "code": "00643",
     "market": "tse",
     "names": [
-      "群益深証中小"
+      "群益深証中小",
+      "643"
     ]
   },
   {
     "code": "00643K",
     "market": "tse",
     "names": [
-      "群益深証中小+R"
+      "群益深証中小+R",
+      "643K"
     ]
   },
   {
     "code": "00645",
     "market": "tse",
     "names": [
-      "富邦日本"
+      "富邦日本",
+      "645"
     ]
   },
   {
     "code": "00646",
     "market": "tse",
     "names": [
-      "元大S&P500"
+      "元大S&P500",
+      "646"
     ]
   },
   {
     "code": "00647L",
     "market": "tse",
     "names": [
-      "元大S&P500正2"
+      "元大S&P500正2",
+      "647L"
     ]
   },
   {
     "code": "00648R",
     "market": "tse",
     "names": [
-      "元大S&P500反1"
+      "元大S&P500反1",
+      "648R"
     ]
   },
   {
     "code": "00650L",
     "market": "tse",
     "names": [
-      "復華香港正2"
+      "復華香港正2",
+      "650L"
     ]
   },
   {
     "code": "00651R",
     "market": "tse",
     "names": [
-      "復華香港反1"
+      "復華香港反1",
+      "651R"
     ]
   },
   {
     "code": "00652",
     "market": "tse",
     "names": [
-      "富邦印度"
+      "富邦印度",
+      "652"
     ]
   },
   {
     "code": "00653L",
     "market": "tse",
     "names": [
-      "富邦印度正2"
+      "富邦印度正2",
+      "653L"
     ]
   },
   {
     "code": "00654R",
     "market": "tse",
     "names": [
-      "富邦印度反1"
+      "富邦印度反1",
+      "654R"
     ]
   },
   {
     "code": "00655L",
     "market": "tse",
     "names": [
-      "國泰中國A50正2"
+      "國泰中國A50正2",
+      "655L"
     ]
   },
   {
     "code": "00656R",
     "market": "tse",
     "names": [
-      "國泰中國A50反1"
+      "國泰中國A50反1",
+      "656R"
     ]
   },
   {
     "code": "00657",
     "market": "tse",
     "names": [
-      "國泰日經225"
+      "國泰日經225",
+      "657"
     ]
   },
   {
     "code": "00657K",
     "market": "tse",
     "names": [
-      "國泰日經225+U"
+      "國泰日經225+U",
+      "657K"
     ]
   },
   {
     "code": "00660",
     "market": "tse",
     "names": [
-      "元大歐洲50"
+      "元大歐洲50",
+      "660"
     ]
   },
   {
     "code": "00661",
     "market": "tse",
     "names": [
-      "元大日經225"
+      "元大日經225",
+      "661"
     ]
   },
   {
     "code": "00662",
     "market": "tse",
     "names": [
-      "富邦NASDAQ"
+      "富邦NASDAQ",
+      "662"
     ]
   },
   {
     "code": "00663L",
     "market": "tse",
     "names": [
-      "國泰臺灣加權正2"
+      "國泰臺灣加權正2",
+      "663L"
     ]
   },
   {
     "code": "00664R",
     "market": "tse",
     "names": [
-      "國泰臺灣加權反1"
+      "國泰臺灣加權反1",
+      "664R"
     ]
   },
   {
     "code": "00665L",
     "market": "tse",
     "names": [
-      "富邦恒生國企正2"
+      "富邦恒生國企正2",
+      "665L"
     ]
   },
   {
     "code": "00666R",
     "market": "tse",
     "names": [
-      "富邦恒生國企反1"
+      "富邦恒生國企反1",
+      "666R"
     ]
   },
   {
     "code": "00668",
     "market": "tse",
     "names": [
-      "國泰美國道瓊"
+      "國泰美國道瓊",
+      "668"
     ]
   },
   {
     "code": "00668K",
     "market": "tse",
     "names": [
-      "國泰美國道瓊+U"
+      "國泰美國道瓊+U",
+      "668K"
     ]
   },
   {
     "code": "00669R",
     "market": "tse",
     "names": [
-      "國泰美國道瓊反1"
+      "國泰美國道瓊反1",
+      "669R"
     ]
   },
   {
@@ -8270,6 +8420,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "富邦NASDAQ正2",
+      "670L",
       "富邦納斯達克正2",
       "富邦NASDAQ2X",
       "ND100正2"
@@ -8280,6 +8431,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "富邦NASDAQ反1",
+      "671R",
       "富邦納斯達克反1",
       "ND100反1"
     ]
@@ -8288,399 +8440,456 @@ const STOCK_DICT = [
     "code": "00673R",
     "market": "tse",
     "names": [
-      "期元大S&P原油反1"
+      "期元大S&P原油反1",
+      "673R"
     ]
   },
   {
     "code": "00674R",
     "market": "tse",
     "names": [
-      "期元大S&P黃金反1"
+      "期元大S&P黃金反1",
+      "674R"
     ]
   },
   {
     "code": "00675L",
     "market": "tse",
     "names": [
-      "富邦臺灣加權正2"
+      "富邦臺灣加權正2",
+      "675L"
     ]
   },
   {
     "code": "00676R",
     "market": "tse",
     "names": [
-      "富邦臺灣加權反1"
+      "富邦臺灣加權反1",
+      "676R"
     ]
   },
   {
     "code": "00678",
     "market": "tse",
     "names": [
-      "群益那斯達克生技"
+      "群益那斯達克生技",
+      "678"
     ]
   },
   {
     "code": "00680L",
     "market": "tse",
     "names": [
-      "元大美債20正2"
+      "元大美債20正2",
+      "680L"
     ]
   },
   {
     "code": "00681R",
     "market": "tse",
     "names": [
-      "元大美債20反1"
+      "元大美債20反1",
+      "681R"
     ]
   },
   {
     "code": "00682U",
     "market": "tse",
     "names": [
-      "期元大美元指數"
+      "期元大美元指數",
+      "682U"
     ]
   },
   {
     "code": "00683L",
     "market": "tse",
     "names": [
-      "期元大美元指正2"
+      "期元大美元指正2",
+      "683L"
     ]
   },
   {
     "code": "00684R",
     "market": "tse",
     "names": [
-      "期元大美元指反1"
+      "期元大美元指反1",
+      "684R"
     ]
   },
   {
     "code": "00685L",
     "market": "tse",
     "names": [
-      "群益臺灣加權正2"
+      "群益臺灣加權正2",
+      "685L"
     ]
   },
   {
     "code": "00686R",
     "market": "tse",
     "names": [
-      "群益臺灣加權反1"
+      "群益臺灣加權反1",
+      "686R"
     ]
   },
   {
     "code": "00688L",
     "market": "tse",
     "names": [
-      "國泰20年美債正2"
+      "國泰20年美債正2",
+      "688L"
     ]
   },
   {
     "code": "00689R",
     "market": "tse",
     "names": [
-      "國泰20年美債反1"
+      "國泰20年美債反1",
+      "689R"
     ]
   },
   {
     "code": "00690",
     "market": "tse",
     "names": [
-      "兆豐藍籌30"
+      "兆豐藍籌30",
+      "690"
     ]
   },
   {
     "code": "00692",
     "market": "tse",
     "names": [
-      "富邦公司治理"
+      "富邦公司治理",
+      "692"
     ]
   },
   {
     "code": "00693U",
     "market": "tse",
     "names": [
-      "期街口S&P黃豆"
+      "期街口S&P黃豆",
+      "693U"
     ]
   },
   {
     "code": "00700",
     "market": "tse",
     "names": [
-      "富邦恒生國企"
+      "富邦恒生國企",
+      "700"
     ]
   },
   {
     "code": "00701",
     "market": "tse",
     "names": [
-      "國泰股利精選30"
+      "國泰股利精選30",
+      "701"
     ]
   },
   {
     "code": "00702",
     "market": "tse",
     "names": [
-      "國泰標普低波高息"
+      "國泰標普低波高息",
+      "702"
     ]
   },
   {
     "code": "00703",
     "market": "tse",
     "names": [
-      "台新MSCI中國"
+      "台新MSCI中國",
+      "703"
     ]
   },
   {
     "code": "00706L",
     "market": "tse",
     "names": [
-      "期元大S&P日圓正2"
+      "期元大S&P日圓正2",
+      "706L"
     ]
   },
   {
     "code": "00707R",
     "market": "tse",
     "names": [
-      "期元大S&P日圓反1"
+      "期元大S&P日圓反1",
+      "707R"
     ]
   },
   {
     "code": "00708L",
     "market": "tse",
     "names": [
-      "期元大S&P黃金正2"
+      "期元大S&P黃金正2",
+      "708L"
     ]
   },
   {
     "code": "00709",
     "market": "tse",
     "names": [
-      "富邦歐洲"
+      "富邦歐洲",
+      "709"
     ]
   },
   {
     "code": "00710B",
     "market": "tse",
     "names": [
-      "復華彭博非投等債"
+      "復華彭博非投等債",
+      "710B"
     ]
   },
   {
     "code": "00711B",
     "market": "tse",
     "names": [
-      "復華彭博新興債"
+      "復華彭博新興債",
+      "711B"
     ]
   },
   {
     "code": "00712",
     "market": "tse",
     "names": [
-      "復華富時不動產"
+      "復華富時不動產",
+      "712"
     ]
   },
   {
     "code": "00713",
     "market": "tse",
     "names": [
-      "元大台灣高息低波"
+      "元大台灣高息低波",
+      "713"
     ]
   },
   {
     "code": "00714",
     "market": "tse",
     "names": [
-      "群益道瓊美國地產"
+      "群益道瓊美國地產",
+      "714"
     ]
   },
   {
     "code": "00715L",
     "market": "tse",
     "names": [
-      "期街口S&P布蘭特油正2"
+      "期街口S&P布蘭特油正2",
+      "715L"
     ]
   },
   {
     "code": "00717",
     "market": "tse",
     "names": [
-      "富邦美國特別股"
+      "富邦美國特別股",
+      "717"
     ]
   },
   {
     "code": "00728",
     "market": "tse",
     "names": [
-      "第一金工業30"
+      "第一金工業30",
+      "728"
     ]
   },
   {
     "code": "00730",
     "market": "tse",
     "names": [
-      "富邦臺灣優質高息"
+      "富邦臺灣優質高息",
+      "730"
     ]
   },
   {
     "code": "00731",
     "market": "tse",
     "names": [
-      "復華富時高息低波"
+      "復華富時高息低波",
+      "731"
     ]
   },
   {
     "code": "00733",
     "market": "tse",
     "names": [
-      "富邦臺灣中小"
+      "富邦臺灣中小",
+      "733"
     ]
   },
   {
     "code": "00735",
     "market": "tse",
     "names": [
-      "國泰臺韓科技"
+      "國泰臺韓科技",
+      "735"
     ]
   },
   {
     "code": "00736",
     "market": "tse",
     "names": [
-      "國泰新興市場"
+      "國泰新興市場",
+      "736"
     ]
   },
   {
     "code": "00737",
     "market": "tse",
     "names": [
-      "國泰AI機器人"
+      "國泰AI機器人",
+      "737"
     ]
   },
   {
     "code": "00738U",
     "market": "tse",
     "names": [
-      "期元大道瓊白銀"
+      "期元大道瓊白銀",
+      "738U"
     ]
   },
   {
     "code": "00752",
     "market": "tse",
     "names": [
-      "中信中國50"
+      "中信中國50",
+      "752"
     ]
   },
   {
     "code": "00753L",
     "market": "tse",
     "names": [
-      "中信中國50正2"
+      "中信中國50正2",
+      "753L"
     ]
   },
   {
     "code": "00757",
     "market": "tse",
     "names": [
-      "統一FANG+"
+      "統一FANG+",
+      "757"
     ]
   },
   {
     "code": "00762",
     "market": "tse",
     "names": [
-      "元大全球AI"
+      "元大全球AI",
+      "762"
     ]
   },
   {
     "code": "00763U",
     "market": "tse",
     "names": [
-      "期街口道瓊銅"
+      "期街口道瓊銅",
+      "763U"
     ]
   },
   {
     "code": "00770",
     "market": "tse",
     "names": [
-      "國泰北美科技"
+      "國泰北美科技",
+      "770"
     ]
   },
   {
     "code": "00771",
     "market": "tse",
     "names": [
-      "元大US高息特別股"
+      "元大US高息特別股",
+      "771"
     ]
   },
   {
     "code": "00775B",
     "market": "tse",
     "names": [
-      "台新投等債15+"
+      "台新投等債15+",
+      "775B"
     ]
   },
   {
     "code": "00783",
     "market": "tse",
     "names": [
-      "富邦中証500"
+      "富邦中証500",
+      "783"
     ]
   },
   {
     "code": "00830",
     "market": "tse",
     "names": [
-      "國泰費城半導體"
+      "國泰費城半導體",
+      "830"
     ]
   },
   {
     "code": "00850",
     "market": "tse",
     "names": [
-      "元大臺灣ESG永續"
+      "元大臺灣ESG永續",
+      "850"
     ]
   },
   {
     "code": "00851",
     "market": "tse",
     "names": [
-      "台新全球AI"
+      "台新全球AI",
+      "851"
     ]
   },
   {
     "code": "00852L",
     "market": "tse",
     "names": [
-      "國泰美國道瓊正2"
+      "國泰美國道瓊正2",
+      "852L"
     ]
   },
   {
     "code": "00861",
     "market": "tse",
     "names": [
-      "元大全球未來通訊"
+      "元大全球未來通訊",
+      "861"
     ]
   },
   {
     "code": "00865B",
     "market": "tse",
     "names": [
-      "國泰US短期公債"
+      "國泰US短期公債",
+      "865B"
     ]
   },
   {
     "code": "00875",
     "market": "tse",
     "names": [
-      "國泰網路資安"
+      "國泰網路資安",
+      "875"
     ]
   },
   {
     "code": "00876",
     "market": "tse",
     "names": [
-      "元大全球5G"
+      "元大全球5G",
+      "876"
     ]
   },
   {
@@ -8688,6 +8897,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "國泰永續高股息",
+      "878",
       "00878",
       "小資ETF"
     ]
@@ -8697,6 +8907,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "國泰台灣科技龍頭",
+      "881",
       "國泰台灣5G+",
       "00881"
     ]
@@ -8705,21 +8916,24 @@ const STOCK_DICT = [
     "code": "00882",
     "market": "tse",
     "names": [
-      "中信中國高股息"
+      "中信中國高股息",
+      "882"
     ]
   },
   {
     "code": "00885",
     "market": "tse",
     "names": [
-      "富邦越南"
+      "富邦越南",
+      "885"
     ]
   },
   {
     "code": "00891",
     "market": "tse",
     "names": [
-      "中信關鍵半導體"
+      "中信關鍵半導體",
+      "891"
     ]
   },
   {
@@ -8727,6 +8941,7 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "富邦台灣半導體",
+      "892",
       "00892",
       "半導體ETF"
     ]
@@ -8735,735 +8950,843 @@ const STOCK_DICT = [
     "code": "00893",
     "market": "tse",
     "names": [
-      "國泰智能電動車"
+      "國泰智能電動車",
+      "893"
     ]
   },
   {
     "code": "00894",
     "market": "tse",
     "names": [
-      "中信小資高價30"
+      "中信小資高價30",
+      "894"
     ]
   },
   {
     "code": "00895",
     "market": "tse",
     "names": [
-      "富邦未來車"
+      "富邦未來車",
+      "895"
     ]
   },
   {
     "code": "00896",
     "market": "tse",
     "names": [
-      "中信綠能及電動車"
+      "中信綠能及電動車",
+      "896"
     ]
   },
   {
     "code": "00897",
     "market": "tse",
     "names": [
-      "富邦基因免疫生技"
+      "富邦基因免疫生技",
+      "897"
     ]
   },
   {
     "code": "00898",
     "market": "tse",
     "names": [
-      "國泰基因免疫革命"
+      "國泰基因免疫革命",
+      "898"
     ]
   },
   {
     "code": "00899",
     "market": "tse",
     "names": [
-      "FT潔淨能源"
+      "FT潔淨能源",
+      "899"
     ]
   },
   {
     "code": "00900",
     "market": "tse",
     "names": [
-      "富邦特選高股息30"
+      "富邦特選高股息30",
+      "900"
     ]
   },
   {
     "code": "00901",
     "market": "tse",
     "names": [
-      "永豐智能車供應鏈"
+      "永豐智能車供應鏈",
+      "901"
     ]
   },
   {
     "code": "00902",
     "market": "tse",
     "names": [
-      "中信電池及儲能"
+      "中信電池及儲能",
+      "902"
     ]
   },
   {
     "code": "00903",
     "market": "tse",
     "names": [
-      "富邦元宇宙"
+      "富邦元宇宙",
+      "903"
     ]
   },
   {
     "code": "00904",
     "market": "tse",
     "names": [
-      "台新臺灣半導體30"
+      "台新臺灣半導體30",
+      "904"
     ]
   },
   {
     "code": "00905",
     "market": "tse",
     "names": [
-      "FT臺灣SMART"
+      "FT臺灣SMART",
+      "905"
     ]
   },
   {
     "code": "00907",
     "market": "tse",
     "names": [
-      "永豐優息存股"
+      "永豐優息存股",
+      "907"
     ]
   },
   {
     "code": "00908",
     "market": "tse",
     "names": [
-      "富邦入息REITs+"
+      "富邦入息REITs+",
+      "908"
     ]
   },
   {
     "code": "00909",
     "market": "tse",
     "names": [
-      "國泰數位支付服務"
+      "國泰數位支付服務",
+      "909"
     ]
   },
   {
     "code": "00910",
     "market": "tse",
     "names": [
-      "第一金太空衛星"
+      "第一金太空衛星",
+      "910"
     ]
   },
   {
     "code": "00911",
     "market": "tse",
     "names": [
-      "兆豐洲際半導體"
+      "兆豐洲際半導體",
+      "911"
     ]
   },
   {
     "code": "00912",
     "market": "tse",
     "names": [
-      "中信臺灣智慧50"
+      "中信臺灣智慧50",
+      "912"
     ]
   },
   {
     "code": "00913",
     "market": "tse",
     "names": [
-      "兆豐台灣晶圓製造"
+      "兆豐台灣晶圓製造",
+      "913"
     ]
   },
   {
     "code": "00915",
     "market": "tse",
     "names": [
-      "凱基優選高股息30"
+      "凱基優選高股息30",
+      "915"
     ]
   },
   {
     "code": "00916",
     "market": "tse",
     "names": [
-      "國泰全球品牌50"
+      "國泰全球品牌50",
+      "916"
     ]
   },
   {
     "code": "00917",
     "market": "tse",
     "names": [
-      "中信特選金融"
+      "中信特選金融",
+      "917"
     ]
   },
   {
     "code": "00918",
     "market": "tse",
     "names": [
-      "大華優利高填息30"
+      "大華優利高填息30",
+      "918"
     ]
   },
   {
     "code": "00919",
     "market": "tse",
     "names": [
-      "群益台灣精選高息"
+      "群益台灣精選高息",
+      "919"
     ]
   },
   {
     "code": "00920",
     "market": "tse",
     "names": [
-      "富邦ESG綠色電力"
+      "富邦ESG綠色電力",
+      "920"
     ]
   },
   {
     "code": "00921",
     "market": "tse",
     "names": [
-      "兆豐龍頭等權重"
+      "兆豐龍頭等權重",
+      "921"
     ]
   },
   {
     "code": "00922",
     "market": "tse",
     "names": [
-      "國泰台灣領袖50"
+      "國泰台灣領袖50",
+      "922"
     ]
   },
   {
     "code": "00923",
     "market": "tse",
     "names": [
-      "群益台ESG低碳50"
+      "群益台ESG低碳50",
+      "923"
     ]
   },
   {
     "code": "00924",
     "market": "tse",
     "names": [
-      "復華S&P500成長"
+      "復華S&P500成長",
+      "924"
     ]
   },
   {
     "code": "00926",
     "market": "tse",
     "names": [
-      "凱基全球菁英55"
+      "凱基全球菁英55",
+      "926"
     ]
   },
   {
     "code": "00927",
     "market": "tse",
     "names": [
-      "群益半導體收益"
+      "群益半導體收益",
+      "927"
     ]
   },
   {
     "code": "00929",
     "market": "tse",
     "names": [
-      "復華台灣科技優息"
+      "復華台灣科技優息",
+      "929"
     ]
   },
   {
     "code": "00930",
     "market": "tse",
     "names": [
-      "永豐ESG低碳高息"
+      "永豐ESG低碳高息",
+      "930"
     ]
   },
   {
     "code": "00932",
     "market": "tse",
     "names": [
-      "兆豐永續高息等權"
+      "兆豐永續高息等權",
+      "932"
     ]
   },
   {
     "code": "00934",
     "market": "tse",
     "names": [
-      "中信成長高股息"
+      "中信成長高股息",
+      "934"
     ]
   },
   {
     "code": "00935",
     "market": "tse",
     "names": [
-      "野村臺灣新科技50"
+      "野村臺灣新科技50",
+      "935"
     ]
   },
   {
     "code": "00936",
     "market": "tse",
     "names": [
-      "台新永續高息中小"
+      "台新永續高息中小",
+      "936"
     ]
   },
   {
     "code": "00938",
     "market": "tse",
     "names": [
-      "凱基優選30"
+      "凱基優選30",
+      "938"
     ]
   },
   {
     "code": "00939",
     "market": "tse",
     "names": [
-      "統一台灣高息動能"
+      "統一台灣高息動能",
+      "939"
     ]
   },
   {
     "code": "00940",
     "market": "tse",
     "names": [
-      "元大台灣價值高息"
+      "元大台灣價值高息",
+      "940"
     ]
   },
   {
     "code": "00941",
     "market": "tse",
     "names": [
-      "中信上游半導體"
+      "中信上游半導體",
+      "941"
     ]
   },
   {
     "code": "00943",
     "market": "tse",
     "names": [
-      "兆豐電子高息等權"
+      "兆豐電子高息等權",
+      "943"
     ]
   },
   {
     "code": "00944",
     "market": "tse",
     "names": [
-      "野村趨勢動能高息"
+      "野村趨勢動能高息",
+      "944"
     ]
   },
   {
     "code": "00945B",
     "market": "tse",
     "names": [
-      "凱基美國非投等債"
+      "凱基美國非投等債",
+      "945B"
     ]
   },
   {
     "code": "00946",
     "market": "tse",
     "names": [
-      "群益科技高息成長"
+      "群益科技高息成長",
+      "946"
     ]
   },
   {
     "code": "00947",
     "market": "tse",
     "names": [
-      "台新臺灣IC設計"
+      "台新臺灣IC設計",
+      "947"
     ]
   },
   {
     "code": "00949",
     "market": "tse",
     "names": [
-      "復華日本龍頭"
+      "復華日本龍頭",
+      "949"
     ]
   },
   {
     "code": "00951",
     "market": "tse",
     "names": [
-      "台新日本半導體"
+      "台新日本半導體",
+      "951"
     ]
   },
   {
     "code": "00952",
     "market": "tse",
     "names": [
-      "凱基台灣AI50"
+      "凱基台灣AI50",
+      "952"
     ]
   },
   {
     "code": "00953B",
     "market": "tse",
     "names": [
-      "群益優選非投等債"
+      "群益優選非投等債",
+      "953B"
     ]
   },
   {
     "code": "00954",
     "market": "tse",
     "names": [
-      "中信日本半導體"
+      "中信日本半導體",
+      "954"
     ]
   },
   {
     "code": "00956",
     "market": "tse",
     "names": [
-      "中信日經高股息"
+      "中信日經高股息",
+      "956"
     ]
   },
   {
     "code": "00960",
     "market": "tse",
     "names": [
-      "野村全球航運龍頭"
+      "野村全球航運龍頭",
+      "960"
     ]
   },
   {
     "code": "00961",
     "market": "tse",
     "names": [
-      "FT臺灣永續高息"
+      "FT臺灣永續高息",
+      "961"
     ]
   },
   {
     "code": "00962",
     "market": "tse",
     "names": [
-      "台新AI優息動能"
+      "台新AI優息動能",
+      "962"
     ]
   },
   {
     "code": "00963",
     "market": "tse",
     "names": [
-      "中信全球高股息"
+      "中信全球高股息",
+      "963"
     ]
   },
   {
     "code": "00964",
     "market": "tse",
     "names": [
-      "中信亞太高股息"
+      "中信亞太高股息",
+      "964"
     ]
   },
   {
     "code": "00965",
     "market": "tse",
     "names": [
-      "元大航太防衛科技"
+      "元大航太防衛科技",
+      "965"
     ]
   },
   {
     "code": "00971",
     "market": "tse",
     "names": [
-      "野村美國研發龍頭"
+      "野村美國研發龍頭",
+      "971"
     ]
   },
   {
     "code": "00972",
     "market": "tse",
     "names": [
-      "野村日本動能高息"
+      "野村日本動能高息",
+      "972"
     ]
   },
   {
     "code": "009800",
     "market": "tse",
     "names": [
-      "中信NASDAQ"
+      "中信NASDAQ",
+      "9800"
     ]
   },
   {
     "code": "009801",
     "market": "tse",
     "names": [
-      "中信美國創新科技"
+      "中信美國創新科技",
+      "9801"
     ]
   },
   {
     "code": "009802",
     "market": "tse",
     "names": [
-      "富邦旗艦50"
+      "富邦旗艦50",
+      "9802"
     ]
   },
   {
     "code": "009803",
     "market": "tse",
     "names": [
-      "玉山市值動能50"
+      "玉山市值動能50",
+      "9803"
     ]
   },
   {
     "code": "009804",
     "market": "tse",
     "names": [
-      "聯邦台精彩50"
+      "聯邦台精彩50",
+      "9804"
     ]
   },
   {
     "code": "009805",
     "market": "tse",
     "names": [
-      "台新美國電力基建"
+      "台新美國電力基建",
+      "9805"
     ]
   },
   {
     "code": "009808",
     "market": "tse",
     "names": [
-      "華南永昌優選50"
+      "華南永昌優選50",
+      "9808"
     ]
   },
   {
     "code": "009809",
     "market": "tse",
     "names": [
-      "富邦淨零ESG50"
+      "富邦淨零ESG50",
+      "9809"
     ]
   },
   {
     "code": "00980A",
     "market": "tse",
     "names": [
-      "主動野村臺灣優選"
+      "主動野村臺灣優選",
+      "980A"
     ]
   },
   {
     "code": "009810",
     "market": "tse",
     "names": [
-      "玉山全球藍籌100"
+      "玉山全球藍籌100",
+      "9810"
     ]
   },
   {
     "code": "009811",
     "market": "tse",
     "names": [
-      "統一美國50"
+      "統一美國50",
+      "9811"
     ]
   },
   {
     "code": "009812",
     "market": "tse",
     "names": [
-      "野村日本東證"
+      "野村日本東證",
+      "9812"
     ]
   },
   {
     "code": "009813",
     "market": "tse",
     "names": [
-      "貝萊德標普卓越50"
+      "貝萊德標普卓越50",
+      "9813"
     ]
   },
   {
     "code": "009816",
     "market": "tse",
     "names": [
-      "凱基台灣TOP50"
+      "凱基台灣TOP50",
+      "9816"
     ]
   },
   {
     "code": "009817",
     "market": "tse",
     "names": [
-      "國泰日本不動產"
+      "國泰日本不動產",
+      "9817"
     ]
   },
   {
     "code": "009818",
     "market": "tse",
     "names": [
-      "華南永昌NASDAQxT"
+      "華南永昌NASDAQxT",
+      "9818"
     ]
   },
   {
     "code": "009819",
     "market": "tse",
     "names": [
-      "中信數據及電力"
+      "中信數據及電力",
+      "9819"
     ]
   },
   {
     "code": "00981A",
     "market": "tse",
     "names": [
-      "主動統一台股增長"
+      "主動統一台股增長",
+      "981A",
+      "瑤姐",
+      "瑤池金母"
     ]
   },
   {
     "code": "00981T",
     "market": "tse",
     "names": [
-      "平衡凱基雙核收息"
+      "平衡凱基雙核收息",
+      "981T"
     ]
   },
   {
     "code": "009820",
     "market": "tse",
     "names": [
-      "元大納斯達克精選"
+      "元大納斯達克精選",
+      "9820"
     ]
   },
   {
     "code": "009821",
     "market": "tse",
     "names": [
-      "野村稀土關鍵資源"
+      "野村稀土關鍵資源",
+      "9821"
     ]
   },
   {
     "code": "009824",
     "market": "tse",
     "names": [
-      "群益美國科技巨頭"
+      "群益美國科技巨頭",
+      "9824"
     ]
   },
   {
     "code": "00982A",
     "market": "tse",
     "names": [
-      "主動群益台灣強棒"
+      "主動群益台灣強棒",
+      "982A"
     ]
   },
   {
     "code": "00982D",
     "market": "tse",
     "names": [
-      "主動富邦動態入息"
+      "主動富邦動態入息",
+      "982D"
     ]
   },
   {
     "code": "00982T",
     "market": "tse",
     "names": [
-      "平衡兆豐台美動能"
+      "平衡兆豐台美動能",
+      "982T"
     ]
   },
   {
     "code": "00983A",
     "market": "tse",
     "names": [
-      "主動中信ARK創新"
+      "主動中信ARK創新",
+      "983A"
     ]
   },
   {
     "code": "00983D",
     "market": "tse",
     "names": [
-      "主動富邦複合收益"
+      "主動富邦複合收益",
+      "983D"
     ]
   },
   {
     "code": "00984A",
     "market": "tse",
     "names": [
-      "主動安聯台灣高息"
+      "主動安聯台灣高息",
+      "984A"
     ]
   },
   {
     "code": "00984D",
     "market": "tse",
     "names": [
-      "主動聯博全球非投"
+      "主動聯博全球非投",
+      "984D"
     ]
   },
   {
     "code": "00985A",
     "market": "tse",
     "names": [
-      "主動野村台灣50"
+      "主動野村台灣50",
+      "985A"
     ]
   },
   {
     "code": "00985B",
     "market": "tse",
     "names": [
-      "群益ESG投等債0-5"
+      "群益ESG投等債0-5",
+      "985B"
     ]
   },
   {
     "code": "00986A",
     "market": "tse",
     "names": [
-      "主動台新龍頭成長"
+      "主動台新龍頭成長",
+      "986A"
     ]
   },
   {
     "code": "00987A",
     "market": "tse",
     "names": [
-      "主動台新優勢成長"
+      "主動台新優勢成長",
+      "987A"
     ]
   },
   {
     "code": "00988A",
     "market": "tse",
     "names": [
-      "主動統一全球創新"
+      "主動統一全球創新",
+      "988A",
+      "988"
     ]
   },
   {
     "code": "00989A",
     "market": "tse",
     "names": [
-      "主動摩根美國科技"
+      "主動摩根美國科技",
+      "989A"
     ]
   },
   {
     "code": "00990A",
     "market": "tse",
     "names": [
-      "主動元大AI新經濟"
+      "主動元大AI新經濟",
+      "990A"
     ]
   },
   {
     "code": "00991A",
     "market": "tse",
     "names": [
-      "主動復華未來50"
+      "主動復華未來50",
+      "991A"
     ]
   },
   {
     "code": "00992A",
     "market": "tse",
     "names": [
-      "主動群益科技創新"
+      "主動群益科技創新",
+      "992A"
     ]
   },
   {
     "code": "00993A",
     "market": "tse",
     "names": [
-      "主動安聯台灣"
+      "主動安聯台灣",
+      "993A"
     ]
   },
   {
     "code": "00994A",
     "market": "tse",
     "names": [
-      "主動第一金台股優"
+      "主動第一金台股優",
+      "994A"
     ]
   },
   {
     "code": "00995A",
     "market": "tse",
     "names": [
-      "主動中信台灣卓越"
+      "主動中信台灣卓越",
+      "995A"
     ]
   },
   {
     "code": "00996A",
     "market": "tse",
     "names": [
-      "主動兆豐台灣豐收"
+      "主動兆豐台灣豐收",
+      "996A"
     ]
   },
   {
     "code": "00997A",
     "market": "tse",
     "names": [
-      "主動群益美國增長"
+      "主動群益美國增長",
+      "997A"
     ]
   },
   {
     "code": "00999A",
     "market": "tse",
     "names": [
-      "主動野村臺灣高息"
+      "主動野村臺灣高息",
+      "999A"
     ]
   },
   {
@@ -9501,812 +9824,928 @@ const STOCK_DICT = [
     "code": "006201",
     "market": "otc",
     "names": [
-      "元大富櫃50"
+      "元大富櫃50",
+      "6201"
     ]
   },
   {
     "code": "00679B",
     "market": "otc",
     "names": [
-      "元大美債20年"
+      "元大美債20年",
+      "679B"
     ]
   },
   {
     "code": "00687B",
     "market": "otc",
     "names": [
-      "國泰20年美債"
+      "國泰20年美債",
+      "687B"
     ]
   },
   {
     "code": "00687C",
     "market": "otc",
     "names": [
-      "國泰20年美債+櫃U"
+      "國泰20年美債+櫃U",
+      "687C"
     ]
   },
   {
     "code": "00694B",
     "market": "otc",
     "names": [
-      "富邦美債1-3年"
+      "富邦美債1-3年",
+      "694B"
     ]
   },
   {
     "code": "00695B",
     "market": "otc",
     "names": [
-      "富邦美債7-10年"
+      "富邦美債7-10年",
+      "695B"
     ]
   },
   {
     "code": "00696B",
     "market": "otc",
     "names": [
-      "富邦美債20年"
+      "富邦美債20年",
+      "696B"
     ]
   },
   {
     "code": "00697B",
     "market": "otc",
     "names": [
-      "元大美債7-10"
+      "元大美債7-10",
+      "697B"
     ]
   },
   {
     "code": "00719B",
     "market": "otc",
     "names": [
-      "元大美債1-3"
+      "元大美債1-3",
+      "719B"
     ]
   },
   {
     "code": "00720B",
     "market": "otc",
     "names": [
-      "元大投資級公司債"
+      "元大投資級公司債",
+      "720B"
     ]
   },
   {
     "code": "00722B",
     "market": "otc",
     "names": [
-      "群益投資級電信債"
+      "群益投資級電信債",
+      "722B"
     ]
   },
   {
     "code": "00723B",
     "market": "otc",
     "names": [
-      "群益投資級科技債"
+      "群益投資級科技債",
+      "723B"
     ]
   },
   {
     "code": "00724B",
     "market": "otc",
     "names": [
-      "群益投資級金融債"
+      "群益投資級金融債",
+      "724B"
     ]
   },
   {
     "code": "00725B",
     "market": "otc",
     "names": [
-      "國泰投資級公司債"
+      "國泰投資級公司債",
+      "725B"
     ]
   },
   {
     "code": "00726B",
     "market": "otc",
     "names": [
-      "國泰新興投等債"
+      "國泰新興投等債",
+      "726B"
     ]
   },
   {
     "code": "00727B",
     "market": "otc",
     "names": [
-      "國泰優選非投等債"
+      "國泰優選非投等債",
+      "727B"
     ]
   },
   {
     "code": "00734B",
     "market": "otc",
     "names": [
-      "台新JPM新興債"
+      "台新JPM新興債",
+      "734B"
     ]
   },
   {
     "code": "00740B",
     "market": "otc",
     "names": [
-      "富邦全球投等債"
+      "富邦全球投等債",
+      "740B"
     ]
   },
   {
     "code": "00741B",
     "market": "otc",
     "names": [
-      "富邦全球非投等債"
+      "富邦全球非投等債",
+      "741B"
     ]
   },
   {
     "code": "00746B",
     "market": "otc",
     "names": [
-      "富邦A級公司債"
+      "富邦A級公司債",
+      "746B"
     ]
   },
   {
     "code": "00749B",
     "market": "otc",
     "names": [
-      "凱基新興債10+"
+      "凱基新興債10+",
+      "749B"
     ]
   },
   {
     "code": "00750B",
     "market": "otc",
     "names": [
-      "凱基科技債10+"
+      "凱基科技債10+",
+      "750B"
     ]
   },
   {
     "code": "00751B",
     "market": "otc",
     "names": [
-      "元大AAA至A公司債"
+      "元大AAA至A公司債",
+      "751B"
     ]
   },
   {
     "code": "00754B",
     "market": "otc",
     "names": [
-      "群益AAA-AA公司債"
+      "群益AAA-AA公司債",
+      "754B"
     ]
   },
   {
     "code": "00755B",
     "market": "otc",
     "names": [
-      "群益投資級公用債"
+      "群益投資級公用債",
+      "755B"
     ]
   },
   {
     "code": "00756B",
     "market": "otc",
     "names": [
-      "群益投等新興公債"
+      "群益投等新興公債",
+      "756B"
     ]
   },
   {
     "code": "00758B",
     "market": "otc",
     "names": [
-      "復華能源債"
+      "復華能源債",
+      "758B"
     ]
   },
   {
     "code": "00759B",
     "market": "otc",
     "names": [
-      "復華製藥債"
+      "復華製藥債",
+      "759B"
     ]
   },
   {
     "code": "00760B",
     "market": "otc",
     "names": [
-      "復華新興企業債"
+      "復華新興企業債",
+      "760B"
     ]
   },
   {
     "code": "00761B",
     "market": "otc",
     "names": [
-      "國泰A級公司債"
+      "國泰A級公司債",
+      "761B"
     ]
   },
   {
     "code": "00764B",
     "market": "otc",
     "names": [
-      "群益25年美債"
+      "群益25年美債",
+      "764B"
     ]
   },
   {
     "code": "00768B",
     "market": "otc",
     "names": [
-      "復華20年美債"
+      "復華20年美債",
+      "768B"
     ]
   },
   {
     "code": "00772B",
     "market": "otc",
     "names": [
-      "中信高評級公司債"
+      "中信高評級公司債",
+      "772B"
     ]
   },
   {
     "code": "00773B",
     "market": "otc",
     "names": [
-      "中信優先金融債"
+      "中信優先金融債",
+      "773B"
     ]
   },
   {
     "code": "00777B",
     "market": "otc",
     "names": [
-      "凱基AAA至A公司債"
+      "凱基AAA至A公司債",
+      "777B"
     ]
   },
   {
     "code": "00778B",
     "market": "otc",
     "names": [
-      "凱基金融債20+"
+      "凱基金融債20+",
+      "778B"
     ]
   },
   {
     "code": "00779B",
     "market": "otc",
     "names": [
-      "凱基美債25+"
+      "凱基美債25+",
+      "779B"
     ]
   },
   {
     "code": "00780B",
     "market": "otc",
     "names": [
-      "國泰A級金融債"
+      "國泰A級金融債",
+      "780B"
     ]
   },
   {
     "code": "00781B",
     "market": "otc",
     "names": [
-      "國泰A級科技債"
+      "國泰A級科技債",
+      "781B"
     ]
   },
   {
     "code": "00782B",
     "market": "otc",
     "names": [
-      "國泰A級公用債"
+      "國泰A級公用債",
+      "782B"
     ]
   },
   {
     "code": "00785B",
     "market": "otc",
     "names": [
-      "富邦金融投等債"
+      "富邦金融投等債",
+      "785B"
     ]
   },
   {
     "code": "00786B",
     "market": "otc",
     "names": [
-      "元大10年IG銀行債"
+      "元大10年IG銀行債",
+      "786B"
     ]
   },
   {
     "code": "00787B",
     "market": "otc",
     "names": [
-      "元大10年IG醫療債"
+      "元大10年IG醫療債",
+      "787B"
     ]
   },
   {
     "code": "00788B",
     "market": "otc",
     "names": [
-      "元大10年IG電能債"
+      "元大10年IG電能債",
+      "788B"
     ]
   },
   {
     "code": "00789B",
     "market": "otc",
     "names": [
-      "復華公司債A3"
+      "復華公司債A3",
+      "789B"
     ]
   },
   {
     "code": "00791B",
     "market": "otc",
     "names": [
-      "復華信用債1-5"
+      "復華信用債1-5",
+      "791B"
     ]
   },
   {
     "code": "00792B",
     "market": "otc",
     "names": [
-      "群益A級公司債"
+      "群益A級公司債",
+      "792B"
     ]
   },
   {
     "code": "00793B",
     "market": "otc",
     "names": [
-      "群益AAA-A醫療債"
+      "群益AAA-A醫療債",
+      "793B"
     ]
   },
   {
     "code": "00795B",
     "market": "otc",
     "names": [
-      "中信美國公債20年"
+      "中信美國公債20年",
+      "795B"
     ]
   },
   {
     "code": "00799B",
     "market": "otc",
     "names": [
-      "國泰A級醫療債"
+      "國泰A級醫療債",
+      "799B"
     ]
   },
   {
     "code": "00834B",
     "market": "otc",
     "names": [
-      "第一金金融債10+"
+      "第一金金融債10+",
+      "834B"
     ]
   },
   {
     "code": "00836B",
     "market": "otc",
     "names": [
-      "永豐10年A公司債"
+      "永豐10年A公司債",
+      "836B"
     ]
   },
   {
     "code": "00838B",
     "market": "otc",
     "names": [
-      "永豐7-10年中國債"
+      "永豐7-10年中國債",
+      "838B"
     ]
   },
   {
     "code": "00840B",
     "market": "otc",
     "names": [
-      "凱基IG精選15+"
+      "凱基IG精選15+",
+      "840B"
     ]
   },
   {
     "code": "00841B",
     "market": "otc",
     "names": [
-      "凱基AAA-AA公司債"
+      "凱基AAA-AA公司債",
+      "841B"
     ]
   },
   {
     "code": "00842B",
     "market": "otc",
     "names": [
-      "台新美元銀行債"
+      "台新美元銀行債",
+      "842B"
     ]
   },
   {
     "code": "00844B",
     "market": "otc",
     "names": [
-      "台新15年IG金融債"
+      "台新15年IG金融債",
+      "844B"
     ]
   },
   {
     "code": "00845B",
     "market": "otc",
     "names": [
-      "富邦新興投等債"
+      "富邦新興投等債",
+      "845B"
     ]
   },
   {
     "code": "00846B",
     "market": "otc",
     "names": [
-      "富邦歐洲銀行債"
+      "富邦歐洲銀行債",
+      "846B"
     ]
   },
   {
     "code": "00847B",
     "market": "otc",
     "names": [
-      "中信美國市政債"
+      "中信美國市政債",
+      "847B"
     ]
   },
   {
     "code": "00848B",
     "market": "otc",
     "names": [
-      "中信新興亞洲債"
+      "中信新興亞洲債",
+      "848B"
     ]
   },
   {
     "code": "00849B",
     "market": "otc",
     "names": [
-      "中信EM主權債0-5"
+      "中信EM主權債0-5",
+      "849B"
     ]
   },
   {
     "code": "00853B",
     "market": "otc",
     "names": [
-      "統一美債10年Aa-A"
+      "統一美債10年Aa-A",
+      "853B"
     ]
   },
   {
     "code": "00856B",
     "market": "otc",
     "names": [
-      "永豐1-3年美公債"
+      "永豐1-3年美公債",
+      "856B"
     ]
   },
   {
     "code": "00857B",
     "market": "otc",
     "names": [
-      "永豐20年美公債"
+      "永豐20年美公債",
+      "857B"
     ]
   },
   {
     "code": "00858",
     "market": "otc",
     "names": [
-      "永豐美國500大"
+      "永豐美國500大",
+      "858"
     ]
   },
   {
     "code": "00859B",
     "market": "otc",
     "names": [
-      "群益0-1年美債"
+      "群益0-1年美債",
+      "859B"
     ]
   },
   {
     "code": "00860B",
     "market": "otc",
     "names": [
-      "群益1-5Y投資級債"
+      "群益1-5Y投資級債",
+      "860B"
     ]
   },
   {
     "code": "00862B",
     "market": "otc",
     "names": [
-      "中信投資級公司債"
+      "中信投資級公司債",
+      "862B"
     ]
   },
   {
     "code": "00863B",
     "market": "otc",
     "names": [
-      "中信全球電信債"
+      "中信全球電信債",
+      "863B"
     ]
   },
   {
     "code": "00864B",
     "market": "otc",
     "names": [
-      "中信美國公債0-1"
+      "中信美國公債0-1",
+      "864B"
     ]
   },
   {
     "code": "00867B",
     "market": "otc",
     "names": [
-      "台新A-BBB電信債"
+      "台新A-BBB電信債",
+      "867B"
     ]
   },
   {
     "code": "00870B",
     "market": "otc",
     "names": [
-      "元大15年EM主權債"
+      "元大15年EM主權債",
+      "870B"
     ]
   },
   {
     "code": "00877",
     "market": "otc",
     "names": [
-      "復華中國5G"
+      "復華中國5G",
+      "877"
     ]
   },
   {
     "code": "00884B",
     "market": "otc",
     "names": [
-      "中信低碳新興債"
+      "中信低碳新興債",
+      "884B"
     ]
   },
   {
     "code": "00886",
     "market": "otc",
     "names": [
-      "永豐美國科技"
+      "永豐美國科技",
+      "886"
     ]
   },
   {
     "code": "00887",
     "market": "otc",
     "names": [
-      "永豐中國科技50大"
+      "永豐中國科技50大",
+      "887"
     ]
   },
   {
     "code": "00888",
     "market": "otc",
     "names": [
-      "永豐台灣ESG"
+      "永豐台灣ESG",
+      "888"
     ]
   },
   {
     "code": "00931B",
     "market": "otc",
     "names": [
-      "統一美債20年"
+      "統一美債20年",
+      "931B"
     ]
   },
   {
     "code": "00933B",
     "market": "otc",
     "names": [
-      "國泰10Y+金融債"
+      "國泰10Y+金融債",
+      "933B"
     ]
   },
   {
     "code": "00937B",
     "market": "otc",
     "names": [
-      "群益ESG投等債20+"
+      "群益ESG投等債20+",
+      "937B"
     ]
   },
   {
     "code": "00942B",
     "market": "otc",
     "names": [
-      "台新美A公司債20+"
+      "台新美A公司債20+",
+      "942B"
     ]
   },
   {
     "code": "00948B",
     "market": "otc",
     "names": [
-      "中信優息投資級債"
+      "中信優息投資級債",
+      "948B"
     ]
   },
   {
     "code": "00950B",
     "market": "otc",
     "names": [
-      "凱基A級公司債"
+      "凱基A級公司債",
+      "950B"
     ]
   },
   {
     "code": "00955",
     "market": "otc",
     "names": [
-      "中信日本商社"
+      "中信日本商社",
+      "955"
     ]
   },
   {
     "code": "00957B",
     "market": "otc",
     "names": [
-      "兆豐US優選投等債"
+      "兆豐US優選投等債",
+      "957B"
     ]
   },
   {
     "code": "00958B",
     "market": "otc",
     "names": [
-      "永豐ESG銀行債15+"
+      "永豐ESG銀行債15+",
+      "958B"
     ]
   },
   {
     "code": "00959B",
     "market": "otc",
     "names": [
-      "大華投等美債15Y+"
+      "大華投等美債15Y+",
+      "959B"
     ]
   },
   {
     "code": "00966B",
     "market": "otc",
     "names": [
-      "統一ESG投等債15+"
+      "統一ESG投等債15+",
+      "966B"
     ]
   },
   {
     "code": "00967B",
     "market": "otc",
     "names": [
-      "元大優息美債"
+      "元大優息美債",
+      "967B"
     ]
   },
   {
     "code": "00968B",
     "market": "otc",
     "names": [
-      "元大優息投等債"
+      "元大優息投等債",
+      "968B"
     ]
   },
   {
     "code": "00969B",
     "market": "otc",
     "names": [
-      "元大零息超長美債"
+      "元大零息超長美債",
+      "969B"
     ]
   },
   {
     "code": "00970B",
     "market": "otc",
     "names": [
-      "台新BBB投等債20+"
+      "台新BBB投等債20+",
+      "970B"
     ]
   },
   {
     "code": "009806",
     "market": "otc",
     "names": [
-      "台新標普500"
+      "台新標普500",
+      "9806"
     ]
   },
   {
     "code": "009807",
     "market": "otc",
     "names": [
-      "台新標普科技精選"
+      "台新標普科技精選",
+      "9807"
     ]
   },
   {
     "code": "00980B",
     "market": "otc",
     "names": [
-      "台新特選IG債10+"
+      "台新特選IG債10+",
+      "980B"
     ]
   },
   {
     "code": "00980D",
     "market": "otc",
     "names": [
-      "主動聯博投等入息"
+      "主動聯博投等入息",
+      "980D"
     ]
   },
   {
     "code": "00980T",
     "market": "otc",
     "names": [
-      "平衡凱基美國TOP"
+      "平衡凱基美國TOP",
+      "980T"
     ]
   },
   {
     "code": "009814",
     "market": "otc",
     "names": [
-      "富邦標普500"
+      "富邦標普500",
+      "9814"
     ]
   },
   {
     "code": "009815",
     "market": "otc",
     "names": [
-      "大華美國MAG7+"
+      "大華美國MAG7+",
+      "9815"
     ]
   },
   {
     "code": "00981B",
     "market": "otc",
     "names": [
-      "第一金優選非投債"
+      "第一金優選非投債",
+      "981B"
     ]
   },
   {
     "code": "00981D",
     "market": "otc",
     "names": [
-      "主動中信非投等債"
+      "主動中信非投等債",
+      "981D"
     ]
   },
   {
     "code": "009822",
     "market": "otc",
     "names": [
-      "華南永昌未來金融"
+      "華南永昌未來金融",
+      "9822"
     ]
   },
   {
     "code": "009823",
     "market": "otc",
     "names": [
-      "群益S&P500"
+      "群益S&P500",
+      "9823"
     ]
   },
   {
     "code": "009825",
     "market": "otc",
     "names": [
-      "聯邦美國金融創新"
+      "聯邦美國金融創新",
+      "9825"
     ]
   },
   {
     "code": "00982B",
     "market": "otc",
     "names": [
-      "FT投資級債20+"
+      "FT投資級債20+",
+      "982B"
     ]
   },
   {
     "code": "00983B",
     "market": "otc",
     "names": [
-      "大華優利美公債20"
+      "大華優利美公債20",
+      "983B"
     ]
   },
   {
     "code": "00984B",
     "market": "otc",
     "names": [
-      "大華優利美A債15"
+      "大華優利美A債15",
+      "984B"
     ]
   },
   {
     "code": "00985D",
     "market": "otc",
     "names": [
-      "主動貝萊德優投等"
+      "主動貝萊德優投等",
+      "985D"
     ]
   },
   {
     "code": "00986B",
     "market": "otc",
     "names": [
-      "FT金融債10+"
+      "FT金融債10+",
+      "986B"
     ]
   },
   {
     "code": "00986D",
     "market": "otc",
     "names": [
-      "主動復華金融債息"
+      "主動復華金融債息",
+      "986D"
     ]
   },
   {
     "code": "00987B",
     "market": "otc",
     "names": [
-      "野村10+澳洲公債"
+      "野村10+澳洲公債",
+      "987B"
     ]
   },
   {
     "code": "00988B",
     "market": "otc",
     "names": [
-      "玉山嚴選非投債"
+      "玉山嚴選非投債",
+      "988B"
     ]
   },
   {
     "code": "00989B",
     "market": "otc",
     "names": [
-      "台新美國非投等債"
+      "台新美國非投等債",
+      "989B"
     ]
   },
   {
     "code": "00990B",
     "market": "otc",
     "names": [
-      "國泰收益非投等債"
+      "國泰收益非投等債",
+      "990B"
     ]
   },
   {
     "code": "00998A",
     "market": "otc",
     "names": [
-      "主動復華金融股息"
+      "主動復華金融股息",
+      "998A"
     ]
   },
   {
@@ -10405,7 +10844,8 @@ const STOCK_DICT = [
     "code": "1591",
     "market": "otc",
     "names": [
-      "駿吉-KY"
+      "駿吉-KY",
+      "駿吉"
     ]
   },
   {
@@ -10638,14 +11078,16 @@ const STOCK_DICT = [
     "code": "2724",
     "market": "otc",
     "names": [
-      "藝舍-KY"
+      "藝舍-KY",
+      "藝舍"
     ]
   },
   {
     "code": "2726",
     "market": "otc",
     "names": [
-      "雅茗-KY"
+      "雅茗-KY",
+      "雅茗"
     ]
   },
   {
@@ -10743,7 +11185,8 @@ const STOCK_DICT = [
     "code": "2924",
     "market": "otc",
     "names": [
-      "宏太-KY"
+      "宏太-KY",
+      "宏太"
     ]
   },
   {
@@ -11866,7 +12309,8 @@ const STOCK_DICT = [
     "code": "3664",
     "market": "otc",
     "names": [
-      "安瑞-KY"
+      "安瑞-KY",
+      "安瑞"
     ]
   },
   {
@@ -12094,7 +12538,8 @@ const STOCK_DICT = [
     "code": "4139",
     "market": "otc",
     "names": [
-      "馬光-KY"
+      "馬光-KY",
+      "馬光"
     ]
   },
   {
@@ -12115,14 +12560,16 @@ const STOCK_DICT = [
     "code": "4154",
     "market": "otc",
     "names": [
-      "樂威科-KY"
+      "樂威科-KY",
+      "樂威科"
     ]
   },
   {
     "code": "4157",
     "market": "otc",
     "names": [
-      "太景*-KY"
+      "太景*-KY",
+      "太景*"
     ]
   },
   {
@@ -12346,7 +12793,8 @@ const STOCK_DICT = [
     "code": "4442",
     "market": "otc",
     "names": [
-      "竣邦-KY"
+      "竣邦-KY",
+      "竣邦"
     ]
   },
   {
@@ -12647,7 +13095,8 @@ const STOCK_DICT = [
     "code": "4745",
     "market": "otc",
     "names": [
-      "合富-KY"
+      "合富-KY",
+      "合富"
     ]
   },
   {
@@ -12703,7 +13152,8 @@ const STOCK_DICT = [
     "code": "4804",
     "market": "otc",
     "names": [
-      "大略-KY"
+      "大略-KY",
+      "大略"
     ]
   },
   {
@@ -12766,7 +13216,8 @@ const STOCK_DICT = [
     "code": "4924",
     "market": "otc",
     "names": [
-      "欣厚-KY"
+      "欣厚-KY",
+      "欣厚"
     ]
   },
   {
@@ -12822,14 +13273,16 @@ const STOCK_DICT = [
     "code": "4966",
     "market": "otc",
     "names": [
-      "譜瑞-KY"
+      "譜瑞-KY",
+      "譜瑞"
     ]
   },
   {
     "code": "4971",
     "market": "otc",
     "names": [
-      "IET-KY"
+      "IET-KY",
+      "IET"
     ]
   },
   {
@@ -12864,7 +13317,8 @@ const STOCK_DICT = [
     "code": "4991",
     "market": "otc",
     "names": [
-      "環宇-KY"
+      "環宇-KY",
+      "環宇"
     ]
   },
   {
@@ -12990,14 +13444,16 @@ const STOCK_DICT = [
     "code": "5223",
     "market": "otc",
     "names": [
-      "安力-KY"
+      "安力-KY",
+      "安力"
     ]
   },
   {
     "code": "5227",
     "market": "otc",
     "names": [
-      "立凱-KY"
+      "立凱-KY",
+      "立凱"
     ]
   },
   {
@@ -13053,7 +13509,8 @@ const STOCK_DICT = [
     "code": "5276",
     "market": "otc",
     "names": [
-      "達輝-KY"
+      "達輝-KY",
+      "達輝"
     ]
   },
   {
@@ -13535,7 +13992,8 @@ const STOCK_DICT = [
     "code": "5543",
     "market": "otc",
     "names": [
-      "桓鼎-KY"
+      "桓鼎-KY",
+      "桓鼎"
     ]
   },
   {
@@ -14800,14 +15258,16 @@ const STOCK_DICT = [
     "code": "6616",
     "market": "otc",
     "names": [
-      "特昇-KY"
+      "特昇-KY",
+      "特昇"
     ]
   },
   {
     "code": "6617",
     "market": "otc",
     "names": [
-      "共信-KY"
+      "共信-KY",
+      "共信"
     ]
   },
   {
@@ -14828,7 +15288,8 @@ const STOCK_DICT = [
     "code": "6629",
     "market": "otc",
     "names": [
-      "泰金-KY"
+      "泰金-KY",
+      "泰金"
     ]
   },
   {
@@ -15066,7 +15527,8 @@ const STOCK_DICT = [
     "code": "6741",
     "market": "otc",
     "names": [
-      "91APP*-KY"
+      "91APP*-KY",
+      "91APP*"
     ]
   },
   {
@@ -15318,7 +15780,8 @@ const STOCK_DICT = [
     "code": "6907",
     "market": "otc",
     "names": [
-      "雅特力-KY"
+      "雅特力-KY",
+      "雅特力"
     ]
   },
   {
@@ -15535,7 +15998,8 @@ const STOCK_DICT = [
     "code": "7717",
     "market": "otc",
     "names": [
-      "萊德光電-KY"
+      "萊德光電-KY",
+      "萊德光電"
     ]
   },
   {
@@ -16238,7 +16702,8 @@ const STOCK_DICT = [
     "code": "8423",
     "market": "otc",
     "names": [
-      "保綠-KY"
+      "保綠-KY",
+      "保綠"
     ]
   },
   {
@@ -16252,7 +16717,8 @@ const STOCK_DICT = [
     "code": "8426",
     "market": "otc",
     "names": [
-      "紅木-KY"
+      "紅木-KY",
+      "紅木"
     ]
   },
   {
@@ -16295,7 +16761,8 @@ const STOCK_DICT = [
     "code": "8437",
     "market": "otc",
     "names": [
-      "大地-KY"
+      "大地-KY",
+      "大地"
     ]
   },
   {
@@ -16309,7 +16776,8 @@ const STOCK_DICT = [
     "code": "8444",
     "market": "otc",
     "names": [
-      "綠河-KY"
+      "綠河-KY",
+      "綠河"
     ]
   },
   {
@@ -16330,7 +16798,8 @@ const STOCK_DICT = [
     "code": "8455",
     "market": "otc",
     "names": [
-      "大拓-KY"
+      "大拓-KY",
+      "大拓"
     ]
   },
   {

@@ -97,6 +97,47 @@ app.get('/api/ptt/articles', async (req, res) => {
       await new Promise(r => setTimeout(r, 200));
     }
 
+    // 若 PTT 搜尋無結果（可能是因為剛發的文還沒進搜尋引擎索引），改以手動爬取最新列表過濾
+    if (articles.length === 0 && keyword) {
+      let fallbackUrl = 'https://www.ptt.cc/bbs/Stock/index.html';
+      const keywords = keyword.split(' ').filter(Boolean);
+      for (let i = 0; i < 5; i++) {
+        try {
+          const html = await fetchPTT(fallbackUrl);
+          const $ = cheerio.load(html);
+          $('.r-ent').each((_, el) => {
+            const $el    = $(el);
+            const $a     = $el.find('.title a');
+            const title  = $a.text().trim();
+            const href   = $a.attr('href');
+            const author = $el.find('.author').text().trim();
+            const date   = $el.find('.date').text().trim();
+            const nrec   = $el.find('.nrec span').text().trim();
+
+            if (!href) return;
+            const isMatch = keywords.every(k => title.includes(k));
+            if (isMatch) {
+              articles.push({
+                title,
+                url:       'https://www.ptt.cc' + href,
+                author,
+                date,
+                pushCount: nrec || '0',
+              });
+            }
+          });
+          const prevHref = $('.btn-group-paging a')
+            .filter((_, el) => $(el).text().includes('上頁'))
+            .attr('href');
+          if (!prevHref) break;
+          fallbackUrl = 'https://www.ptt.cc' + prevHref;
+          await new Promise(r => setTimeout(r, 200));
+        } catch (e) {
+          break;
+        }
+      }
+    }
+
     res.json({ success: true, articles, total: articles.length });
   } catch (err) {
     console.error('[PTT Articles Error]', err.message);

@@ -108,6 +108,28 @@ async function handlePttArticles(request) {
     }
   }
 
+  // 若 PTT 搜尋無結果，改以手動爬取最新列表過濾
+  if (articles.length === 0 && keyword) {
+    let fallbackUrl = 'https://www.ptt.cc/bbs/Stock/index.html';
+    const keywords = keyword.split(' ').filter(Boolean);
+    for (let i = 0; i < 5; i++) {
+      try {
+        const resp = await fetch(fallbackUrl, { headers: PTT_HEADERS });
+        if (!resp.ok) break;
+        const html = await resp.text();
+        const pageArticles = await parsePTTArticles(html, '');
+        const matched = pageArticles.filter(a => keywords.every(k => a.title.includes(k)));
+        articles.push(...matched);
+
+        const prevMatch = html.match(/href="(\/bbs\/Stock\/index\d+\.html)"[^>]*>上頁<\/a>/);
+        if (!prevMatch) break;
+        fallbackUrl = 'https://www.ptt.cc' + prevMatch[1];
+      } catch {
+        break;
+      }
+    }
+  }
+
   return jsonResponse({ success: true, articles, total: articles.length });
 }
 
