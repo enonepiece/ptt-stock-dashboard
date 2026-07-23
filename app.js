@@ -969,7 +969,7 @@ function toggleMonitoring() {
 function updateMonitorUI(active) {
   dom.statusDot.classList.toggle('paused', !active);
   dom.statusText.textContent    = active ? '即時監測中' : '已暫停';
-  dom.monitorToggle.textContent = active ? '⏸ 暫停監測' : '▶ 恢復監測';
+  dom.monitorToggle.innerHTML = active ? '<span class="btn-icon">⏸</span><span class="btn-text"> 暫停監測</span>' : '<span class="btn-icon">▶</span><span class="btn-text"> 恢復監測</span>';
   dom.monitorToggle.classList.toggle('active', !active);
 }
 

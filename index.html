@@ -224,6 +224,9 @@
     .index-change.up   { color: var(--up); }
     .index-change.down { color: var(--down); }
     .index-change.flat { color: var(--neutral); }
+    .index-price.up    { color: var(--up); }
+    .index-price.down  { color: var(--down); }
+    .index-price.flat  { color: var(--neutral); }
 
     /* ── Stocks Panel (Left) ─────────────────────────────── */
     .stocks-panel {
@@ -1234,9 +1237,7 @@
         font-size: 0.85rem;
         gap: 5px;
       }
-      .logo span {
-        display: none; /* Hide '台股看板' text on mobile header to save space */
-      }
+      .logo .logo-text { display: none; }
       .logo-icon {
         width: 24px; height: 24px;
         font-size: 0.8rem;
@@ -1330,7 +1331,6 @@
   
     @media (max-width: 860px) {
       .mobile-nav-bar { order: 3 !important; }
-      .market-index-bar { display: none !important; }
     }
   </style>
 
@@ -1344,7 +1344,7 @@
 <header class="topbar" role="banner">
   <div class="logo">
     <div class="logo-icon">📡</div>
-    PTT 輿情 &times; <span>台股看板</span>
+    <span class="logo-text">PTT 輿情 &times; <span>台股看板</span></span>
   </div>
 
   <div class="topbar-sep"></div>
