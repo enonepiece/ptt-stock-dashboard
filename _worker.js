@@ -169,49 +169,6 @@ async function ensureTWSECookie() {
   }
 }
 
-async function fetchStockFromYahoo(code) {
-  const isOtcHint = code.startsWith('6') || code.startsWith('8') || code === '6547';
-  const suffixes  = isOtcHint ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
-
-  for (const suffix of suffixes) {
-    try {
-      const url  = `https://query1.finance.yahoo.com/v8/finance/chart/${code}${suffix}?interval=1m&range=1d&includePrePost=true&_=${Date.now()}`;
-      const resp = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' } });
-      const data = await resp.json();
-      if (data.chart && data.chart.result && data.chart.result[0]) {
-        const result    = data.chart.result[0];
-        const meta      = result.meta;
-        const quotes    = result.indicators?.quote?.[0];
-        const closes    = quotes?.close ? quotes.close.filter(c => c !== null) : [];
-
-        const price     = closes.length > 0 ? +(closes[closes.length - 1]).toFixed(2) : meta.regularMarketPrice;
-        const prevClose = meta.previousClose || meta.chartPreviousClose;
-
-        if (price && prevClose) {
-          const change    = +(price - prevClose).toFixed(2);
-          const changePct = +((change / prevClose) * 100).toFixed(2);
-          return {
-            code,
-            name:        code,
-            price,
-            isLive:      true,
-            prevClose,
-            open:        meta.regularMarketOpen || meta.chartPreviousClose || price,
-            high:        meta.regularMarketDayHigh || price,
-            low:         meta.regularMarketDayLow || price,
-            volume:      meta.regularMarketVolume || 0,
-            change,
-            changePct,
-            tradeTime:   new Date((meta.regularMarketTime || Date.now() / 1000) * 1000).toLocaleTimeString('zh-TW', { hour12: false }),
-            hasLiveData: true,
-          };
-        }
-      }
-    } catch (e) {}
-  }
-  return null;
-}
-
 function extractStockPrice(s) {
   const z         = parseFloat(s.z);
   const pz        = parseFloat(s.pz);
@@ -259,14 +216,8 @@ async function handleStock(request) {
 
   if (codes.length === 0) return jsonResponse({ success: true, stocks: [] });
 
-  const yahooStocks = await Promise.all(codes.map(c => fetchStockFromYahoo(c)));
-  const stocksMap   = new Map();
-
-  yahooStocks.forEach(s => {
-    if (s) stocksMap.set(s.code, s);
-  });
-
-  const missingCodes = codes.filter(c => !stocksMap.has(c));
+  const stocksMap    = new Map();
+  const missingCodes = codes;
 
   if (missingCodes.length > 0) {
     const cookie = await ensureTWSECookie();
@@ -312,38 +263,6 @@ async function handleStock(request) {
 }
 
 async function handleMarketIndex(request) {
-  const [twiiRes, twoiiRes] = await Promise.all([
-    fetch('https://query1.finance.yahoo.com/v8/finance/chart/^TWII?interval=1m&range=1d', { headers: { 'User-Agent': 'Mozilla/5.0' } }).then(r => r.json()).catch(() => null),
-    fetch('https://query1.finance.yahoo.com/v8/finance/chart/^TWOII?interval=1m&range=1d', { headers: { 'User-Agent': 'Mozilla/5.0' } }).then(r => r.json()).catch(() => null),
-  ]);
-
-  const indices = [];
-
-  if (twiiRes?.chart?.result?.[0]?.meta) {
-    const meta = twiiRes.chart.result[0].meta;
-    const price = meta.regularMarketPrice;
-    const prevClose = meta.previousClose || meta.chartPreviousClose;
-    if (price && prevClose) {
-      const change    = +(price - prevClose).toFixed(2);
-      const changePct = +((change / prevClose) * 100).toFixed(2);
-      indices.push({ key: 't00', name: '發行量加權股價指數', price, prevClose, change, changePct, isLive: true, tradeTime: '' });
-    }
-  }
-
-  if (twoiiRes?.chart?.result?.[0]?.meta) {
-    const meta = twoiiRes.chart.result[0].meta;
-    const price = meta.regularMarketPrice;
-    const prevClose = meta.previousClose || meta.chartPreviousClose;
-    if (price && prevClose) {
-      const change    = +(price - prevClose).toFixed(2);
-      const changePct = +((change / prevClose) * 100).toFixed(2);
-      indices.push({ key: 'o00', name: '櫃買指數', price, prevClose, change, changePct, isLive: true, tradeTime: '' });
-    }
-  }
-
-  if (indices.length > 0) {
-    return jsonResponse({ success: true, indices, timestamp: Date.now() });
-  }
 
   const cookie = await ensureTWSECookie();
   const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=tse_t00.tw|otc_o00.tw&_=${Date.now()}`;
