@@ -17044,19 +17044,35 @@ for (const stock of STOCK_DICT) {
  * @param {string} text
  * @returns {Array<{code, names, market, matchedTerm}>}
  */
-function detectStocks(text) {
-  if (!text) return [];
+function getAllStockMatches(text) {
   const matches = [];
 
   // 1. 搜尋中文名稱 / 綽號 (由長到短)
   const sortedNames = [...NAME_INDEX.keys()].sort((a, b) => b.length - a.length);
   for (const name of sortedNames) {
     if (name.length < 2) continue;
-    let pos = 0;
-    while ((pos = text.indexOf(name, pos)) !== -1) {
-      const end = pos + name.length;
-      matches.push({ start: pos, end, stock: NAME_INDEX.get(name), matchedTerm: name });
-      pos = end;
+    
+    // 若為純數字綽號，需有邊界避免誤判 (如 "50" 不應匹配 "500", "50點", "+50")
+    if (/^\d+$/.test(name)) {
+      const regex = new RegExp(`(?<!\\d|[-+])${name}(?!\\d|[點塊元張萬千百口%])`, 'g');
+      let match;
+      while ((match = regex.exec(text)) !== null) {
+        matches.push({ start: match.index, end: match.index + name.length, stock: NAME_INDEX.get(name), matchedText: name });
+      }
+    } else {
+      let pos = 0;
+      while ((pos = text.indexOf(name, pos)) !== -1) {
+        const end = pos + name.length;
+        
+        // 排除特定誤判詞，如 "海力士" 誤判為 "力士"
+        if (name === '力士' && pos >= 1 && text.substring(pos - 1, pos) === '海') {
+          pos = end;
+          continue;
+        }
+        
+        matches.push({ start: pos, end, stock: NAME_INDEX.get(name), matchedText: name });
+        pos = end;
+      }
     }
   }
 
@@ -17071,15 +17087,25 @@ function detectStocks(text) {
         start: match.index,
         end: match.index + rawCode.length,
         stock: CODE_INDEX.get(upperCode),
-        matchedTerm: rawCode,
+        matchedText: rawCode,
       });
     }
   }
 
-  if (matches.length === 0) return [];
-
   // 依起始位置排序；若位置相同，優先採用較長匹配
   matches.sort((a, b) => a.start - b.start || (b.end - b.start) - (a.end - a.start));
+  return matches;
+}
+
+/**
+ * 從文字中偵測所有提及的台股
+ * @param {string} text
+ * @returns {Array<{code, names, market, matchedTerm}>}
+ */
+function detectStocks(text) {
+  if (!text) return [];
+  const matches = getAllStockMatches(text);
+  if (matches.length === 0) return [];
 
   // 過濾重疊區間，避免子字串造成誤判
   const found = new Map();
@@ -17087,7 +17113,7 @@ function detectStocks(text) {
   for (const m of matches) {
     if (m.start >= lastEnd) {
       if (!found.has(m.stock.code)) {
-        found.set(m.stock.code, { ...m.stock, matchedTerm: m.matchedTerm });
+        found.set(m.stock.code, { ...m.stock, matchedTerm: m.matchedText });
       }
       lastEnd = m.end;
     }
@@ -17108,41 +17134,10 @@ function highlightStocksInText(text) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
-  const matches = [];
-
-  // 1. 搜尋中文名稱 / 綽號 (由長到短)
-  const sortedNames = [...NAME_INDEX.keys()].sort((a, b) => b.length - a.length);
-  for (const name of sortedNames) {
-    if (name.length < 2) continue;
-    let pos = 0;
-    while ((pos = text.indexOf(name, pos)) !== -1) {
-      const end = pos + name.length;
-      matches.push({ start: pos, end, stock: NAME_INDEX.get(name), matchedText: name });
-      pos = end;
-    }
-  }
-
-  // 2. 掃描數字與ETF代號 (4-6 位，可包含 L/R 等字母副標)
-  const codePattern = /(?<![A-Za-z0-9])(\d{4,6}[A-Za-z]?)(?![A-Za-z0-9])/gi;
-  let match;
-  while ((match = codePattern.exec(text)) !== null) {
-    const rawCode = match[1];
-    const upperCode = rawCode.toUpperCase();
-    if (CODE_INDEX.has(upperCode)) {
-      matches.push({
-        start: match.index,
-        end: match.index + rawCode.length,
-        stock: CODE_INDEX.get(upperCode),
-        matchedText: rawCode,
-      });
-    }
-  }
-
+  const matches = getAllStockMatches(text);
   if (matches.length === 0) {
     return esc(text);
   }
-
-  matches.sort((a, b) => a.start - b.start || (b.end - b.start) - (a.end - a.start));
 
   const filtered = [];
   let lastEnd = 0;

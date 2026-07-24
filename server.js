@@ -227,7 +227,7 @@ function getStockName(code) {
   return code;
 }
 
-// ── 輔助函式：Yahoo 股市台灣 (tw.stock.yahoo.com) 即時價位與漲跌 ────
+// ── 輔助函式：Yahoo 股市 JSON API 即時價位與漲跌 ────
 async function fetchStockFromYahoo(code) {
   const isOtcHint = code.startsWith('6') || code.startsWith('8') || code === '6547';
   const suffixes  = isOtcHint ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
@@ -235,60 +235,45 @@ async function fetchStockFromYahoo(code) {
   for (const suffix of suffixes) {
     try {
       const symbol = code + suffix;
-      const url    = `https://tw.stock.yahoo.com/quote/${encodeURIComponent(symbol)}`;
+      const url    = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1m&range=1d`;
       const resp   = await fetch(url, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         },
       });
 
       if (!resp.ok) continue;
 
-      const html = await resp.text();
-      const idx  = html.indexOf('Fz(32px)');
-      if (idx === -1) continue;
+      const data = await resp.json();
+      const result = data.chart?.result?.[0];
+      if (!result) continue;
 
-      const block = html.slice(idx - 50, idx + 450);
+      const meta = result.meta || {};
+      const price = meta.regularMarketPrice;
+      const prevClose = meta.chartPreviousClose || meta.previousClose || meta.regularMarketPreviousClose || price;
+      
+      if (!price || isNaN(price)) continue;
 
-      const priceMatch = block.match(/Fz\(32px\)[^>]*>([^<]+)</);
-      if (!priceMatch) continue;
+      let change = price - prevClose;
+      let changePct = prevClose > 0 ? (change / prevClose) * 100 : 0;
 
-      const price  = parseFloat(priceMatch[1].replace(/,/g, '').trim());
-      const isUp   = block.includes('C($c-trend-up)');
-      const isDown = block.includes('C($c-trend-down)');
-
-      const changeMatch = block.match(/Fz\(20px\)[^>]*>(?:<span[^>]*><\/span>)?\s*([0-9.,]+)</);
-      const pctMatch    = block.match(/\(([0-9.,]+)%\)/);
-
-      let change    = changeMatch ? parseFloat(changeMatch[1].replace(/,/g, '')) : 0;
-      let changePct = pctMatch ? parseFloat(pctMatch[1].replace(/,/g, '')) : 0;
-
-      if (isDown) {
-        change    = -change;
-        changePct = -changePct;
-      }
-
-      const prevClose = isUp ? +(price - Math.abs(change)).toFixed(2) : (isDown ? +(price + Math.abs(change)).toFixed(2) : price);
-      const stockName = getStockName(code);
-
-      if (!isNaN(price) && price > 0) {
-        return {
-          code,
-          name:        stockName,
-          price,
-          isLive:      true,
-          prevClose,
-          open:        price,
-          high:        price,
-          low:         price,
-          volume:      0,
-          change:      +change.toFixed(2),
-          changePct:   +changePct.toFixed(2),
-          tradeTime:   new Date().toLocaleTimeString('zh-TW', { hour12: false }),
-        };
-      }
-    } catch (e) {}
+      return {
+        code,
+        name:        getStockName(code),
+        price:       +price.toFixed(2),
+        isLive:      true,
+        prevClose:   +prevClose.toFixed(2),
+        open:        +(meta.regularMarketDayHigh || price).toFixed(2),
+        high:        +(meta.regularMarketDayHigh || price).toFixed(2),
+        low:         +(meta.regularMarketDayLow || price).toFixed(2),
+        volume:      meta.regularMarketVolume || 0,
+        change:      +change.toFixed(2),
+        changePct:   +changePct.toFixed(2),
+        tradeTime:   '',
+      };
+    } catch (err) {
+      continue;
+    }
   }
   return null;
 }
