@@ -433,6 +433,7 @@ function updateStockModalUI(entry) {
           <span class="push-tag ${tagClass}">${m.tag}</span>
           <span class="push-userid" style="min-width:70px">${escHtml(m.userid)}</span>
           <span style="flex:1;color:var(--text-primary)">${highlightStocksInText(m.content)}</span>
+          <span style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;margin-left:8px;">${escHtml(m.ipdatetime)}</span>
         </div>`;
     }).join('');
   }

@@ -481,54 +481,42 @@ app.get('/api/stock-chart', async (req, res) => {
 // ── 輔助函式：Yahoo 股市台灣大盤指數 ────────────────────
 async function fetchIndexFromYahoo(symbol, name) {
   try {
-    const url  = `https://tw.stock.yahoo.com/quote/${encodeURIComponent(symbol)}`;
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1m&range=1d`;
     const resp = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0',
       },
     });
 
     if (!resp.ok) return null;
 
-    const html = await resp.text();
-    const idx  = html.indexOf('Fz(32px)');
-    if (idx === -1) return null;
-
-    const block = html.slice(idx - 50, idx + 450);
-
-    const priceMatch = block.match(/Fz\(32px\)[^>]*>([^<]+)</);
-    if (!priceMatch) return null;
-
-    const price  = parseFloat(priceMatch[1].replace(/,/g, '').trim());
-    const isUp   = block.includes('C($c-trend-up)');
-    const isDown = block.includes('C($c-trend-down)');
-
-    const changeMatch = block.match(/Fz\(20px\)[^>]*>(?:<span[^>]*><\/span>)?\s*([0-9.,]+)</);
-    const pctMatch    = block.match(/\(([0-9.,]+)%\)/);
-
-    let change    = changeMatch ? parseFloat(changeMatch[1].replace(/,/g, '')) : 0;
-    let changePct = pctMatch ? parseFloat(pctMatch[1].replace(/,/g, '')) : 0;
-
-    if (isDown) {
-      change    = -change;
-      changePct = -changePct;
+    const data = await resp.json();
+    if (!data || !data.chart || !data.chart.result || data.chart.result.length === 0) {
+      return null;
     }
 
-    const prevClose = isUp ? +(price - Math.abs(change)).toFixed(2) : (isDown ? +(price + Math.abs(change)).toFixed(2) : price);
+    const result = data.chart.result[0];
+    const meta = result.meta;
+    if (!meta || !meta.regularMarketPrice) return null;
 
-    if (!isNaN(price) && price > 0) {
-      return {
-        key:       symbol === '^TWII' ? 't00' : 'o00',
-        name,
-        price,
-        prevClose,
-        change:    +change.toFixed(2),
-        changePct: +changePct.toFixed(2),
-        isLive:    true,
-        tradeTime: '',
-      };
-    }
-  } catch (e) {}
+    const price = meta.regularMarketPrice;
+    const prevClose = meta.chartPreviousClose || meta.previousClose;
+    const change = price - prevClose;
+    const changePct = prevClose > 0 ? (change / prevClose) * 100 : 0;
+
+    return {
+      key:       symbol === '^TWII' ? 't00' : 'o00',
+      name,
+      price,
+      prevClose,
+      change:    +change.toFixed(2),
+      changePct: +changePct.toFixed(2),
+      isLive:    true,
+      tradeTime: '',
+    };
+  } catch (err) {
+    console.error(`[fetchIndexFromYahoo] Error fetching ${symbol}:`, err.message);
+  }
   return null;
 }
 
