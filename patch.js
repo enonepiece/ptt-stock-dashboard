@@ -1,45 +1,84 @@
 const fs = require('fs');
 
-try {
-  let html = fs.readFileSync('index.html', 'utf8');
+let code = fs.readFileSync('server.js', 'utf8');
 
-  // 1. CSS for .index-price
-  html = html.replace(
-    '    .index-change.flat { color: var(--neutral); }',
-    '    .index-change.flat { color: var(--neutral); }\n    .index-price.up    { color: var(--up); }\n    .index-price.down  { color: var(--down); }\n    .index-price.flat  { color: var(--neutral); }'
-  );
+const regex = /\/\/ ── 路由：股票分時走勢圖數據 \(1分鐘實時與歷史走勢\) ───────[\s\S]*?\/\/ ── 輔助函式：Yahoo 股市台灣大盤指數 ────────────────────/;
 
-  // 2. Hide logo text on mobile instead of logo span
-  html = html.replace(
-    '      .logo span {\n        display: none; /* Hide \'台股看板\' text on mobile header to save space */\n      }',
-    '      .logo .logo-text {\n        display: none;\n      }'
-  );
+const replacement = `// ── 路由：股票分時走勢圖數據 (1分鐘實時與歷史走勢) ───────
+// GET /api/stock-chart?code=2330
+app.get('/api/stock-chart', async (req, res) => {
+  try {
+    const { code } = req.query;
+    if (!code) return res.status(400).json({ success: false, error: '未提供股票代號' });
 
-  // 3. Remove .market-index-bar hiding
-  html = html.replace(
-    '    @media (max-width: 860px) {\n      .mobile-nav-bar { order: 3 !important; }\n      .market-index-bar { display: none !important; }\n    }',
-    '    @media (max-width: 860px) {\n      .mobile-nav-bar { order: 3 !important; }\n    }'
-  );
-  
-  // Also try replacing with carriage returns if they exist
-  html = html.replace(
-    '    @media (max-width: 860px) {\r\n      .mobile-nav-bar { order: 3 !important; }\r\n      .market-index-bar { display: none !important; }\r\n    }',
-    '    @media (max-width: 860px) {\r\n      .mobile-nav-bar { order: 3 !important; }\r\n    }'
-  );
+    const fetchUrl = \`https://tw.stock.yahoo.com/quote/\${encodeURIComponent(code)}\`;
+    const resp = await fetch(fetchUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+    });
 
-  // 4. Update logo HTML
-  html = html.replace(
-    '  <div class="logo">\n    <div class="logo-icon">📡</div>\n    PTT 輿情 &times; <span>台股看板</span>\n  </div>',
-    '  <div class="logo">\n    <div class="logo-icon">📡</div>\n    <span class="logo-text">PTT 輿情 &times; <span>台股看板</span></span>\n  </div>'
-  );
+    if (!resp.ok) {
+      return res.status(404).json({ success: false, error: '查無資料' });
+    }
 
-  html = html.replace(
-    '  <div class="logo">\r\n    <div class="logo-icon">📡</div>\r\n    PTT 輿情 &times; <span>台股看板</span>\r\n  </div>',
-    '  <div class="logo">\r\n    <div class="logo-icon">📡</div>\r\n    <span class="logo-text">PTT 輿情 &times; <span>台股看板</span></span>\r\n  </div>'
-  );
+    const html = await resp.text();
+    const matchTime = html.match(/"timestamp":\\[([-\\d,]+)\\]/);
+    const matchClose = html.match(/"close":\\[([-\\d\\.,nullA-Za-z]+)\\]/);
+    const matchVolume = html.match(/"volume":\\[([-\\d\\.,nullA-Za-z]+)\\]/);
+    const matchPrevClose = html.match(/"previousClose":([-\\d\\.]+)/);
 
-  fs.writeFileSync('index.html', html, 'utf8');
-  console.log('index.html patched successfully.');
-} catch (e) {
-  console.error(e);
+    if (!matchTime || !matchClose) {
+      return res.status(404).json({ success: false, error: '無法解析圖表資料' });
+    }
+
+    const times = matchTime[1].split(',');
+    const closes = matchClose[1].split(',');
+    const volumes = matchVolume ? matchVolume[1].split(',') : [];
+    
+    const points = [];
+    let cumVolume = 0;
+    for (let i = 0; i < times.length; i++) {
+      const t = parseInt(times[i]);
+      const c = parseFloat(closes[i]);
+      const v = parseInt(volumes[i]) || 0;
+      if (!isNaN(t) && !isNaN(c)) {
+        cumVolume += v;
+        points.push({
+          ts: t,
+          price: c,
+          volume: v,
+          cumVolume: cumVolume
+        });
+      }
+    }
+
+    if (points.length === 0) {
+      return res.status(404).json({ success: false, error: '查無點位' });
+    }
+
+    const pricesArr = points.map(p => p.price);
+    res.json({
+      success: true,
+      code,
+      symbol: code,
+      prevClose: matchPrevClose ? parseFloat(matchPrevClose[1]) : points[0].price,
+      open: points[0].price,
+      high: Math.max(...pricesArr),
+      low: Math.min(...pricesArr),
+      currentPrice: points.at(-1).price,
+      points,
+    });
+  } catch (err) {
+    console.error('[Stock Chart API Error]', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ── 輔助函式：Yahoo 股市台灣大盤指數 ────────────────────`;
+
+if (regex.test(code)) {
+  code = code.replace(regex, replacement);
+  fs.writeFileSync('server.js', code);
+  console.log('Patch success!');
+} else {
+  console.log('Regex not found!');
 }

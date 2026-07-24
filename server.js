@@ -407,75 +407,67 @@ app.get('/api/stock-chart', async (req, res) => {
     const { code } = req.query;
     if (!code) return res.status(400).json({ success: false, error: '未提供股票代號' });
 
-    const isOtcHint = code.startsWith('6') || code.startsWith('8') || code === '6547';
-    const suffixes  = isOtcHint ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
+    const fetchUrl = `https://tw.stock.yahoo.com/quote/${encodeURIComponent(code)}`;
+    const resp = await fetch(fetchUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+    });
 
-    for (const suffix of suffixes) {
-      try {
-        const symbol = code.includes('.') ? code : `${code}${suffix}`;
-        const url    = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1m&range=1d`;
-        const resp   = await fetch(url, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          },
-        });
-
-        if (!resp.ok) continue;
-
-        const data   = await resp.json();
-        const result = data.chart?.result?.[0];
-        if (!result) continue;
-
-        const meta       = result.meta || {};
-        const prevClose  = meta.chartPreviousClose || meta.regularMarketPreviousClose || meta.previousClose || 0;
-        const timestamps = result.timestamp || [];
-        const quote      = result.indicators?.quote?.[0] || {};
-        const closes     = quote.close || [];
-        const volumes    = quote.volume || [];
-
-        const points = [];
-        let cumVolume = 0;
-        for (let i = 0; i < timestamps.length; i++) {
-          const price = closes[i];
-          const vol   = volumes[i] || 0;
-          if (price !== null && price !== undefined && !isNaN(price)) {
-            cumVolume += vol;
-            points.push({
-              ts: timestamps[i],
-              price: +price.toFixed(2),
-              volume: vol,
-              cumVolume,
-            });
-          }
-        }
-
-        if (points.length > 0) {
-          const pricesArr = points.map(p => p.price);
-          const highP = Math.max(...pricesArr);
-          const lowP  = Math.min(...pricesArr);
-
-          return res.json({
-            success: true,
-            code,
-            symbol,
-            prevClose: +prevClose.toFixed(2),
-            open: points[0].price,
-            high: +highP.toFixed(2),
-            low: +lowP.toFixed(2),
-            currentPrice: points.at(-1).price,
-            points,
-          });
-        }
-      } catch (e) {}
+    if (!resp.ok) {
+      return res.status(404).json({ success: false, error: '查無資料' });
     }
 
-    res.json({ success: false, error: '無法取得分時走勢圖資料' });
+    const html = await resp.text();
+    const matchTime = html.match(/"timestamp":\[([-\d,]+)\]/);
+    const matchClose = html.match(/"close":\[([-\d\.,nullA-Za-z]+)\]/);
+    const matchVolume = html.match(/"volume":\[([-\d\.,nullA-Za-z]+)\]/);
+    const matchPrevClose = html.match(/"previousClose":([-\d\.]+)/);
+
+    if (!matchTime || !matchClose) {
+      return res.status(404).json({ success: false, error: '無法解析圖表資料' });
+    }
+
+    const times = matchTime[1].split(',');
+    const closes = matchClose[1].split(',');
+    const volumes = matchVolume ? matchVolume[1].split(',') : [];
+    
+    const points = [];
+    let cumVolume = 0;
+    for (let i = 0; i < times.length; i++) {
+      const t = parseInt(times[i]);
+      const c = parseFloat(closes[i]);
+      const v = parseInt(volumes[i]) || 0;
+      if (!isNaN(t) && !isNaN(c)) {
+        cumVolume += v;
+        points.push({
+          ts: t,
+          price: c,
+          volume: v,
+          cumVolume: cumVolume
+        });
+      }
+    }
+
+    if (points.length === 0) {
+      return res.status(404).json({ success: false, error: '查無點位' });
+    }
+
+    const pricesArr = points.map(p => p.price);
+    res.json({
+      success: true,
+      code,
+      symbol: code,
+      prevClose: matchPrevClose ? parseFloat(matchPrevClose[1]) : points[0].price,
+      open: points[0].price,
+      high: Math.max(...pricesArr),
+      low: Math.min(...pricesArr),
+      currentPrice: points.at(-1).price,
+      points,
+    });
   } catch (err) {
     console.error('[Stock Chart API Error]', err.message);
     res.status(500).json({ success: false, error: err.message });
   }
 });
-
 
 // ── 輔助函式：Yahoo 股市台灣大盤指數 ────────────────────
 async function fetchIndexFromYahoo(symbol, name) {

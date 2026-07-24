@@ -299,66 +299,60 @@ async function handleStockChart(request) {
   const code = url.searchParams.get('code');
   if (!code) return jsonResponse({ success: false, error: '未提供股票代號' }, 400);
 
-  const isOtcHint = code.startsWith('6') || code.startsWith('8') || code === '6547';
-  const suffixes  = isOtcHint ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
+  try {
+    const fetchUrl = `https://tw.stock.yahoo.com/quote/${encodeURIComponent(code)}`;
+    const resp = await fetch(fetchUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
+    });
 
-  for (const suffix of suffixes) {
-    try {
-      const symbol = code.includes('.') ? code : `${code}${suffix}`;
-      const fetchUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1m&range=1d`;
-      const resp = await fetch(fetchUrl, {
-        headers: { 'User-Agent': 'Mozilla/5.0' }
-      });
-      if (!resp.ok) continue;
+    if (!resp.ok) return jsonResponse({ success: false, error: '查無資料' }, 404);
 
-      const data   = await resp.json();
-      const result = data.chart?.result?.[0];
-      if (!result) continue;
+    const html = await resp.text();
+    const matchTime = html.match(/"timestamp":\[([-\d,]+)\]/);
+    const matchClose = html.match(/"close":\[([-\d\.,nullA-Za-z]+)\]/);
+    const matchVolume = html.match(/"volume":\[([-\d\.,nullA-Za-z]+)\]/);
+    const matchPrevClose = html.match(/"previousClose":([-\d\.]+)/);
 
-      const meta       = result.meta || {};
-      const prevClose  = meta.chartPreviousClose || meta.regularMarketPreviousClose || meta.previousClose || 0;
-      const timestamps = result.timestamp || [];
-      const quote      = result.indicators?.quote?.[0] || {};
-      const closes     = quote.close || [];
-      const volumes    = quote.volume || [];
+    if (!matchTime || !matchClose) return jsonResponse({ success: false, error: '無法解析圖表資料' }, 404);
 
-      const points = [];
-      let cumVolume = 0;
-      for (let i = 0; i < timestamps.length; i++) {
-        const price = closes[i];
-        const vol   = volumes[i] || 0;
-        if (price !== null && price !== undefined && !isNaN(price)) {
-          cumVolume += vol;
-          points.push({
-            ts: timestamps[i],
-            price: +price.toFixed(2),
-            volume: vol,
-            cumVolume,
-          });
-        }
-      }
-
-      if (points.length > 0) {
-        const pricesArr = points.map(p => p.price);
-        const highP = Math.max(...pricesArr);
-        const lowP  = Math.min(...pricesArr);
-
-        return jsonResponse({
-          success: true,
-          code,
-          symbol,
-          prevClose: +prevClose.toFixed(2),
-          open: points[0].price,
-          high: +highP.toFixed(2),
-          low: +lowP.toFixed(2),
-          currentPrice: points.at(-1).price,
-          points,
+    const times = matchTime[1].split(',');
+    const closes = matchClose[1].split(',');
+    const volumes = matchVolume ? matchVolume[1].split(',') : [];
+    
+    const points = [];
+    let cumVolume = 0;
+    for (let i = 0; i < times.length; i++) {
+      const t = parseInt(times[i]);
+      const c = parseFloat(closes[i]);
+      const v = parseInt(volumes[i]) || 0;
+      if (!isNaN(t) && !isNaN(c)) {
+        cumVolume += v;
+        points.push({
+          ts: t,
+          price: c,
+          volume: v,
+          cumVolume: cumVolume
         });
       }
-    } catch (e) {}
-  }
+    }
 
-  return jsonResponse({ success: false, error: '無法取得分時走勢圖資料' });
+    if (points.length === 0) return jsonResponse({ success: false, error: '查無點位' }, 404);
+
+    const pricesArr = points.map(p => p.price);
+    return jsonResponse({
+      success: true,
+      code,
+      symbol: code,
+      prevClose: matchPrevClose ? parseFloat(matchPrevClose[1]) : points[0].price,
+      open: points[0].price,
+      high: Math.max(...pricesArr),
+      low: Math.min(...pricesArr),
+      currentPrice: points.at(-1).price,
+      points,
+    });
+  } catch (err) {
+    return jsonResponse({ success: false, error: err.message }, 500);
+  }
 }
 
 export default {
