@@ -295,25 +295,22 @@ function bindEvents() {
     if (!entry) return;
 
     const rect   = dom.modalChartCanvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
+    const scaleX = dom.modalChartCanvas.width / rect.width;
+    const mouseX = (e.clientX - rect.left) * scaleX;
 
     const pad      = { left: 10, right: 75 };
     const chartW   = dom.modalChartCanvas.width - pad.left - pad.right;
-    const totalPts = (entry.chartPoints && entry.chartPoints.length > 0) ? entry.chartPoints.length : 135;
-
     if (mouseX >= pad.left && mouseX <= pad.left + chartW) {
-      const ratio = (mouseX - pad.left) / chartW;
-      const idx   = Math.round(ratio * (totalPts - 1));
-      state.chartHoverIndex = Math.max(0, Math.min(totalPts - 1, idx));
+      state.chartHoverRatio = (mouseX - pad.left) / chartW;
     } else {
-      state.chartHoverIndex = null;
+      state.chartHoverRatio = null;
     }
 
     drawYahooStyleChart(dom.modalChartCanvas, entry);
   });
 
   dom.modalChartCanvas.addEventListener('mouseleave', () => {
-    state.chartHoverIndex = null;
+    state.chartHoverRatio = null;
     if (state.currentModalCode) {
       const entry = state.stocks.get(state.currentModalCode) || state.tempModalEntry;
       if (entry) drawYahooStyleChart(dom.modalChartCanvas, entry);
@@ -380,15 +377,8 @@ async function fetchStockChartData(code) {
       if (entry && state.currentModalCode === code) {
         entry.chartPoints = data.points;
         if (data.prevClose) entry.prevClose = data.prevClose;
-        if (data.high)      entry.high      = data.high;
-        if (data.low)       entry.low       = data.low;
-        if (data.open)      entry.open      = data.open;
-        if (data.currentPrice) entry.price  = data.currentPrice;
-
-        if (entry.prevClose && entry.price) {
-          entry.change    = +(entry.price - entry.prevClose).toFixed(2);
-          entry.changePct = +((entry.change / entry.prevClose) * 100).toFixed(2);
-        }
+        // 僅取用 Yahoo 的 1 分鐘歷史點位資料，不再用 Yahoo 的延遲報價覆蓋 TWSE 的即時報價
+        // 確保個股的即時股價、開高低與漲跌幅維持 100% 精準
 
         updateStockModalUI(entry);
         drawYahooStyleChart(dom.modalChartCanvas, entry);
@@ -443,7 +433,7 @@ function closeStockModal() {
   dom.stockModal.style.display = 'none';
   state.currentModalCode = null;
   state.tempModalEntry   = null;
-  state.chartHoverIndex  = null;
+  state.chartHoverRatio  = null;
 }
 
 /**
@@ -559,18 +549,57 @@ function drawYahooStyleChart(canvas, entry) {
     }
   }
 
-  // 3. 【核心優化】動態 Y 軸高度縮放（讓波幅呈現顯著且生動）
-  let maxDiff = 0;
-  for (const pt of activePoints) {
-    maxDiff = Math.max(maxDiff, Math.abs(pt.price - basePrice));
+  // 3. 【核心優化】Y 軸高度縮放（最高為漲停價，最低為跌停價，精確遵循台股升降單位）
+  let yMax, yMin, maxDev;
+  const isIndex = entry.code === 't00' || entry.code === 'o00' || entry.code === 'TWT00U';
+
+  if (isIndex) {
+    let maxDiff = 0;
+    for (const pt of activePoints) {
+      maxDiff = Math.max(maxDiff, Math.abs(pt.price - basePrice));
+    }
+    const minDev = Math.max(basePrice * 0.005, 0.3);
+    maxDev = Math.max(maxDiff * 1.15, minDev);
+    yMax = basePrice + maxDev;
+    yMin = basePrice - maxDev;
+  } else {
+    // 依據台股漲跌停計算規則
+    const isETF = entry.code ? entry.code.startsWith('00') : false;
+    const getTickSize = p => {
+      if (isETF) return p < 50 ? 0.01 : 0.05;
+      if (p < 10) return 0.01;
+      if (p < 50) return 0.05;
+      if (p < 100) return 0.1;
+      if (p < 500) return 0.5;
+      if (p < 1000) return 1;
+      return 5;
+    };
+    
+    const limitUpTarget = basePrice * 1.1;
+    const limitDownTarget = basePrice * 0.9;
+    
+    const upTick = getTickSize(limitUpTarget);
+    const downTick = getTickSize(limitDownTarget);
+    
+    // 漲停向下捨入至升降單位，跌停向上進位至升降單位
+    const exactLimitUp = Math.floor((limitUpTarget + 0.000001) / upTick) * upTick;
+    const exactLimitDown = Math.ceil((limitDownTarget - 0.000001) / downTick) * downTick;
+    
+    // 計算上下最大差距以維持 Y 軸對稱
+    const upDiff = exactLimitUp - basePrice;
+    const downDiff = basePrice - exactLimitDown;
+    maxDev = Math.max(upDiff, downDiff);
+    
+    // 檢查是否有異常極端波動 (無漲跌幅限制等)
+    let maxDiff = 0;
+    for (const pt of activePoints) {
+      maxDiff = Math.max(maxDiff, Math.abs(pt.price - basePrice));
+    }
+    maxDev = Math.max(maxDiff > maxDev ? maxDiff * 1.05 : 0, maxDev);
+    
+    yMax = basePrice + maxDev;
+    yMin = basePrice - maxDev;
   }
-
-  // 保留適當邊界 margin（讓真實波動填滿圖表高度，平盤或微幅波動亦可清晰辨識）
-  const minDev = Math.max(basePrice * 0.005, 0.3);
-  const maxDev = Math.max(maxDiff * 1.25, minDev);
-
-  const yMax = basePrice + maxDev;
-  const yMin = basePrice - maxDev;
 
   const toX = xRatio => pad.left + xRatio * chartW;
   const toY = v => pad.top + ((yMax - Math.min(yMax, Math.max(yMin, v))) / (2 * maxDev)) * chartH;
@@ -734,8 +763,17 @@ function drawYahooStyleChart(canvas, entry) {
   ctx.stroke();
 
   // 10. 十字軸 (Crosshair) 與 Hover 動態數據 Tooltip
-  if (state.chartHoverIndex !== null && state.chartHoverIndex >= 0 && state.chartHoverIndex < activePoints.length) {
-    const pt    = activePoints[state.chartHoverIndex];
+  if (state.chartHoverRatio !== null && activePoints.length > 0) {
+    let pt = activePoints[0];
+    let minDiff = Infinity;
+    for (const p of activePoints) {
+      const diff = Math.abs(p.xRatio - state.chartHoverRatio);
+      if (diff < minDiff) {
+        minDiff = diff;
+        pt = p;
+      }
+    }
+
     const hPx   = toX(pt.xRatio);
     const hPy   = toY(pt.price);
     const hVal  = pt.price;
@@ -1039,7 +1077,7 @@ function renderPushes(pushes, newCount) {
     const isNew    = newCount > 0 && i < newCount;
     const tagClass = p.tag === '推' ? 'up' : p.tag === '噓' ? 'down' : 'neutral';
     const tagChar  = p.tag === '推' ? '▲' : p.tag === '噓' ? '▽' : '─';
-    const content  = highlightStocksInText(p.content);
+    const content  = getCachedPushProcess(p.content).highlighted;
 
     return `
       <div class="push-item ${isNew ? 'new' : ''}" role="listitem">
@@ -1060,7 +1098,7 @@ function renderTopMentionedChips(pushes) {
   const counts = new Map();
 
   for (const push of pushes) {
-    const detected = detectStocks(push.content);
+    const detected = getCachedPushProcess(push.content).detected;
     for (const stockInfo of detected) {
       if (!counts.has(stockInfo.code)) {
         counts.set(stockInfo.code, {
@@ -1094,6 +1132,19 @@ function renderTopMentionedChips(pushes) {
 /* ════════════════════════════════════════════════════════
    STOCK DETECTION
 ════════════════════════════════════════════════════════ */
+const pushTextCache = new Map();
+
+function getCachedPushProcess(content) {
+  if (pushTextCache.has(content)) return pushTextCache.get(content);
+  
+  const detected = detectStocks(content);
+  const highlighted = highlightStocksInText(content);
+  const res = { detected, highlighted };
+  
+  pushTextCache.set(content, res);
+  return res;
+}
+
 function processStocksFromPushes(pushes) {
   for (const entry of state.stocks.values()) {
     entry.mentionCount = 0;
@@ -1101,7 +1152,7 @@ function processStocksFromPushes(pushes) {
   }
 
   for (const push of pushes) {
-    const detected = detectStocks(push.content);
+    const detected = getCachedPushProcess(push.content).detected;
     for (const stockInfo of detected) {
       if (!state.stocks.has(stockInfo.code)) {
         state.stocks.set(stockInfo.code, {

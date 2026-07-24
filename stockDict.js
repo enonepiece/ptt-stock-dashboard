@@ -6006,7 +6006,13 @@ const STOCK_DICT = [
     "market": "tse",
     "names": [
       "台表科",
-      "台表哥",
+      "台表哥"
+    ]
+  },
+  {
+    "code": "8039",
+    "market": "tse",
+    "names": [
       "台虹"
     ]
   },

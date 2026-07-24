@@ -229,8 +229,9 @@ function getStockName(code) {
 
 // ── 輔助函式：Yahoo 股市 JSON API 即時價位與漲跌 ────
 async function fetchStockFromYahoo(code) {
-  const isOtcHint = code.startsWith('6') || code.startsWith('8') || code === '6547';
-  const suffixes  = isOtcHint ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
+  const stockInfo = CODE_INDEX.get(code);
+  const isOtc = stockInfo ? stockInfo.market === 'otc' : (code.startsWith('6') || code.startsWith('8') || code === '6547');
+  const suffixes = isOtc ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
 
   for (const suffix of suffixes) {
     try {
@@ -252,6 +253,11 @@ async function fetchStockFromYahoo(code) {
       const price = meta.regularMarketPrice;
       const prevClose = meta.chartPreviousClose || meta.previousClose || meta.regularMarketPreviousClose || price;
       
+      const quote = result.indicators?.quote?.[0] || {};
+      const closes = quote.close || [];
+      const firstValidClose = closes.find(c => c !== null && c !== undefined && !isNaN(c));
+      const openPrice = firstValidClose || price;
+
       if (!price || isNaN(price)) continue;
 
       let change = price - prevClose;
@@ -263,7 +269,7 @@ async function fetchStockFromYahoo(code) {
         price:       +price.toFixed(2),
         isLive:      true,
         prevClose:   +prevClose.toFixed(2),
-        open:        +(meta.regularMarketDayHigh || price).toFixed(2),
+        open:        +(openPrice).toFixed(2),
         high:        +(meta.regularMarketDayHigh || price).toFixed(2),
         low:         +(meta.regularMarketDayLow || price).toFixed(2),
         volume:      meta.regularMarketVolume || 0,
@@ -330,17 +336,10 @@ app.get('/api/stock', async (req, res) => {
     const codes = [...new Set(rawCodes.split(',').map(c => c.trim()).filter(Boolean))];
     if (codes.length === 0) return res.json({ success: true, stocks: [] });
 
-    // 1. 優先使用 Yahoo 股市台灣網頁 實時報價 (100% 與 Yahoo 股市網頁一致)
-    const yahooStocks = await Promise.all(codes.map(c => fetchStockFromYahoo(c)));
     const stocksMap   = new Map();
+    const missingCodes = codes;
 
-    yahooStocks.forEach(s => {
-      if (s) stocksMap.set(s.code, s);
-    });
-
-    const missingCodes = codes.filter(c => !stocksMap.has(c));
-
-    // 2. 對於備援個股，由 TWSE MIS API 提供
+    // 1. 全部改由 100% 即時的 TWSE MIS API 提供，避免 Yahoo Finance 的 20 分鐘延遲
     if (missingCodes.length > 0) {
       const cookie = await ensureTWSESession();
       const BATCH  = 10;
@@ -524,19 +523,6 @@ async function fetchIndexFromYahoo(symbol, name) {
 // GET /api/market-index
 app.get('/api/market-index', async (req, res) => {
   try {
-    // 優先查詢 Yahoo 股市台灣網頁 ^TWII (加權) 與 ^TWOII (櫃買)
-    const [twii, twoii] = await Promise.all([
-      fetchIndexFromYahoo('^TWII', '發行量加權股價指數'),
-      fetchIndexFromYahoo('^TWOII', '櫃買指數'),
-    ]);
-
-    const indices = [twii, twoii].filter(Boolean);
-
-    if (indices.length > 0) {
-      return res.json({ success: true, indices, timestamp: Date.now() });
-    }
-
-    // TWSE 備援
     const cookie = await ensureTWSESession();
     const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=tse_t00.tw|otc_o00.tw&_=${Date.now()}`;
 
