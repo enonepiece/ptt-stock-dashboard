@@ -4175,11 +4175,7 @@ const STOCK_DICT = [
     "code": "3130",
     "market": "tse",
     "names": [
-      "一零四",
-      "穩懋",
-      "穩懋半導體",
-      "穩套",
-      "WIN Semi"
+      "一零四"
     ]
   },
   {
@@ -11326,7 +11322,10 @@ const STOCK_DICT = [
     "code": "3105",
     "market": "otc",
     "names": [
-      "穩懋"
+      "穩懋",
+      "穩懋半導體",
+      "穩套",
+      "WIN Semi"
     ]
   },
   {
