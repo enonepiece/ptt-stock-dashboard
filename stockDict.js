@@ -3971,7 +3971,10 @@ const STOCK_DICT = [
     "code": "3035",
     "market": "tse",
     "names": [
-      "智原"
+      "智原",
+      "智原科技",
+      "邰哥",
+      "Faraday"
     ]
   },
   {
@@ -4739,7 +4742,9 @@ const STOCK_DICT = [
     "code": "3715",
     "market": "tse",
     "names": [
-      "定穎投控"
+      "定穎投控",
+      "定穎",
+      "定穎頭痛"
     ]
   },
   {
@@ -5823,7 +5828,9 @@ const STOCK_DICT = [
     "code": "6191",
     "market": "tse",
     "names": [
-      "精成科"
+      "精成科",
+      "精成科技",
+      "精神科"
     ]
   },
   {
@@ -7126,9 +7133,7 @@ const STOCK_DICT = [
     "code": "8103",
     "market": "tse",
     "names": [
-      "瀚荃",
-      "波若威",
-      "波波"
+      "瀚荃"
     ]
   },
   {
@@ -11409,7 +11414,8 @@ const STOCK_DICT = [
     "code": "3163",
     "market": "otc",
     "names": [
-      "波若威"
+      "波若威",
+      "波波"
     ]
   },
   {
@@ -12378,11 +12384,7 @@ const STOCK_DICT = [
     "code": "3691",
     "market": "otc",
     "names": [
-      "碩禾",
-      "智原",
-      "智原科技",
-      "邰哥",
-      "Faraday"
+      "碩禾"
     ]
   },
   {
@@ -14715,10 +14717,7 @@ const STOCK_DICT = [
     "code": "6259",
     "market": "otc",
     "names": [
-      "百徽",
-      "精成科",
-      "精成科技",
-      "精神科"
+      "百徽"
     ]
   },
   {
@@ -15001,10 +15000,7 @@ const STOCK_DICT = [
     "code": "6508",
     "market": "otc",
     "names": [
-      "惠光",
-      "定穎投控",
-      "定穎",
-      "定穎頭痛"
+      "惠光"
     ]
   },
   {
