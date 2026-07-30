@@ -366,7 +366,7 @@ app.get('/api/stock', async (req, res) => {
       for (const s of allStocks) {
         if (!s.c || stocksMap.has(s.c)) continue;
         const parsed = extractStockPrice(s);
-        stocksMap.set(s.c, {
+        let stockItem = {
           code:        s.c,
           name:        getStockName(s.c),
           price:       parsed.price,
@@ -379,7 +379,31 @@ app.get('/api/stock', async (req, res) => {
           change:      parsed.change,
           changePct:   parsed.changePct,
           tradeTime:   s.t || '',
-        });
+        };
+
+        // 🌟【價位落差完全根治】：若 TWSE MIS API 回傳 z: '-' (無盤中成交價)，自動由 Yahoo Finance API 提供精準成交現價
+        if (!parsed.isLive) {
+          try {
+            const yahooData = await fetchStockFromYahoo(s.c);
+            if (yahooData && yahooData.price > 0) {
+              stockItem = yahooData;
+            }
+          } catch (e) {}
+        }
+        stocksMap.set(s.c, stockItem);
+      }
+
+      // 對於 TWSE 沒回傳或無即時報價的股票代號，補執行 Yahoo Finance 查詢
+      for (const c of missingCodes) {
+        const item = stocksMap.get(c);
+        if (!item || !item.isLive || item.price === null || item.price === item.prevClose) {
+          try {
+            const yahooData = await fetchStockFromYahoo(c);
+            if (yahooData && yahooData.price > 0) {
+              stocksMap.set(c, yahooData);
+            }
+          } catch (e) {}
+        }
       }
     }
 

@@ -297,7 +297,7 @@ async function handleStock(request) {
       for (const s of msgArray) {
         if (!s.c || stocksMap.has(s.c)) continue;
         const parsed = extractStockPrice(s);
-        stocksMap.set(s.c, {
+        let stockItem = {
           code:        s.c,
           name:        s.n,
           price:       parsed.price,
@@ -311,7 +311,17 @@ async function handleStock(request) {
           changePct:   parsed.changePct,
           tradeTime:   s.t || '',
           hasLiveData: parsed.isLive,
-        });
+        };
+
+        if (!parsed.isLive) {
+          try {
+            const yahooData = await fetchStockFromYahoo(s.c);
+            if (yahooData && yahooData.price > 0) {
+              stockItem = { ...yahooData, name: s.n || yahooData.name };
+            }
+          } catch (e) {}
+        }
+        stocksMap.set(s.c, stockItem);
       }
     } catch (e) {}
   }

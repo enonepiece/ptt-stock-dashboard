@@ -202,6 +202,55 @@ function extractStockPrice(s) {
   };
 }
 
+async function fetchStockFromYahoo(code) {
+  try {
+    const isOtc = code.startsWith('6') || code.startsWith('8') || code === '6547';
+    const suffixes = isOtc ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
+
+    for (const suffix of suffixes) {
+      const symbol = code + suffix;
+      const url    = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1m&range=1d`;
+      const resp   = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        },
+      });
+
+      if (!resp.ok) continue;
+
+      const data = await resp.json();
+      const result = data.chart?.result?.[0];
+      if (!result) continue;
+
+      const meta = result.meta || {};
+      const price = meta.regularMarketPrice;
+      const prevClose = meta.chartPreviousClose || meta.previousClose || meta.regularMarketPreviousClose || price;
+
+      if (!price || isNaN(price)) continue;
+
+      const change = price - prevClose;
+      const changePct = prevClose > 0 ? (change / prevClose) * 100 : 0;
+
+      return {
+        code,
+        name:        code,
+        price:       +price.toFixed(2),
+        isLive:      true,
+        prevClose:   +prevClose.toFixed(2),
+        open:        +(meta.regularMarketDayHigh || price).toFixed(2),
+        high:        +(meta.regularMarketDayHigh || price).toFixed(2),
+        low:         +(meta.regularMarketDayLow || price).toFixed(2),
+        volume:      meta.regularMarketVolume || 0,
+        change:      +change.toFixed(2),
+        changePct:   +changePct.toFixed(2),
+        tradeTime:   '',
+        hasLiveData: true,
+      };
+    }
+  } catch (err) {}
+  return null;
+}
+
 async function handleStock(request) {
   const url   = new URL(request.url);
   const codes = (url.searchParams.get('codes') || '').split(',').filter(Boolean);
@@ -231,7 +280,7 @@ async function handleStock(request) {
       for (const s of msgArray) {
         if (!s.c || stocksMap.has(s.c)) continue;
         const parsed = extractStockPrice(s);
-        stocksMap.set(s.c, {
+        let stockItem = {
           code:        s.c,
           name:        s.n,
           price:       parsed.price,
@@ -245,7 +294,31 @@ async function handleStock(request) {
           changePct:   parsed.changePct,
           tradeTime:   s.t || '',
           hasLiveData: parsed.isLive,
-        });
+        };
+
+        // 🌟 若 TWSE MIS API 無成交價 (z: '-'), 由 Yahoo Finance API 補全正確現價
+        if (!parsed.isLive) {
+          try {
+            const yahooData = await fetchStockFromYahoo(s.c);
+            if (yahooData && yahooData.price > 0) {
+              stockItem = { ...yahooData, name: s.n || yahooData.name };
+            }
+          } catch (e) {}
+        }
+
+        stocksMap.set(s.c, stockItem);
+      }
+
+      for (const c of missingCodes) {
+        const item = stocksMap.get(c);
+        if (!item || !item.isLive || item.price === null || item.price === item.prevClose) {
+          try {
+            const yahooData = await fetchStockFromYahoo(c);
+            if (yahooData && yahooData.price > 0) {
+              stocksMap.set(c, yahooData);
+            }
+          } catch (e) {}
+        }
       }
     } catch (e) {}
   }
