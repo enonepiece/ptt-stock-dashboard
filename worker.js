@@ -232,8 +232,6 @@ async function fetchStockFromYahoo(code) {
 function extractStockPrice(s) {
   const z         = parseFloat(s.z);
   const pz        = parseFloat(s.pz);
-  const topAsk    = parseFloat((s.a || '').split('_')[0]);
-  const topBid    = parseFloat((s.b || '').split('_')[0]);
   const open      = parseFloat(s.o);
   const prevClose = parseFloat(s.y) || 0;
 
@@ -245,12 +243,6 @@ function extractStockPrice(s) {
     isLive = true;
   } else if (!isNaN(pz) && pz > 0) {
     price  = pz;
-    isLive = true;
-  } else if (!isNaN(topAsk) && topAsk > 0) {
-    price  = topAsk;
-    isLive = true;
-  } else if (!isNaN(topBid) && topBid > 0) {
-    price  = topBid;
     isLive = true;
   } else if (!isNaN(open) && open > 0) {
     price  = open;

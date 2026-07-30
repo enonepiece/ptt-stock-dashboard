@@ -352,6 +352,11 @@ function openStockModal(code) {
   state.currentModalCode = code;
   state.chartHoverIndex  = null;
 
+  // 標記線圖加載狀態
+  if (!entry.chartPoints || entry.chartPoints.length === 0) {
+    entry.isLoadingChart = true;
+  }
+
   // 若股價資料尚未載入，維護即時價位查詢
   if (entry.price === null) {
     fetchStockPrices([code]);
@@ -369,22 +374,51 @@ function openStockModal(code) {
 }
 
 async function fetchStockChartData(code) {
+  const entry = state.stocks.get(code) || state.tempModalEntry;
   try {
     const res  = await fetch(`${API_BASE}/api/stock-chart?code=${encodeURIComponent(code)}`);
     const data = await res.json();
+
+    if (entry) entry.isLoadingChart = false;
+
     if (data.success && data.points && data.points.length > 0) {
-      const entry = state.stocks.get(code) || state.tempModalEntry;
       if (entry && state.currentModalCode === code) {
         entry.chartPoints = data.points;
-        if (data.prevClose) entry.prevClose = data.prevClose;
-        // 僅取用 Yahoo 的 1 分鐘歷史點位資料，不再用 Yahoo 的延遲報價覆蓋 TWSE 的即時報價
-        // 確保個股的即時股價、開高低與漲跌幅維持 100% 精準
+        if (data.prevClose && data.prevClose > 0) entry.prevClose = data.prevClose;
+
+        // 🌟【價位誤差完全修復】：用走勢圖最後一個實時成交點位 (lastPt) 與 Meta 數據修正即時股價、高低與漲跌幅！
+        // 確保股票卡片、Modal 頂部價位與走勢圖點位 100% 絕對完全一致！
+        const lastPt = data.points[data.points.length - 1];
+        if (lastPt && lastPt.price && lastPt.price > 0) {
+          entry.price = +lastPt.price.toFixed(2);
+          if (entry.prevClose > 0) {
+            entry.change    = +(entry.price - entry.prevClose).toFixed(2);
+            entry.changePct = +((entry.change / entry.prevClose) * 100).toFixed(2);
+          }
+        }
+
+        // 計算最新最高低價與總成交量
+        let pHigh = entry.high || entry.price;
+        let pLow  = entry.low  || entry.price;
+        for (const pt of data.points) {
+          if (pt.price > pHigh) pHigh = pt.price;
+          if (pt.price < pLow && pt.price > 0) pLow = pt.price;
+        }
+        entry.high = +pHigh.toFixed(2);
+        entry.low  = +pLow.toFixed(2);
+        if (lastPt && lastPt.cumVolume) entry.volume = lastPt.cumVolume;
 
         updateStockModalUI(entry);
+        renderStockCards(); // 同步更新左側卡片
+        drawYahooStyleChart(dom.modalChartCanvas, entry);
+      }
+    } else {
+      if (entry && state.currentModalCode === code) {
         drawYahooStyleChart(dom.modalChartCanvas, entry);
       }
     }
   } catch (err) {
+    if (entry) entry.isLoadingChart = false;
     console.warn('[fetchStockChartData Error]', err);
   }
 }
@@ -458,9 +492,10 @@ function drawYahooStyleChart(canvas, entry) {
   const lowP      = entry.low   || Math.min(basePrice, openP, currPrice);
 
   let activePoints = [];
+  const hasRealPoints = entry.chartPoints && entry.chartPoints.length > 0;
 
   // 1. 判斷是否有 Yahoo 實時 1 分鐘走勢點位數據
-  if (entry.chartPoints && entry.chartPoints.length > 0) {
+  if (hasRealPoints) {
     for (const pt of entry.chartPoints) {
       const d = new Date(pt.ts * 1000);
       const twTimeStr = d.toLocaleString('en-US', { timeZone: 'Asia/Taipei' });
@@ -478,8 +513,8 @@ function drawYahooStyleChart(canvas, entry) {
         timeStr: `${hh}:${mm}`,
       });
     }
-  } else {
-    // 2. 若無 API 歷史點位，根據目前盤中時間與高低價，模擬具備自然波動的擬真曲線
+  } else if (!entry.isLoadingChart) {
+    // 2. 只有在圖表非加載狀態，且確定無實體歷史點位時，才作擬真點位展示
     const TOTAL_PTS = 135;
     let activePts   = TOTAL_PTS;
 
@@ -698,7 +733,16 @@ function drawYahooStyleChart(canvas, entry) {
   ctx.stroke();
 
   // 9. 繪製分時折線與漸層區域
-  if (activePoints.length === 0) return;
+  if (activePoints.length === 0) {
+    if (entry.isLoadingChart) {
+      ctx.fillStyle    = 'rgba(255, 255, 255, 0.7)';
+      ctx.font         = '13px Inter, sans-serif';
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('📈 即時分時走勢載入中...', pad.left + chartW / 2, pad.top + chartH / 2);
+    }
+    return;
+  }
 
   const latestPrice = activePoints[activePoints.length - 1].price;
   const isUp        = latestPrice >= basePrice;
