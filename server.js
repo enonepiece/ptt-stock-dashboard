@@ -227,61 +227,60 @@ function getStockName(code) {
   return code;
 }
 
-// ── 輔助函式：Yahoo 股市 JSON API 即時價位與漲跌 ────
+// ── 輔助函式：Yahoo 股市網頁官方即時價位與漲跌 (對齊 Yahoo 股市官網) ────
 async function fetchStockFromYahoo(code) {
-  const stockInfo = CODE_INDEX.get(code);
-  const isOtc = stockInfo ? stockInfo.market === 'otc' : (code.startsWith('6') || code.startsWith('8') || code === '6547');
-  const suffixes = isOtc ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
+  try {
+    const url  = `https://tw.stock.yahoo.com/quote/${encodeURIComponent(code)}`;
+    const resp = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      },
+    });
 
-  for (const suffix of suffixes) {
-    try {
-      const symbol = code + suffix;
-      const url    = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1m&range=1d`;
-      const resp   = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        },
-      });
+    if (!resp.ok) return null;
 
-      if (!resp.ok) continue;
+    const html = await resp.text();
 
-      const data = await resp.json();
-      const result = data.chart?.result?.[0];
-      if (!result) continue;
+    // 解析 Yahoo 股市網頁大字現價 (如 2230, 493.5)
+    const fzMatch   = html.match(/Fz\(32px\)[^>]*>([0-9\.,]+)</);
+    const regMatch  = html.match(/"regularMarketPrice":([0-9\.]+)/);
+    const prevMatch = html.match(/"previousClose":([0-9\.]+)/);
+    const highMatch = html.match(/"regularMarketDayHigh":([0-9\.]+)/) || html.match(/"dayHigh":([0-9\.]+)/);
+    const lowMatch  = html.match(/"regularMarketDayLow":([0-9\.]+)/) || html.match(/"dayLow":([0-9\.]+)/);
+    const volMatch  = html.match(/"regularMarketVolume":([0-9\.]+)/) || html.match(/"dayVolume":([0-9\.]+)/);
 
-      const meta = result.meta || {};
-      const price = meta.regularMarketPrice;
-      const prevClose = meta.chartPreviousClose || meta.previousClose || meta.regularMarketPreviousClose || price;
-      
-      const quote = result.indicators?.quote?.[0] || {};
-      const closes = quote.close || [];
-      const firstValidClose = closes.find(c => c !== null && c !== undefined && !isNaN(c));
-      const openPrice = firstValidClose || price;
+    const priceText = fzMatch ? fzMatch[1].replace(/,/g, '') : (regMatch ? regMatch[1] : null);
+    if (!priceText) return null;
 
-      if (!price || isNaN(price)) continue;
+    const price     = parseFloat(priceText);
+    const prevClose = prevMatch ? parseFloat(prevMatch[1]) : price;
+    if (isNaN(price) || price <= 0) return null;
 
-      let change = price - prevClose;
-      let changePct = prevClose > 0 ? (change / prevClose) * 100 : 0;
+    const change    = +(price - prevClose).toFixed(2);
+    const changePct = prevClose > 0 ? +((change / prevClose) * 100).toFixed(2) : 0;
+    const high      = highMatch ? parseFloat(highMatch[1]) : Math.max(price, prevClose);
+    const low       = lowMatch ? parseFloat(lowMatch[1]) : Math.min(price, prevClose);
+    const volume    = volMatch ? parseInt(volMatch[1]) : 0;
 
-      return {
-        code,
-        name:        getStockName(code),
-        price:       +price.toFixed(2),
-        isLive:      true,
-        prevClose:   +prevClose.toFixed(2),
-        open:        +(openPrice).toFixed(2),
-        high:        +(meta.regularMarketDayHigh || price).toFixed(2),
-        low:         +(meta.regularMarketDayLow || price).toFixed(2),
-        volume:      meta.regularMarketVolume || 0,
-        change:      +change.toFixed(2),
-        changePct:   +changePct.toFixed(2),
-        tradeTime:   '',
-      };
-    } catch (err) {
-      continue;
-    }
+    return {
+      code,
+      name:        getStockName(code),
+      price:       +price.toFixed(2),
+      isLive:      true,
+      prevClose:   +prevClose.toFixed(2),
+      open:        price,
+      high:        +high.toFixed(2),
+      low:         +low.toFixed(2),
+      volume:      volume,
+      change:      change,
+      changePct:   changePct,
+      tradeTime:   '',
+    };
+  } catch (err) {
+    console.warn(`[Yahoo Web Scrape Error] ${code}:`, err.message);
+    return null;
   }
-  return null;
 }
 
 // ── 輔助函式：解析 TWSE 股票價格與漲跌 (當 Yahoo 查無資料時備援) ─
@@ -318,7 +317,7 @@ function extractStockPrice(s) {
   };
 }
 
-// ── 路由：TWSE 即時股價 ────────────────────────────────────
+// ── 路由：TWSE & Yahoo 即時股價 ────────────────────────────
 // GET /api/stock?codes=2330,2317,0050
 app.get('/api/stock', async (req, res) => {
   try {
@@ -328,10 +327,18 @@ app.get('/api/stock', async (req, res) => {
     const codes = [...new Set(rawCodes.split(',').map(c => c.trim()).filter(Boolean))];
     if (codes.length === 0) return res.json({ success: true, stocks: [] });
 
-    const stocksMap   = new Map();
-    const missingCodes = codes;
+    const stocksMap = new Map();
 
-    // 1. 全部改由 100% 即時的 TWSE MIS API 提供，避免 Yahoo Finance 的 20 分鐘延遲
+    // 🌟【全面對齊 Yahoo 股市官網】：優先併行爬取 Yahoo 股市即時網頁資料
+    const yahooResults = await Promise.all(codes.map(c => fetchStockFromYahoo(c)));
+    yahooResults.forEach(item => {
+      if (item && item.price > 0) {
+        stocksMap.set(item.code, item);
+      }
+    });
+
+    const missingCodes = codes.filter(c => !stocksMap.has(c));
+
     if (missingCodes.length > 0) {
       const cookie = await ensureTWSESession();
       const BATCH  = 10;
@@ -366,7 +373,7 @@ app.get('/api/stock', async (req, res) => {
       for (const s of allStocks) {
         if (!s.c || stocksMap.has(s.c)) continue;
         const parsed = extractStockPrice(s);
-        let stockItem = {
+        stocksMap.set(s.c, {
           code:        s.c,
           name:        getStockName(s.c),
           price:       parsed.price,
@@ -379,31 +386,7 @@ app.get('/api/stock', async (req, res) => {
           change:      parsed.change,
           changePct:   parsed.changePct,
           tradeTime:   s.t || '',
-        };
-
-        // 🌟【價位落差完全根治】：若 TWSE MIS API 回傳 z: '-' (無盤中成交價)，自動由 Yahoo Finance API 提供精準成交現價
-        if (!parsed.isLive) {
-          try {
-            const yahooData = await fetchStockFromYahoo(s.c);
-            if (yahooData && yahooData.price > 0) {
-              stockItem = yahooData;
-            }
-          } catch (e) {}
-        }
-        stocksMap.set(s.c, stockItem);
-      }
-
-      // 對於 TWSE 沒回傳或無即時報價的股票代號，補執行 Yahoo Finance 查詢
-      for (const c of missingCodes) {
-        const item = stocksMap.get(c);
-        if (!item || !item.isLive || item.price === null || item.price === item.prevClose) {
-          try {
-            const yahooData = await fetchStockFromYahoo(c);
-            if (yahooData && yahooData.price > 0) {
-              stocksMap.set(c, yahooData);
-            }
-          } catch (e) {}
-        }
+        });
       }
     }
 

@@ -187,46 +187,57 @@ async function ensureTWSECookie() {
 }
 
 async function fetchStockFromYahoo(code) {
-  const isOtcHint = code.startsWith('6') || code.startsWith('8') || code === '6547';
-  const suffixes  = isOtcHint ? ['.TWO', '.TW'] : ['.TW', '.TWO'];
+  try {
+    const url  = `https://tw.stock.yahoo.com/quote/${encodeURIComponent(code)}`;
+    const resp = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      },
+    });
 
-  for (const suffix of suffixes) {
-    try {
-      const url  = `https://query1.finance.yahoo.com/v8/finance/chart/${code}${suffix}?interval=1m&range=1d&includePrePost=true&_=${Date.now()}`;
-      const resp = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' } });
-      const data = await resp.json();
-      if (data.chart && data.chart.result && data.chart.result[0]) {
-        const result    = data.chart.result[0];
-        const meta      = result.meta;
-        const quotes    = result.indicators?.quote?.[0];
-        const closes    = quotes?.close ? quotes.close.filter(c => c !== null) : [];
+    if (!resp.ok) return null;
 
-        const price     = closes.length > 0 ? +(closes[closes.length - 1]).toFixed(2) : meta.regularMarketPrice;
-        const prevClose = meta.previousClose || meta.chartPreviousClose;
+    const html = await resp.text();
 
-        if (price && prevClose) {
-          const change    = +(price - prevClose).toFixed(2);
-          const changePct = +((change / prevClose) * 100).toFixed(2);
-          return {
-            code,
-            name:        code,
-            price,
-            isLive:      true,
-            prevClose,
-            open:        meta.regularMarketOpen || meta.chartPreviousClose || price,
-            high:        meta.regularMarketDayHigh || price,
-            low:         meta.regularMarketDayLow || price,
-            volume:      meta.regularMarketVolume || 0,
-            change,
-            changePct,
-            tradeTime:   new Date((meta.regularMarketTime || Date.now() / 1000) * 1000).toLocaleTimeString('zh-TW', { hour12: false }),
-            hasLiveData: true,
-          };
-        }
-      }
-    } catch (e) {}
+    const fzMatch   = html.match(/Fz\(32px\)[^>]*>([0-9\.,]+)</);
+    const regMatch  = html.match(/"regularMarketPrice":([0-9\.]+)/);
+    const prevMatch = html.match(/"previousClose":([0-9\.]+)/);
+    const highMatch = html.match(/"regularMarketDayHigh":([0-9\.]+)/) || html.match(/"dayHigh":([0-9\.]+)/);
+    const lowMatch  = html.match(/"regularMarketDayLow":([0-9\.]+)/) || html.match(/"dayLow":([0-9\.]+)/);
+    const volMatch  = html.match(/"regularMarketVolume":([0-9\.]+)/) || html.match(/"dayVolume":([0-9\.]+)/);
+
+    const priceText = fzMatch ? fzMatch[1].replace(/,/g, '') : (regMatch ? regMatch[1] : null);
+    if (!priceText) return null;
+
+    const price     = parseFloat(priceText);
+    const prevClose = prevMatch ? parseFloat(prevMatch[1]) : price;
+    if (isNaN(price) || price <= 0) return null;
+
+    const change    = +(price - prevClose).toFixed(2);
+    const changePct = prevClose > 0 ? +((change / prevClose) * 100).toFixed(2) : 0;
+    const high      = highMatch ? parseFloat(highMatch[1]) : Math.max(price, prevClose);
+    const low       = lowMatch ? parseFloat(lowMatch[1]) : Math.min(price, prevClose);
+    const volume    = volMatch ? parseInt(volMatch[1]) : 0;
+
+    return {
+      code,
+      name:        code,
+      price:       +price.toFixed(2),
+      isLive:      true,
+      prevClose:   +prevClose.toFixed(2),
+      open:        price,
+      high:        +high.toFixed(2),
+      low:         +low.toFixed(2),
+      volume:      volume,
+      change:      change,
+      changePct:   changePct,
+      tradeTime:   '',
+      hasLiveData: true,
+    };
+  } catch (err) {
+    return null;
   }
-  return null;
 }
 
 function extractStockPrice(s) {
