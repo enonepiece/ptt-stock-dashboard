@@ -20,6 +20,9 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Content-Type': 'application/json; charset=utf-8',
+  'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+  'Pragma': 'no-cache',
+  'Expires': '0',
 };
 
 function jsonResponse(data, status = 200) {
@@ -157,9 +160,10 @@ async function handlePttArticle(request) {
     return jsonResponse({ success: false, error: '無效的 URL' }, 400);
   }
 
-  const resp    = await fetch(target, { headers: PTT_HEADERS });
-  const html    = await resp.text();
-  const result  = await parsePTTPushes(html);
+  const cacheBustUrl = target + (target.includes('?') ? '&' : '?') + `_=${Date.now()}`;
+  const resp         = await fetch(cacheBustUrl, { headers: PTT_HEADERS });
+  const html         = await resp.text();
+  const result       = await parsePTTPushes(html);
 
   return jsonResponse({ success: true, ...result });
 }

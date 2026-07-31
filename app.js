@@ -1126,7 +1126,7 @@ async function fetchAndUpdatePushes() {
   if (!state.selectedArticle) return;
 
   try {
-    const res  = await fetch(`${API_BASE}/api/ptt/article?url=${encodeURIComponent(state.selectedArticle.url)}`);
+    const res  = await fetch(`${API_BASE}/api/ptt/article?url=${encodeURIComponent(state.selectedArticle.url)}&_=${Date.now()}`);
     const data = await res.json();
 
     if (!data.success) throw new Error(data.error || '推文載入失敗');

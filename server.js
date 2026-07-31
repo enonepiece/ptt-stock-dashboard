@@ -18,6 +18,14 @@ const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+    'Pragma':        'no-cache',
+    'Expires':       '0',
+  });
+  next();
+});
 app.use(express.static(path.join(__dirname)));
 
 // ── PTT Helper ─────────────────────────────────────────────
