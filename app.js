@@ -1144,10 +1144,10 @@ async function fetchAndUpdatePushes() {
     updateSentiment(data.pushes);
     updateLastUpdated();
 
-    dom.pushTotalCount.textContent = `${data.pushTotal} 則推文`;
+    dom.pushTotalCount.textContent = `${data.pushTotal} 則推文 (PTT Web 快照同步)`;
 
     if (newPushCount > 0 && !isFirst) {
-      dom.newPushBadge.textContent   = `+${newPushCount} 新推文`;
+      dom.newPushBadge.textContent   = `⚡ +${newPushCount} 則新推文`;
       dom.newPushBadge.style.display = 'inline-flex';
       setTimeout(() => { dom.newPushBadge.style.display = 'none'; }, 5000);
     }
