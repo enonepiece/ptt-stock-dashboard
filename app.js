@@ -124,6 +124,7 @@ function getStockDirInfo(change, changePct) {
 document.addEventListener('DOMContentLoaded', () => {
   initDateSelect();
   bindEvents();
+  initWebSocketGateway();
   triggerArticleSearch();
   fetchMarketIndex();
   startMonitoring();
@@ -976,6 +977,66 @@ function renderArticleList(articles) {
 }
 
 /* ════════════════════════════════════════════════════════
+   WEBSOCKET REAL-TIME STREAM GATEWAY (0.5s 秒級即時連線)
+════════════════════════════════════════════════════════ */
+let wsClient = null;
+
+function initWebSocketGateway() {
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl    = `${protocol}//${location.host}/ws`;
+
+    try {
+      wsClient = new WebSocket(wsUrl);
+
+      wsClient.onopen = () => {
+        console.log('[WebSocket Client] 🟢 0.5s 秒級即時長連線成功建立');
+        if (dom.statusText) {
+          dom.statusText.textContent = '🟢 0.5s 秒級即時中';
+        }
+        if (state.selectedArticle) {
+          wsClient.send(JSON.stringify({ action: 'watch_article', url: state.selectedArticle.url }));
+        }
+      };
+
+      wsClient.onmessage = e => {
+        try {
+          const data = JSON.parse(e.data);
+          if (data.type === 'push_update' && data.pushes) {
+            const newPushCount = data.newPushCount || 0;
+            const isFirst      = state.isFirstPushLoad;
+
+            state.prevPushTotal   = data.pushTotal;
+            state.isFirstPushLoad = false;
+            state.pushes          = data.pushes;
+
+            processStocksFromPushes(data.pushes);
+            renderTopMentionedChips(data.pushes);
+            renderPushes(data.pushes, isFirst ? 0 : Math.max(0, newPushCount));
+            updateSentiment(data.pushes);
+            updateLastUpdated();
+
+            dom.pushTotalCount.textContent = `${data.pushTotal} 則推文 (🟢 0.5s 秒級即時串流)`;
+
+            if (newPushCount > 0 && !isFirst) {
+              dom.newPushBadge.textContent   = `⚡ +${newPushCount} 則秒級新推文`;
+              dom.newPushBadge.style.display = 'inline-flex';
+              setTimeout(() => { dom.newPushBadge.style.display = 'none'; }, 5000);
+            }
+          }
+        } catch (err) {}
+      };
+
+      wsClient.onclose = () => {
+        setTimeout(initWebSocketGateway, 3000);
+      };
+    } catch (err) {
+      console.warn('[WebSocket Client Init Error]', err);
+    }
+  }
+}
+
+/* ════════════════════════════════════════════════════════
    ARTICLE SELECTION
 ════════════════════════════════════════════════════════ */
 async function selectArticle(article) {
@@ -1001,8 +1062,13 @@ async function selectArticle(article) {
   dom.pushStream.innerHTML = `
     <div class="push-placeholder">
       <div class="spinner" style="width:24px;height:24px;border-width:3px"></div>
-      <span>載入推文中...</span>
+      <span>載入即時串流推文中...</span>
     </div>`;
+
+  // 訂閱 WebSocket 秒級串流
+  if (wsClient && wsClient.readyState === WebSocket.OPEN) {
+    wsClient.send(JSON.stringify({ action: 'watch_article', url: article.url }));
+  }
 
   state.countdown = REFRESH_MS / 1000;
   await fetchAndUpdatePushes();
@@ -1144,7 +1210,8 @@ async function fetchAndUpdatePushes() {
     updateSentiment(data.pushes);
     updateLastUpdated();
 
-    dom.pushTotalCount.textContent = `${data.pushTotal} 則推文 (PTT Web 快照同步)`;
+    const wsBadge = (wsClient && wsClient.readyState === WebSocket.OPEN) ? ' (🟢 0.5s 秒級即時串流)' : ' (PTT 快照同步)';
+    dom.pushTotalCount.textContent = `${data.pushTotal} 則推文${wsBadge}`;
 
     if (newPushCount > 0 && !isFirst) {
       dom.newPushBadge.textContent   = `⚡ +${newPushCount} 則新推文`;

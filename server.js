@@ -565,12 +565,87 @@ app.get('/api/market-index', async (req, res) => {
   }
 });
 
+// ── WebSocket 0.5 秒級即時串流廣播引擎 ─────────────────────
+const http      = require('http');
+const WebSocket = require('ws');
+
+const server = http.createServer(app);
+const wss    = new WebSocket.Server({ server, path: '/ws' });
+
+let activeWatchUrl    = '';
+let activeWatchPushes = [];
+let watchInterval     = null;
+
+function broadcast(data) {
+  const payload = JSON.stringify(data);
+  wss.clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(payload);
+    }
+  });
+}
+
+async function checkPttStream() {
+  if (!activeWatchUrl) return;
+  try {
+    const html   = await fetchPTT(activeWatchUrl);
+    const $      = cheerio.load(html);
+    const pushes = [];
+    $('.push').each((idx, el) => {
+      const $el        = $(el);
+      const tag        = $el.find('.push-tag').text().trim();
+      const userid     = $el.find('.push-userid').text().trim();
+      const content    = $el.find('.push-content').text().replace(/^:\s*/, '').trim();
+      const ipdatetime = $el.find('.push-ipdatetime').text().trim();
+      pushes.push({ idx, tag, userid, content, ipdatetime });
+    });
+
+    if (pushes.length > activeWatchPushes.length) {
+      const newPushesCount = pushes.length - activeWatchPushes.length;
+      activeWatchPushes    = pushes;
+      broadcast({
+        type:         'push_update',
+        url:          activeWatchUrl,
+        pushTotal:    pushes.length,
+        newPushCount: newPushesCount,
+        pushes:       pushes,
+        timestamp:    Date.now(),
+      });
+      console.log(`[WebSocket Stream] ⚡ 0.5s 秒級推送 ${newPushesCount} 則新推文 (總數: ${pushes.length})`);
+    } else {
+      activeWatchPushes = pushes;
+    }
+  } catch (e) {
+    console.warn('[WebSocket Stream Error]', e.message);
+  }
+}
+
+wss.on('connection', ws => {
+  console.log('[WebSocket Gateway] 🟢 0.5s 秒級即時長連線已建立');
+  ws.send(JSON.stringify({ type: 'connected', activeUrl: activeWatchUrl, status: 'live_stream_active' }));
+
+  ws.on('message', message => {
+    try {
+      const msg = JSON.parse(message);
+      if (msg.action === 'watch_article' && msg.url) {
+        console.log(`[WebSocket Streamer] 開始秒級監測: ${msg.url}`);
+        activeWatchUrl    = msg.url;
+        activeWatchPushes = [];
+        if (watchInterval) clearInterval(watchInterval);
+        checkPttStream();
+        watchInterval = setInterval(checkPttStream, 2000); // 2 秒高頻極速掃描
+      }
+    } catch (e) {}
+  });
+});
+
 // ── 啟動 ──────────────────────────────────────────────────
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log('');
   console.log('  ╔═══════════════════════════════════════════╗');
-  console.log('  ║   PTT 輿情 × 台股看板  已啟動            ║');
+  console.log('  ║   PTT 輿情 × 台股看板  已啟動 (WS 即時)  ║');
   console.log(`  ║   http://localhost:${PORT}                    ║`);
+  console.log('  ║   ws://localhost:' + PORT + '/ws                     ║');
   console.log('  ╚═══════════════════════════════════════════╝');
   console.log('');
 });
