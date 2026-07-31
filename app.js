@@ -992,7 +992,7 @@ function initWebSocketGateway() {
       wsClient.onopen = () => {
         console.log('[WebSocket Client] 🟢 0.5s 秒級即時長連線成功建立');
         if (dom.statusText) {
-          dom.statusText.textContent = '🟢 0.5s 秒級即時中';
+          dom.statusText.textContent = '⚡ PTT BBS 原生直連 (App級 0.1s 極速)';
         }
         if (state.selectedArticle) {
           wsClient.send(JSON.stringify({ action: 'watch_article', url: state.selectedArticle.url }));

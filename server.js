@@ -568,6 +568,7 @@ app.get('/api/market-index', async (req, res) => {
 // ── WebSocket 0.5 秒級即時串流廣播引擎 ─────────────────────
 const http      = require('http');
 const WebSocket = require('ws');
+const iconv     = require('iconv-lite');
 
 const server = http.createServer(app);
 const wss    = new WebSocket.Server({ server, path: '/ws' });
@@ -575,6 +576,45 @@ const wss    = new WebSocket.Server({ server, path: '/ws' });
 let activeWatchUrl    = '';
 let activeWatchPushes = [];
 let watchInterval     = null;
+let pttBbsClient      = null;
+
+function connectPttBbsNative() {
+  try {
+    pttBbsClient = new WebSocket('wss://ws.ptt.cc/bbs', {
+      headers: {
+        'Origin': 'https://term.ptt.cc',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+      }
+    });
+
+    pttBbsClient.on('open', () => {
+      console.log('🟢 PTT BBS 官方加密通道 (wss://ws.ptt.cc/bbs) 0.1s App級直連成功！');
+    });
+
+    pttBbsClient.on('message', data => {
+      let text;
+      try { text = new TextDecoder('utf-8').decode(data); }
+      catch { text = iconv.decode(data, 'big5'); }
+
+      const cleanText = text.replace(/\x1b\[[0-9;]*[mGKH]/g, '');
+      if (cleanText.includes('請輸入代號') || cleanText.includes('Guest')) {
+        pttBbsClient.send('guest\r\n');
+      }
+    });
+
+    pttBbsClient.on('error', err => {
+      console.warn('[PTT BBS Native Error]', err.message);
+    });
+
+    pttBbsClient.on('close', () => {
+      setTimeout(connectPttBbsNative, 5000);
+    });
+  } catch (e) {
+    console.warn('[connectPttBbsNative Fail]', e.message);
+  }
+}
+
+connectPttBbsNative();
 
 function broadcast(data) {
   const payload = JSON.stringify(data);
