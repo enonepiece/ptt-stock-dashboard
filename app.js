@@ -1011,6 +1011,63 @@ async function selectArticle(article) {
 /* ════════════════════════════════════════════════════════
    MONITORING TIMER
 ════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════
+   MONITORING TIMER & FULL REFRESH RULES
+════════════════════════════════════════════════════════ */
+async function autoRefreshAll() {
+  // 1. 自動背景爬取 PTT 最新文章列表 (帶 Cache-Busting 無感更新)
+  await refreshArticleListSilent();
+
+  // 2. 若已有選中文章，自動穿透快取重新抓取最新推文
+  if (state.selectedArticle) {
+    await fetchAndUpdatePushes();
+  }
+
+  // 3. 自動刷新大盤指數
+  fetchMarketIndex();
+
+  // 4. 自動刷新當前股票卡片面板中的個股最新實時股價
+  if (state.stocks.size > 0) {
+    const codes = [...state.stocks.keys()];
+    fetchStockPrices(codes);
+  }
+}
+
+async function refreshArticleListSilent() {
+  try {
+    const pages = parseInt(dom.timeRangeSelect?.value || '2');
+    let keyword = '';
+    if (state.currentTabKeyword !== '全部') {
+      const yearStr = new Date().getFullYear();
+      const defaultDate = `${String(new Date().getMonth() + 1).padStart(2, '0')}/${String(new Date().getDate()).padStart(2, '0')}`;
+      const targetDate = state.currentDateStr || defaultDate;
+      keyword = `${yearStr}/${targetDate} ${state.currentTabKeyword}`;
+    }
+
+    const res  = await fetch(`${API_BASE}/api/ptt/articles?keyword=${encodeURIComponent(keyword)}&pages=${pages}&_=${Date.now()}`);
+    const data = await res.json();
+
+    if (data.success && data.articles && data.articles.length > 0) {
+      const oldFirstUrl = state.articles[0]?.url;
+      const newFirstUrl = data.articles[0]?.url;
+      
+      state.articles         = data.articles;
+      state.filteredArticles = dom.searchInput.value.trim()
+        ? data.articles.filter(a => a.title.toLowerCase().includes(dom.searchInput.value.trim().toLowerCase()))
+        : [...data.articles];
+
+      renderArticleList(state.filteredArticles);
+
+      // 若發現產出了最新的 PTT 閒聊/文章，提示通知
+      if (oldFirstUrl && newFirstUrl && oldFirstUrl !== newFirstUrl) {
+        showToast(`⚡ PTT 有新文章：${data.articles[0].title}`, 'success');
+      }
+    }
+  } catch (e) {
+    console.warn('[refreshArticleListSilent Error]', e);
+  }
+}
+
 function startMonitoring() {
   if (state.countdownTimer) clearInterval(state.countdownTimer);
   state.isMonitoring = true;
@@ -1023,10 +1080,7 @@ function startMonitoring() {
     updateCountdownUI();
     if (state.countdown <= 0) {
       state.countdown = REFRESH_MS / 1000;
-      if (state.selectedArticle) {
-        fetchAndUpdatePushes();
-      }
-      fetchMarketIndex();
+      autoRefreshAll();
     }
   }, 1000);
 }
@@ -1045,8 +1099,7 @@ function toggleMonitoring() {
   } else {
     startMonitoring();
     showToast('已恢復監測', 'success');
-    if (state.selectedArticle) fetchAndUpdatePushes();
-    fetchMarketIndex();
+    autoRefreshAll();
   }
 }
 

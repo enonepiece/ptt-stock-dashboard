@@ -3,9 +3,12 @@
  */
 
 const PTT_HEADERS = {
-  'Cookie': 'over18=1',
-  'User-Agent': 'Mozilla/5.0 (compatible; PTTDashboard/1.0)',
-  'Referer': 'https://www.ptt.cc/',
+  'Cookie':          'over18=1',
+  'User-Agent':      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Referer':         'https://www.ptt.cc/',
+  'Cache-Control':   'no-cache, no-store, must-revalidate',
+  'Pragma':          'no-cache',
+  'Expires':         '0',
 };
 
 const CORS_HEADERS = {
@@ -141,9 +144,10 @@ async function handlePttArticle(request) {
     return jsonResponse({ success: false, error: '無效的 URL' }, 400);
   }
 
-  const resp    = await fetch(target, { headers: PTT_HEADERS });
-  const html    = await resp.text();
-  const result  = await parsePTTPushes(html);
+  const cacheBustUrl = target + (target.includes('?') ? '&' : '?') + `_=${Date.now()}`;
+  const resp         = await fetch(cacheBustUrl, { headers: PTT_HEADERS });
+  const html         = await resp.text();
+  const result       = await parsePTTPushes(html);
 
   return jsonResponse({ success: true, ...result });
 }

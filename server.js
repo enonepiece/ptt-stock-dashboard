@@ -28,10 +28,14 @@ const PTT_HEADERS = {
   'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8',
   'Referer':         'https://www.ptt.cc/',
+  'Cache-Control':   'no-cache, no-store, must-revalidate',
+  'Pragma':          'no-cache',
+  'Expires':         '0',
 };
 
 async function fetchPTT(url) {
-  const response = await fetch(url, { headers: PTT_HEADERS });
+  const fetchUrl = url + (url.includes('?') ? '&' : '?') + `_=${Date.now()}`;
+  const response = await fetch(fetchUrl, { headers: PTT_HEADERS });
   if (!response.ok) throw new Error(`PTT fetch failed: ${response.status} ${url}`);
   return response.text();
 }
