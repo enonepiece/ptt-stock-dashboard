@@ -628,9 +628,10 @@ function broadcast(data) {
 async function checkPttStream() {
   if (!activeWatchUrl) return;
   try {
-    const html   = await fetchPTT(activeWatchUrl);
-    const $      = cheerio.load(html);
-    const pushes = [];
+    const fetchUrl = activeWatchUrl + (activeWatchUrl.includes('?') ? '&' : '?') + `_=${Date.now()}`;
+    const html     = await fetchPTT(fetchUrl);
+    const $        = cheerio.load(html);
+    const pushes   = [];
     $('.push').each((idx, el) => {
       const $el        = $(el);
       const tag        = $el.find('.push-tag').text().trim();
@@ -640,8 +641,8 @@ async function checkPttStream() {
       pushes.push({ idx, tag, userid, content, ipdatetime });
     });
 
-    if (pushes.length > activeWatchPushes.length) {
-      const newPushesCount = pushes.length - activeWatchPushes.length;
+    if (pushes.length > activeWatchPushes.length || pushes.length !== activeWatchPushes.length) {
+      const newPushesCount = Math.max(0, pushes.length - activeWatchPushes.length);
       activeWatchPushes    = pushes;
       broadcast({
         type:         'push_update',
@@ -651,9 +652,6 @@ async function checkPttStream() {
         pushes:       pushes,
         timestamp:    Date.now(),
       });
-      console.log(`[WebSocket Stream] ⚡ 0.5s 秒級推送 ${newPushesCount} 則新推文 (總數: ${pushes.length})`);
-    } else {
-      activeWatchPushes = pushes;
     }
   } catch (e) {
     console.warn('[WebSocket Stream Error]', e.message);

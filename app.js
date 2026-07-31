@@ -992,7 +992,7 @@ function initWebSocketGateway() {
       wsClient.onopen = () => {
         console.log('[WebSocket Client] 🟢 0.5s 秒級即時長連線成功建立');
         if (dom.statusText) {
-          dom.statusText.textContent = '⚡ PTT BBS 原生直連 (App級 0.1s 極速)';
+          dom.statusText.textContent = '即時監測中';
         }
         if (state.selectedArticle) {
           wsClient.send(JSON.stringify({ action: 'watch_article', url: state.selectedArticle.url }));
@@ -1016,10 +1016,10 @@ function initWebSocketGateway() {
             updateSentiment(data.pushes);
             updateLastUpdated();
 
-            dom.pushTotalCount.textContent = `${data.pushTotal} 則推文 (🟢 0.5s 秒級即時串流)`;
+            dom.pushTotalCount.textContent = `${data.pushTotal} 則推文`;
 
             if (newPushCount > 0 && !isFirst) {
-              dom.newPushBadge.textContent   = `⚡ +${newPushCount} 則秒級新推文`;
+              dom.newPushBadge.textContent   = `+${newPushCount} 新推文`;
               dom.newPushBadge.style.display = 'inline-flex';
               setTimeout(() => { dom.newPushBadge.style.display = 'none'; }, 5000);
             }
@@ -1210,8 +1210,7 @@ async function fetchAndUpdatePushes() {
     updateSentiment(data.pushes);
     updateLastUpdated();
 
-    const wsBadge = (wsClient && wsClient.readyState === WebSocket.OPEN) ? ' (🟢 0.5s 秒級即時串流)' : ' (PTT 快照同步)';
-    dom.pushTotalCount.textContent = `${data.pushTotal} 則推文${wsBadge}`;
+    dom.pushTotalCount.textContent = `${data.pushTotal} 則推文`;
 
     if (newPushCount > 0 && !isFirst) {
       dom.newPushBadge.textContent   = `⚡ +${newPushCount} 則新推文`;
