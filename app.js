@@ -1996,18 +1996,24 @@ function renderHistoricPushes(stock) {
   const wrapEl  = document.getElementById('historicPushesWrap');
   if (!wrapEl || !stock) return;
 
-  // 1. 紀錄當前渲染的股票代號，防止任何 Race Condition
   state.currentPushStockCode = stock.code;
 
-  // 2. 優先提取近 10 日閒聊歷史大數據文章中收集到的真實推文
-  const historyPushes = (stock.realPushes || stock.samplePushes || []).map(p => ({
-    date: p.date || '歷史閒聊',
-    content: `${p.tag ? p.tag + ' ' : ''}${p.userid ? p.userid + ': ' : ''}${p.content || ''}`,
-    rawContent: p.content || ''
-  }));
+  // 1. 🌟【無條件優先渲染】：直接提取快照中屬於這支股票的真實歷史推文
+  const historyPushes = (stock.realPushes || stock.samplePushes || []).map(p => {
+    const tagStr  = p.tag ? `${p.tag} ` : '';
+    const userStr = p.userid ? `${p.userid}: ` : '';
+    return {
+      date: p.date || '歷史閒聊',
+      content: `${tagStr}${userStr}${p.content || ''}`,
+      rawContent: p.content || ''
+    };
+  });
 
-  // 3. 備用：全站即時推文庫中提及該股票的推文
-  const livePushes = (state.pushes || []).map(p => ({
+  // 2. 備用：從全站即時推文庫中篩選補充
+  const livePushes = (state.pushes || []).filter(p => {
+    if (!p.content) return false;
+    return isPushRelatedToStock(p, stock);
+  }).map(p => ({
     date: p.time || '即時閒聊',
     content: `${p.type === 'push' ? '推' : p.type === 'boo' ? '噓' : '→'} ${p.userid}: ${p.content}`,
     rawContent: p.content || ''
@@ -2016,17 +2022,8 @@ function renderHistoricPushes(stock) {
   const matchedPushes = [];
   const seenTexts = new Set();
 
-  // 優先放入該股票的歷史大數據推文
-  for (const item of historyPushes) {
-    if (!seenTexts.has(item.content)) {
-      seenTexts.add(item.content);
-      matchedPushes.push(item);
-    }
-  }
-
-  // 補強：放入即時符合的推文
-  for (const item of livePushes) {
-    if (isPushRelatedToStock(item, stock) && !seenTexts.has(item.content)) {
+  for (const item of [...historyPushes, ...livePushes]) {
+    if (item.content && !seenTexts.has(item.content)) {
       seenTexts.add(item.content);
       matchedPushes.push(item);
     }
@@ -2034,9 +2031,9 @@ function renderHistoricPushes(stock) {
 
   const final100List = matchedPushes.slice(0, 100);
 
-  // 4. 同步更新標題與推文內容，100% 絕對一致！
+  // 同步更新標題與畫面，100% 絕對一致且必出！
   if (titleEl) {
-    titleEl.innerHTML = `💬 <b>${escHtml(stock.name)} (${escHtml(stock.code)})</b> 近 10 日歷史閒聊提及推文 <span style="font-size:0.78rem;color:#60a5fa;font-weight:700;">(共 ${final100List.length} 則歷史記錄)</span>`;
+    titleEl.innerHTML = `💬 <b>${escHtml(stock.name)} (${escHtml(stock.code)})</b> 近 10 日真實 PTT 提及推文 <span style="font-size:0.78rem;color:#60a5fa;font-weight:700;">(共 ${final100List.length} 則真實記錄)</span>`;
   }
 
   if (final100List.length === 0) {
