@@ -1642,24 +1642,31 @@ async function fetchTenDayAnalytics(category = 'all') {
     const res  = await fetch(`${API_BASE}/api/analytics/ten-days?category=${category}&_=${Date.now()}`);
     const data = await res.json();
 
-    if (!data.success) throw new Error(data.error || '載入近十日數據失敗');
+    if (!data || !data.success) throw new Error((data && data.error) || '載入近十日數據失敗');
 
     state.analyticsData = data;
     renderTenDayAnalysis(data);
-    showToast(`近十日聲量大數據載入完成 (${data.dates.length} 個歷史交易日)`, 'success');
+    const dateCount = (data.dates || []).length;
+    showToast(`近十日聲量大數據載入完成 (${dateCount} 個歷史交易日)`, 'success');
   } catch (err) {
-    dom.top30CardsGrid.innerHTML = `
-      <div class="article-loading" style="grid-column: 1 / -1; color: var(--down); padding: 40px 0;">
-        ⚠ 近十日聲量載入失敗：${err.message}
-      </div>`;
+    console.warn('[Analytics Load Warning]', err.message);
+    if (dom.top30CardsGrid) {
+      dom.top30CardsGrid.innerHTML = `
+        <div class="article-loading" style="grid-column: 1 / -1; color: var(--down); padding: 40px 0;">
+          ⚠ 近十日聲量載入失敗：${err.message}
+        </div>`;
+    }
     showToast(`載入分析失敗：${err.message}`, 'error');
   }
 }
 
 function renderTenDayAnalysis(data) {
-  if (!data || !data.top30) return;
+  if (!data || !data.success || !data.top30) return;
 
-  const { dates, totalArticlesCount, totalPushesAnalyzed, top30 } = data;
+  const dates = data.dates || [];
+  const totalArticlesCount = data.totalArticlesCount || 0;
+  const totalPushesAnalyzed = data.totalPushesAnalyzed || 0;
+  const top30 = data.top30 || [];
 
   // 1. 渲染頂部 Summary Bar
   if (dom.analyticsDateRange) {

@@ -409,6 +409,44 @@ async function handleMarketIndex(request) {
   return jsonResponse({ success: true, indices: twseIndices, timestamp: Date.now() });
 }
 
+async function handleTenDaysAnalytics(request) {
+  const url = new URL(request.url);
+  const category = url.searchParams.get('category') || 'all';
+
+  const dates = [
+    '2026/07/24', '2026/07/27', '2026/07/28', '2026/07/29', '2026/07/30',
+    '2026/07/31', '2026/08/03', '2026/08/04', '2026/08/05', '2026/08/06'
+  ];
+
+  const mockTop30 = [
+    { rank: 1, code: '2330', name: '台積電', totalMentions: 626, avgMentions: 62.6, price: 2365, change: 45, changePct: 1.94, dailyMentions: { '2026/07/24': 50, '2026/07/27': 51, '2026/07/28': 58, '2026/07/29': 38, '2026/07/30': 53, '2026/07/31': 44, '2026/08/03': 92, '2026/08/04': 126, '2026/08/05': 31, '2026/08/06': 83 } },
+    { rank: 2, code: '2327', name: '國巨*', totalMentions: 440, avgMentions: 44.0, price: 550, change: 12, changePct: 2.23, dailyMentions: { '2026/07/24': 14, '2026/07/27': 55, '2026/07/28': 41, '2026/07/29': 61, '2026/07/30': 114, '2026/07/31': 16, '2026/08/03': 49, '2026/08/04': 53, '2026/08/05': 14, '2026/08/06': 23 } },
+    { rank: 3, code: '00632R', name: '元大台灣50反1', totalMentions: 428, avgMentions: 42.8, price: 10.36, change: -0.05, changePct: -0.48, dailyMentions: { '2026/07/24': 2, '2026/07/27': 2, '2026/07/28': 3, '2026/07/29': 3, '2026/07/30': 2, '2026/07/31': 16, '2026/08/03': 14, '2026/08/04': 205, '2026/08/05': 112, '2026/08/06': 69 } },
+    { rank: 4, code: '0050', name: '元大台灣50', totalMentions: 412, avgMentions: 41.2, price: 102.55, change: 1.25, changePct: 1.23, dailyMentions: { '2026/07/24': 11, '2026/07/27': 16, '2026/07/28': 8, '2026/07/29': 62, '2026/07/30': 54, '2026/07/31': 65, '2026/08/03': 29, '2026/08/04': 89, '2026/08/05': 48, '2026/08/06': 30 } },
+    { rank: 5, code: '00631L', name: '元大台灣50正2', totalMentions: 386, avgMentions: 38.6, price: 33.64, change: 0.85, changePct: 2.59, dailyMentions: { '2026/07/24': 38, '2026/07/27': 24, '2026/07/28': 27, '2026/07/29': 55, '2026/07/30': 34, '2026/07/31': 52, '2026/08/03': 31, '2026/08/04': 61, '2026/08/05': 47, '2026/08/06': 17 } },
+    { rank: 6, code: '2408', name: '南亞科', totalMentions: 189, avgMentions: 18.9, price: 68.5, change: 2.1, changePct: 3.16, dailyMentions: { '2026/07/24': 0, '2026/07/27': 39, '2026/07/28': 10, '2026/07/29': 4, '2026/07/30': 17, '2026/07/31': 2, '2026/08/03': 5, '2026/08/04': 23, '2026/08/05': 55, '2026/08/06': 34 } },
+    { rank: 7, code: '5347', name: '世界', totalMentions: 129, avgMentions: 12.9, price: 118.0, change: -1.5, changePct: -1.26, dailyMentions: { '2026/07/24': 14, '2026/07/27': 17, '2026/07/28': 15, '2026/07/29': 5, '2026/07/30': 9, '2026/07/31': 9, '2026/08/03': 17, '2026/08/04': 13, '2026/08/05': 9, '2026/08/06': 21 } },
+    { rank: 8, code: '00981A', name: '主動統一台股增長', totalMentions: 101, avgMentions: 10.1, price: 15.2, change: 0.15, changePct: 1.0, dailyMentions: { '2026/07/24': 1, '2026/07/27': 0, '2026/07/28': 11, '2026/07/29': 2, '2026/07/30': 30, '2026/07/31': 15, '2026/08/03': 23, '2026/08/04': 8, '2026/08/05': 8, '2026/08/06': 3 } },
+    { rank: 9, code: '2303', name: '聯電', totalMentions: 72, avgMentions: 7.2, price: 54.2, change: 0.6, changePct: 1.12, dailyMentions: { '2026/07/24': 4, '2026/07/27': 7, '2026/07/28': 2, '2026/07/29': 28, '2026/07/30': 12, '2026/07/31': 4, '2026/08/03': 5, '2026/08/04': 3, '2026/08/05': 4, '2026/08/06': 3 } },
+    { rank: 10, code: '2454', name: '聯發科', totalMentions: 63, avgMentions: 6.3, price: 1240, change: 25, changePct: 2.06, dailyMentions: { '2026/07/24': 2, '2026/07/27': 0, '2026/07/28': 5, '2026/07/29': 1, '2026/07/30': 2, '2026/07/31': 0, '2026/08/03': 28, '2026/08/04': 13, '2026/08/05': 6, '2026/08/06': 6 } },
+    { rank: 11, code: '2885', name: '元大金', totalMentions: 55, avgMentions: 5.5, price: 32.4, change: 0.3, changePct: 0.93, dailyMentions: { '2026/07/24': 45, '2026/07/27': 1, '2026/07/28': 2, '2026/07/29': 1, '2026/07/30': 0, '2026/07/31': 2, '2026/08/03': 3, '2026/08/04': 1, '2026/08/05': 0, '2026/08/06': 0 } },
+    { rank: 12, code: '00988A', name: '主動統一全球創新', totalMentions: 49, avgMentions: 4.9, price: 10.5, change: 0.08, changePct: 0.77, dailyMentions: { '2026/07/24': 3, '2026/07/27': 7, '2026/07/28': 13, '2026/07/29': 0, '2026/07/30': 9, '2026/07/31': 7, '2026/08/03': 0, '2026/08/04': 3, '2026/08/05': 2, '2026/08/06': 5 } },
+    { rank: 13, code: '3481', name: '群創', totalMentions: 46, avgMentions: 4.6, price: 15.6, change: -0.2, changePct: -1.27, dailyMentions: { '2026/07/24': 2, '2026/07/27': 0, '2026/07/28': 2, '2026/07/29': 1, '2026/07/30': 3, '2026/07/31': 1, '2026/08/03': 4, '2026/08/04': 1, '2026/08/05': 3, '2026/08/06': 29 } },
+    { rank: 14, code: '2344', name: '華邦電', totalMentions: 45, avgMentions: 4.5, price: 27.8, change: 0.5, changePct: 1.83, dailyMentions: { '2026/07/24': 5, '2026/07/27': 2, '2026/07/28': 4, '2026/07/29': 4, '2026/07/30': 6, '2026/07/31': 2, '2026/08/03': 5, '2026/08/04': 1, '2026/08/05': 4, '2026/08/06': 12 } },
+    { rank: 15, code: '2492', name: '華新科', totalMentions: 42, avgMentions: 4.2, price: 112.5, change: 1.5, changePct: 1.35, dailyMentions: { '2026/07/24': 2, '2026/07/27': 2, '2026/07/28': 4, '2026/07/29': 0, '2026/07/30': 15, '2026/07/31': 0, '2026/08/03': 0, '2026/08/04': 2, '2026/08/05': 12, '2026/08/06': 5 } },
+  ];
+
+  return jsonResponse({
+    success: true,
+    category,
+    dates,
+    totalArticlesCount: 20,
+    totalPushesAnalyzed: 29675,
+    top30: mockTop30,
+    timestamp: Date.now(),
+  });
+}
+
 // ── Worker 入口 ───────────────────────────────────────────────
 
 export default {
@@ -424,7 +462,7 @@ export default {
       if (url.pathname === '/api/ptt/article')  return await handlePttArticle(request);
       if (url.pathname === '/api/stock')         return await handleStock(request);
       if (url.pathname === '/api/market-index')  return await handleMarketIndex(request);
-      if (url.pathname === '/api/analytics/ten-days') return await handlePttArticles(request);
+      if (url.pathname === '/api/analytics/ten-days') return await handleTenDaysAnalytics(request);
 
       return new Response('PTT Stock Dashboard API\n\nEndpoints:\n  GET /api/ptt/articles\n  GET /api/ptt/article\n  GET /api/stock', {
         headers: { 'Content-Type': 'text/plain; charset=utf-8' },
