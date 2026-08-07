@@ -702,42 +702,93 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     }
 
-    .historic-pushes-wrap {
+    .right-detail-tabs {
+      display: flex;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      flex-shrink: 0;
+    }
+    .detail-tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .detail-tab-btn:hover {
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .detail-tab-btn.active {
+      background: #3b82f6;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+    }
+
+    .detail-tab-panel {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+    }
+    .detail-tab-panel.active {
+      display: flex;
+    }
+
+    .historic-pushes-full-wrap {
       background: rgba(15, 23, 42, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
-      padding: 12px;
-      max-height: 320px;
+      padding: 14px;
+      flex: 1;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      min-height: 0;
     }
+
     .historic-push-item {
       display: flex;
-      align-items: baseline;
+      align-items: flex-start;
       gap: 10px;
-      padding: 8px 12px;
-      background: rgba(30, 41, 59, 0.5);
-      border: 1px solid rgba(255,255,255,0.04);
-      border-radius: 6px;
-      font-size: 0.84rem;
+      padding: 10px 12px;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
+      font-size: 0.86rem;
     }
     .historic-push-item:hover {
-      background: rgba(30, 41, 59, 0.8);
-      border-color: rgba(59,130,246,0.3);
+      background: rgba(30, 41, 59, 0.85);
+      border-color: rgba(59,130,246,0.35);
     }
-    .historic-push-date {
+    .historic-push-date-badge {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.74rem;
       color: #60a5fa;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 2px 7px;
+      border-radius: 4px;
       white-space: nowrap;
       font-weight: 700;
+      flex-shrink: 0;
     }
     .historic-push-text {
       color: #f1f5f9;
       word-break: break-all;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .top30-cards-grid {
@@ -2107,47 +2158,62 @@
       </div>
     </div>
 
-    <!-- 右欄：聲量推移圖表 & 每日分佈明細 & 歷史推文 -->
+    <!-- 右欄：子頁籤面板 (趨勢圖 / 明細表 / 100則推文) -->
     <div class="trend-detail-section">
-      <div class="section-title-bar">
-        <span id="trendChartTitle">🔥 近 10 日熱門提及 Top 5 聲量大比拼</span>
-        <div class="chart-mode-btns">
-          <button class="chart-mode-btn active" id="btnMultiChartMode">🔥 Top 5 聲量對比</button>
-          <button class="chart-mode-btn" id="btnSingleChartMode">📌 單股走勢</button>
+      <div class="right-detail-tabs">
+        <button class="detail-tab-btn active" data-panel="panelTrendChart">📈 聲量趨勢圖</button>
+        <button class="detail-tab-btn" data-panel="panelDailyTable">📅 每日提及明細表</button>
+        <button class="detail-tab-btn" data-panel="panelHistoricPushes">💬 近 100 則 PTT 推文</button>
+      </div>
+
+      <!-- Panel 1: 折線趨勢圖 -->
+      <div class="detail-tab-panel active" id="panelTrendChart">
+        <div class="section-title-bar">
+          <span id="trendChartTitle">🔥 近 10 日熱門提及 Top 5 聲量大比拼</span>
+          <div class="chart-mode-btns">
+            <button class="chart-mode-btn active" id="btnMultiChartMode">🔥 Top 5 聲量對比</button>
+            <button class="chart-mode-btn" id="btnSingleChartMode">📌 單股走勢</button>
+          </div>
+        </div>
+        <div class="chart-legend-bar" id="chartLegendBar">
+          <!-- 動態插入 Top 5 對比圖例晶片 -->
+        </div>
+        <div class="trend-chart-box">
+          <canvas id="tenDayTrendCanvas" width="600" height="260"></canvas>
         </div>
       </div>
-      <div class="chart-legend-bar" id="chartLegendBar">
-        <!-- 動態插入 Top 5 對比圖例晶片 -->
-      </div>
-      <div class="trend-chart-box">
-        <canvas id="tenDayTrendCanvas" width="600" height="220"></canvas>
+
+      <!-- Panel 2: 每日明細表 -->
+      <div class="detail-tab-panel" id="panelDailyTable">
+        <div class="section-title">
+          <span>📅 近 10 日每日提及次數明細表</span>
+        </div>
+        <div class="daily-table-wrap">
+          <table class="daily-breakdown-table" id="dailyBreakdownTable">
+            <thead>
+              <tr id="dailyTableHeadRow">
+                <th>股票</th>
+                <th>10日總聲量</th>
+                <th>日均聲量</th>
+                <!-- 動態插入日期標頭 -->
+              </tr>
+            </thead>
+            <tbody id="dailyTableBody">
+              <!-- 動態插入資料列 -->
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div class="section-title" style="margin-top: 14px;">
-        <span>📅 近 10 日每日提及次數明細表</span>
-      </div>
-      <div class="daily-table-wrap">
-        <table class="daily-breakdown-table" id="dailyBreakdownTable">
-          <thead>
-            <tr id="dailyTableHeadRow">
-              <th>股票</th>
-              <th>10日總聲量</th>
-              <th>日均聲量</th>
-              <!-- 動態插入日期標頭 -->
-            </tr>
-          </thead>
-          <tbody id="dailyTableBody">
-            <!-- 動態插入資料列 -->
-          </tbody>
-        </table>
-      </div>
-
-      <div class="section-title" style="margin-top: 14px;">
-        <span id="historicPushesTitle">💬 近 10 日歷史提及推文 (請選擇股票卡片)</span>
-      </div>
-      <div class="historic-pushes-wrap" id="historicPushesWrap">
-        <div style="font-size:0.8rem;color:var(--text-muted);padding:12px;text-align:center;">
-          💡 點擊左側 Top 30 股票卡片即可檢視近 10 日提及該股票的歷史 PTT 推文
+      <!-- Panel 3: 近 100 則真實 PTT 提及推文 -->
+      <div class="detail-tab-panel" id="panelHistoricPushes">
+        <div class="section-title">
+          <span id="historicPushesTitle">💬 近 100 則 PTT 真實提及推文 (請選擇股票卡片)</span>
+        </div>
+        <div class="historic-pushes-full-wrap" id="historicPushesWrap">
+          <div style="font-size:0.82rem;color:var(--text-muted);padding:24px;text-align:center;">
+            💡 點擊左側 Top 30 股票卡片即可檢視近 100 則提及該股票的真實 PTT 推文
+          </div>
         </div>
       </div>
     </div>
