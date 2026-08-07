@@ -693,9 +693,72 @@
       grid-auto-rows: minmax(102px, max-content);
       gap: 10px;
       overflow-y: auto;
-      padding-right: 6px;
+      padding: 6px 6px 6px 2px;
       flex: 1;
       min-height: 0;
+    }
+
+    .section-title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .chart-mode-btns {
+      display: flex;
+      gap: 4px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2px;
+      border-radius: 6px;
+    }
+    .chart-mode-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 4px 10px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .chart-mode-btn.active {
+      background: #3b82f6;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+    }
+    .chart-legend-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.74rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #cbd5e1;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+    .legend-chip.active {
+      border-color: currentColor;
+      background: rgba(255,255,255,0.12);
+      font-weight: 700;
+    }
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
     }
 
     .top30-card {
@@ -1992,8 +2055,15 @@
 
     <!-- 右欄：聲量推移圖表 & 每日分佈明細 -->
     <div class="trend-detail-section">
-      <div class="section-title">
-        <span id="trendChartTitle">📈 聲量推移趨勢圖 (請點選左側股票卡片)</span>
+      <div class="section-title-bar">
+        <span id="trendChartTitle">🔥 近 10 日熱門提及 Top 5 聲量大比拼</span>
+        <div class="chart-mode-btns">
+          <button class="chart-mode-btn active" id="btnMultiChartMode">🔥 Top 5 聲量對比</button>
+          <button class="chart-mode-btn" id="btnSingleChartMode">📌 單股走勢</button>
+        </div>
+      </div>
+      <div class="chart-legend-bar" id="chartLegendBar">
+        <!-- 動態插入 Top 5 對比圖例晶片 -->
       </div>
       <div class="trend-chart-box">
         <canvas id="tenDayTrendCanvas" width="600" height="220"></canvas>
