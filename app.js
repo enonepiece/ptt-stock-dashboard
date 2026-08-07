@@ -1349,7 +1349,7 @@ function getCachedPushProcess(content) {
   return res;
 }
 
-function processStocksFromPushes(pushes) {
+async function processStocksFromPushes(pushes) {
   for (const entry of state.stocks.values()) {
     entry.mentionCount = 0;
     entry.mentions     = [];
@@ -1391,11 +1391,13 @@ function processStocksFromPushes(pushes) {
     state.stocks = new Map(sorted.slice(0, MAX_CARDS));
   }
 
-  if (state.stocks.size > 0) {
-    fetchStockPrices([...state.stocks.keys()]);
-  }
-
+  // 1. 先畫出股票卡片（包含提及次數與最新留言預覽）
   renderStockCards();
+
+  // 2. 🌟【100% 第一秒股價刷出修復】：即刻併發抓取個股最新價格
+  if (state.stocks.size > 0) {
+    await fetchStockPrices([...state.stocks.keys()]);
+  }
 }
 
 /* ════════════════════════════════════════════════════════
@@ -1441,17 +1443,22 @@ async function fetchStockPrices(codes) {
         if (entry.priceHistory.length > MAX_PRICE_PTS) entry.priceHistory.shift();
       }
 
-      if (prevPrice !== null && prevPrice !== undefined && prevPrice !== s.price && s.price) {
-        const card = document.querySelector(`.stock-card[data-code="${s.code}"] .card-price`);
-        if (card) {
-          const cls = s.price > prevPrice ? 'flash-up' : 'flash-down';
-          card.classList.add(cls);
-          setTimeout(() => card.classList.remove(cls), 600);
+      // 🌟【定點 DOM 股價微更新】：直接對 DOM 上的卡片節點刷出最新價格，第一秒絕對顯示！
+      const card = document.querySelector(`.stock-card[data-code="${s.code}"]`);
+      if (card) {
+        updateStockCardDOM(card, entry);
+        if (prevPrice !== null && prevPrice !== undefined && prevPrice !== s.price && s.price) {
+          const cardPriceEl = card.querySelector('.card-price');
+          if (cardPriceEl) {
+            const cls = s.price > prevPrice ? 'flash-up' : 'flash-down';
+            cardPriceEl.classList.add(cls);
+            setTimeout(() => cardPriceEl.classList.remove(cls), 600);
+          }
         }
       }
     }
 
-    // 🌟【自動股價刷出修復】：價格更新後立刻強制刷新股票卡片 UI，點擊文章第一秒即顯示股價！
+    // 重新排序並刷新畫面
     renderStockCards();
 
     if (state.currentModalCode) {
