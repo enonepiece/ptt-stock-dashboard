@@ -1935,20 +1935,29 @@ function renderTenDayCardsOnly(top30, maxMentions) {
 }
 
 function isPushRelatedToStock(item, stock) {
-  if (!item || !stock) return false;
-  const text = (item.rawContent || item.content || '').toLowerCase();
+  if (!item || !stock || !stock.code) return false;
+  const text = item.rawContent || item.content || '';
   if (!text) return false;
 
-  const code = (stock.code || '').toLowerCase();
-  const rawName = (stock.name || '').replace(/\*$/, '').toLowerCase();
+  // 🌟【調用專案權威知識】：使用 stockDict.js 提供的全市場 2,300+ 檔股票及 PTT 熱門綽號偵測引擎
+  if (typeof detectStocks === 'function') {
+    const detected = detectStocks(text);
+    if (detected && detected.some(d => d.code === stock.code)) {
+      return true;
+    }
+  }
 
-  // 代號、名稱與俗稱精確匹配
-  if (code && text.includes(code)) return true;
-  if (rawName && rawName.length >= 2 && text.includes(rawName)) return true;
-
-  if (code === '2330' && (text.includes('gg') || text.includes('積電') || text.includes('護國神山'))) return true;
-  if (code === '00632R' && (text.includes('反1') || text.includes('反一') || text.includes('50反'))) return true;
-  if (code === '00631L' && (text.includes('正2') || text.includes('正二') || text.includes('50正'))) return true;
+  // 備用權威 CODE_INDEX 暱稱比對
+  if (typeof CODE_INDEX !== 'undefined' && CODE_INDEX.has(stock.code)) {
+    const dictItem = CODE_INDEX.get(stock.code);
+    const names = dictItem.names || [stock.name];
+    const upperText = text.toUpperCase();
+    if (upperText.includes(stock.code.toUpperCase())) return true;
+    for (const name of names) {
+      const cleanName = name.replace(/\*$/, '');
+      if (cleanName && cleanName.length >= 2 && text.includes(cleanName)) return true;
+    }
+  }
 
   return false;
 }
