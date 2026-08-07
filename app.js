@@ -1680,6 +1680,8 @@ function renderTenDayAnalysis(data) {
     return;
   }
 
+  const maxMentions = top30[0]?.totalMentions || 1;
+
   // 預設選中第一名
   if (!state.selectedTrendCode || !top30.some(s => s.code === state.selectedTrendCode)) {
     state.selectedTrendCode = top30[0]?.code;
@@ -1690,17 +1692,39 @@ function renderTenDayAnalysis(data) {
     const { dir, symbol, dirSign } = getStockDirInfo(s.change, s.changePct);
     const hasPrice = s.price !== null && s.price > 0;
     const priceStr = hasPrice ? formatNum(s.price) : '─';
+    const changeStr = (hasPrice && s.change !== null)
+      ? `${symbol} ${dirSign}${Math.abs(s.change)} (${dirSign}${Math.abs(s.changePct).toFixed(2)}%)`
+      : '';
+
+    const heatPct = Math.round((s.totalMentions / maxMentions) * 100);
+
+    let rankBadgeText = `#${s.rank}`;
+    if (s.rank === 1) rankBadgeText = `👑 1`;
+    else if (s.rank === 2) rankBadgeText = `🥈 2`;
+    else if (s.rank === 3) rankBadgeText = `🥉 3`;
 
     return `
       <div class="top30-card rank-${s.rank} ${isSelected ? 'selected' : ''}" data-code="${s.code}">
-        <span class="rank-badge">#${s.rank}</span>
+        <span class="rank-badge">${rankBadgeText}</span>
         <div class="top30-card-header">
           <span class="top30-stock-name">${escHtml(s.name)}</span>
           <span class="top30-stock-code">${escHtml(s.code)}</span>
         </div>
+
+        <div class="top30-price-row">
+          <div class="price-wrap">
+            <span class="top30-price ${hasPrice ? dir : 'flat'}">${priceStr}</span>
+            ${changeStr ? `<span class="top30-change-pill ${dir}">${changeStr}</span>` : ''}
+          </div>
+        </div>
+
         <div class="top30-card-metrics">
           <span class="top30-total-badge">💬 ${s.totalMentions} 次</span>
-          <span class="card-price ${hasPrice ? dir : 'flat'}" style="font-size:0.92rem;font-weight:700;">${priceStr}</span>
+          <span class="top30-avg-badge">日均 ${s.avgMentions}次</span>
+        </div>
+
+        <div class="top30-heat-wrap" title="聲量佔比 ${heatPct}%">
+          <div class="top30-heat-bar" style="width: ${heatPct}%;"></div>
         </div>
       </div>`;
   }).join('');

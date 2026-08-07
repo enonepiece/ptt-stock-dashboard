@@ -635,6 +635,73 @@
       font-weight: 600;
       color: var(--text-secondary);
     }
+    /* Top 30 Rank Cards Rich Styling */
+    .top30-price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 4px 0;
+    }
+    .top30-price-row .price-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .top30-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+    .top30-price.up { color: var(--up); }
+    .top30-price.down { color: var(--down); }
+    .top30-price.flat { color: var(--text-secondary); }
+
+    .top30-change-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .top30-change-pill.up {
+      background: var(--up-dim);
+      color: var(--up);
+      border: 1px solid var(--up-glow);
+    }
+    .top30-change-pill.down {
+      background: var(--down-dim);
+      color: var(--down);
+      border: 1px solid var(--down-glow);
+    }
+
+    .top30-avg-badge {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .top30-heat-wrap {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .top30-heat-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #a855f7);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .rank-1 .top30-heat-bar {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+    }
+
     .modal-mentions-list {
       display: flex;
       flex-direction: column;
