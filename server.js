@@ -567,225 +567,280 @@ app.get('/api/market-index', async (req, res) => {
 
 // ── 路由：近十日閒聊聲量 Top 30 統計與分析 ──────────────────
 const { detectStocks, STOCK_DICT } = require('./stockDict');
+const fs = require('fs');
 
-let tenDaysCache = {
-  data: {},
-  fetchedAt: 0,
-};
+const CACHE_FILE = path.join(__dirname, 'data', 'analytics_10days_cache.json');
+
+// 確保 data 目錄存在
+if (!fs.existsSync(path.join(__dirname, 'data'))) {
+  fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
+}
+
+function loadAnalyticsCacheFromFile() {
+  try {
+    if (fs.existsSync(CACHE_FILE)) {
+      const raw = fs.readFileSync(CACHE_FILE, 'utf-8');
+      const data = JSON.parse(raw);
+      console.log('💾 [Ten-Day Analytics] 成功從本機檔案 analytics_10days_cache.json 0.001秒載入快照！');
+      return data;
+    }
+  } catch (e) {
+    console.warn('[Analytics File Cache Load Error]', e.message);
+  }
+  return { data: {}, fetchedAt: 0 };
+}
+
+function saveAnalyticsCacheToFile(cacheData) {
+  try {
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(cacheData, null, 2), 'utf-8');
+    console.log('💾 [Ten-Day Analytics] 已成功持久化儲存至本機檔案 analytics_10days_cache.json');
+  } catch (e) {
+    console.warn('[Analytics File Cache Save Error]', e.message);
+  }
+}
+
+let tenDaysCache = loadAnalyticsCacheFromFile();
+
+async function generateAndSaveTenDaysAnalytics(category = 'all') {
+  const todayObj = new Date();
+  const todayYMD = `${todayObj.getFullYear()}/${String(todayObj.getMonth() + 1).padStart(2, '0')}/${String(todayObj.getDate()).padStart(2, '0')}`;
+  const todayMD  = `${todayObj.getMonth() + 1}/${String(todayObj.getDate()).padStart(2, '0')}`;
+  const todayMDShort = `${todayObj.getMonth() + 1}/${todayObj.getDate()}`;
+
+  const scannedArticles = [];
+  let pageUrl = 'https://www.ptt.cc/bbs/Stock/search?q=' + encodeURIComponent('閒聊');
+
+  for (let p = 0; p < 8; p++) {
+    let html;
+    try { html = await fetchPTT(pageUrl); } catch { break; }
+    const $ = cheerio.load(html);
+
+    $('.r-ent').each((_, el) => {
+      const $a     = $(el).find('.title a');
+      const title  = $a.text().trim();
+      const href   = $a.attr('href');
+      const rawDate = $(el).find('.date').text().trim();
+      const author = $(el).find('.author').text().trim();
+
+      if (href) {
+        const m = title.match(/(\d{4}\/\d{2}\/\d{2})/);
+        const fullDate = m ? m[1] : rawDate;
+        scannedArticles.push({ title, url: 'https://www.ptt.cc' + href, date: fullDate, rawDate, author });
+      }
+    });
+
+    const prevHref = $('.btn-group-paging a').filter((_, el) => $(el).text().includes('上頁')).attr('href');
+    if (!prevHref) break;
+    pageUrl = 'https://www.ptt.cc' + prevHref;
+  }
+
+  const filteredArticles = scannedArticles.filter(a => {
+    if (a.date.includes(todayYMD) || a.rawDate === todayMD || a.rawDate === todayMDShort) return false;
+
+    const isIntraday   = a.title.includes('盤中') || a.title.includes('盤中閒聊');
+    const isAfterHours = a.title.includes('盤後') || a.title.includes('盤後閒聊');
+
+    if (category === 'intraday') return isIntraday;
+    if (category === 'afterHours') return isAfterHours;
+    return isIntraday || isAfterHours;
+  });
+
+  const dateMap = new Map();
+  for (const art of filteredArticles) {
+    if (!dateMap.has(art.date)) {
+      if (dateMap.size >= 10) break;
+      dateMap.set(art.date, []);
+    }
+    dateMap.get(art.date).push(art);
+  }
+
+  const uniqueDates = [...dateMap.keys()].reverse();
+  const stockStats  = new Map();
+  let totalPushesAnalyzed = 0;
+  let totalArticlesCount  = 0;
+
+  const allArtsToFetch = [];
+  for (const [dStr, arts] of dateMap.entries()) {
+    totalArticlesCount += arts.length;
+    arts.forEach(a => allArtsToFetch.push({ date: dStr, url: a.url }));
+  }
+
+  const batchSize = 3;
+  const articleResults = [];
+
+  for (let i = 0; i < allArtsToFetch.length; i += batchSize) {
+    const chunk = allArtsToFetch.slice(i, i + batchSize);
+    const chunkResults = await Promise.all(chunk.map(async item => {
+      try {
+        const html = await fetchPTT(item.url);
+        const $ = cheerio.load(html);
+        const pushes = [];
+        $('.push').each((_, el) => {
+          const content = $(el).find('.push-content').text().replace(/^:\s*/, '').trim();
+          if (content) pushes.push(content);
+        });
+        return { date: item.date, pushes };
+      } catch {
+        return { date: item.date, pushes: [] };
+      }
+    }));
+    articleResults.push(...chunkResults);
+    await new Promise(r => setTimeout(r, 120));
+  }
+
+  for (const resItem of articleResults) {
+    const dStr = resItem.date;
+    totalPushesAnalyzed += resItem.pushes.length;
+
+    for (const pushText of resItem.pushes) {
+      const detected = detectStocks(pushText);
+      for (const st of detected) {
+        if (!stockStats.has(st.code)) {
+          stockStats.set(st.code, {
+            code: st.code,
+            name: st.names[0],
+            totalMentions: 0,
+            dailyMentions: {},
+          });
+        }
+        const item = stockStats.get(st.code);
+        item.totalMentions += 1;
+        item.dailyMentions[dStr] = (item.dailyMentions[dStr] || 0) + 1;
+      }
+    }
+  }
+
+  const sortedStocks = [...stockStats.values()]
+    .sort((a, b) => b.totalMentions - a.totalMentions)
+    .slice(0, 30);
+
+  const topCodes = sortedStocks.map(s => s.code);
+  const stockPriceMap = new Map();
+
+  if (topCodes.length > 0) {
+    await Promise.all(topCodes.map(async code => {
+      try {
+        const info = await fetchStockFromYahoo(code);
+        if (info && info.price) stockPriceMap.set(code, info);
+      } catch {}
+    }));
+
+    const missingCodes = topCodes.filter(c => !stockPriceMap.has(c));
+    if (missingCodes.length > 0) {
+      try {
+        const cookie = await ensureTWSESession();
+        const tseChs = missingCodes.map(c => `tse_${c}.tw|otc_${c}.tw`).join('|');
+        const twseUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=${tseChs}&_=${Date.now()}`;
+        const resp = await fetch(twseUrl, {
+          headers: {
+            'Cookie': cookie || '',
+            'User-Agent': 'Mozilla/5.0',
+            'Referer': 'https://mis.twse.com.tw/stock/fibest.jsp',
+          }
+        });
+        const json = await resp.json();
+        const msgArray = json.msgArray || [];
+        msgArray.forEach(s => {
+          const parsed = extractStockPrice(s);
+          if (parsed && parsed.price) {
+            stockPriceMap.set(s.c, {
+              code: s.c,
+              name: s.n,
+              price: parsed.price,
+              change: parsed.change,
+              changePct: parsed.changePct,
+            });
+          }
+        });
+      } catch (e) {
+        console.warn('[Analytics TWSE Fallback Error]', e.message);
+      }
+    }
+  }
+
+  const finalTop30 = sortedStocks.map((s, rankIdx) => {
+    const pInfo = stockPriceMap.get(s.code) || {};
+    const avgMentions = (s.totalMentions / (uniqueDates.length || 1)).toFixed(1);
+
+    return {
+      rank: rankIdx + 1,
+      code: s.code,
+      name: s.name,
+      totalMentions: s.totalMentions,
+      avgMentions: Number(avgMentions),
+      dailyMentions: s.dailyMentions,
+      price: pInfo.price !== undefined ? pInfo.price : null,
+      change: pInfo.change !== undefined ? pInfo.change : null,
+      changePct: pInfo.changePct !== undefined ? pInfo.changePct : null,
+    };
+  });
+
+  const responsePayload = {
+    success: true,
+    category,
+    dates: uniqueDates,
+    totalArticlesCount,
+    totalPushesAnalyzed,
+    top30: finalTop30,
+    timestamp: Date.now(),
+  };
+
+  if (!tenDaysCache.data) tenDaysCache.data = {};
+  tenDaysCache.data[category] = responsePayload;
+  tenDaysCache.fetchedAt = Date.now();
+
+  saveAnalyticsCacheToFile(tenDaysCache);
+  return responsePayload;
+}
+
+// ── 午夜 12 點 (00:00:05) 自動 Cron 引擎 ────────────────────
+function scheduleMidnightCron() {
+  const now = new Date();
+  const nextMidnight = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    0, 0, 5
+  );
+
+  const msUntilMidnight = nextMidnight.getTime() - now.getTime();
+  console.log(`⏰ [Midnight Cron] 距離下一次午夜 12:00 自動近十日大數據更新還剩: ${(msUntilMidnight / 1000 / 60).toFixed(1)} 分鐘`);
+
+  setTimeout(async () => {
+    console.log('🌙 [Midnight Cron] 到了午夜 12 點！開始自動計算與儲存近十日聲量大數據...');
+    try {
+      await generateAndSaveTenDaysAnalytics('all');
+      await generateAndSaveTenDaysAnalytics('intraday');
+      await generateAndSaveTenDaysAnalytics('afterHours');
+      console.log('🎉 [Midnight Cron] 午夜 12 點近十日大數據自動更新並儲存完成！');
+    } catch (e) {
+      console.error('[Midnight Cron Error]', e.message);
+    }
+    scheduleMidnightCron();
+  }, msUntilMidnight);
+}
+
+scheduleMidnightCron();
 
 app.get('/api/analytics/ten-days', async (req, res) => {
   try {
     const category = req.query.category || 'all'; // all, intraday, afterHours
-    const now = Date.now();
 
-    // 歷史資料不可變，快取 15 分鐘
-    if (tenDaysCache.data[category] && (now - tenDaysCache.fetchedAt < 15 * 60 * 1000)) {
+    // 如果持久化檔案內有資料，0.001 秒直接回傳 (零等待)！
+    if (tenDaysCache.data && tenDaysCache.data[category]) {
       return res.json(tenDaysCache.data[category]);
     }
 
-    const todayObj = new Date();
-    const todayYMD = `${todayObj.getFullYear()}/${String(todayObj.getMonth() + 1).padStart(2, '0')}/${String(todayObj.getDate()).padStart(2, '0')}`;
-    const todayMD  = `${todayObj.getMonth() + 1}/${String(todayObj.getDate()).padStart(2, '0')}`;
-    const todayMDShort = `${todayObj.getMonth() + 1}/${todayObj.getDate()}`;
-
-    // 爬取 PTT 原生搜尋文章 (搜尋「閒聊」)
-    const scannedArticles = [];
-    let pageUrl = 'https://www.ptt.cc/bbs/Stock/search?q=' + encodeURIComponent('閒聊');
-
-    for (let p = 0; p < 8; p++) {
-      let html;
-      try { html = await fetchPTT(pageUrl); } catch { break; }
-      const $ = cheerio.load(html);
-
-      $('.r-ent').each((_, el) => {
-        const $a     = $(el).find('.title a');
-        const title  = $a.text().trim();
-        const href   = $a.attr('href');
-        const rawDate = $(el).find('.date').text().trim();
-        const author = $(el).find('.author').text().trim();
-
-        if (href) {
-          const m = title.match(/(\d{4}\/\d{2}\/\d{2})/);
-          const fullDate = m ? m[1] : rawDate;
-          scannedArticles.push({ title, url: 'https://www.ptt.cc' + href, date: fullDate, rawDate, author });
-        }
-      });
-
-      const prevHref = $('.btn-group-paging a').filter((_, el) => $(el).text().includes('上頁')).attr('href');
-      if (!prevHref) break;
-      pageUrl = 'https://www.ptt.cc' + prevHref;
-    }
-
-    // 依據類別過濾，並嚴格排除「今日當天」
-    const filteredArticles = scannedArticles.filter(a => {
-      // 排除今日
-      if (a.date.includes(todayYMD) || a.rawDate === todayMD || a.rawDate === todayMDShort) return false;
-
-      const isIntraday   = a.title.includes('盤中') || a.title.includes('盤中閒聊');
-      const isAfterHours = a.title.includes('盤後') || a.title.includes('盤後閒聊');
-
-      if (category === 'intraday') return isIntraday;
-      if (category === 'afterHours') return isAfterHours;
-      return isIntraday || isAfterHours;
-    });
-
-    // 依日期與類別分組，最多保留近 10 個有文章的最新歷史日期
-    const dateMap = new Map();
-    for (const art of filteredArticles) {
-      if (!dateMap.has(art.date)) {
-        if (dateMap.size >= 10) break;
-        dateMap.set(art.date, []);
-      }
-      dateMap.get(art.date).push(art);
-    }
-
-    const uniqueDates = [...dateMap.keys()].reverse(); // 依時間由舊到新
-    const stockStats  = new Map(); // code -> { code, name, totalMentions, dailyMentions: { [date]: count } }
-    let totalPushesAnalyzed = 0;
-    let totalArticlesCount  = 0;
-
-    // 扁平化所有需爬取的歷史文章
-    const allArtsToFetch = [];
-    for (const [dStr, arts] of dateMap.entries()) {
-      totalArticlesCount += arts.length;
-      arts.forEach(a => allArtsToFetch.push({ date: dStr, url: a.url }));
-    }
-
-    // 分批次 (每批 3 篇) 避免觸發 PTT Rate Limit
-    const batchSize = 3;
-    const articleResults = [];
-
-    for (let i = 0; i < allArtsToFetch.length; i += batchSize) {
-      const chunk = allArtsToFetch.slice(i, i + batchSize);
-      const chunkResults = await Promise.all(chunk.map(async item => {
-        try {
-          const html = await fetchPTT(item.url);
-          const $ = cheerio.load(html);
-          const pushes = [];
-          $('.push').each((_, el) => {
-            const content = $(el).find('.push-content').text().replace(/^:\s*/, '').trim();
-            if (content) pushes.push(content);
-          });
-          return { date: item.date, pushes };
-        } catch {
-          return { date: item.date, pushes: [] };
-        }
-      }));
-      articleResults.push(...chunkResults);
-      await new Promise(r => setTimeout(r, 120));
-    }
-
-    for (const resItem of articleResults) {
-      const dStr = resItem.date;
-      totalPushesAnalyzed += resItem.pushes.length;
-
-      for (const pushText of resItem.pushes) {
-        const detected = detectStocks(pushText);
-        for (const st of detected) {
-          if (!stockStats.has(st.code)) {
-            stockStats.set(st.code, {
-              code: st.code,
-              name: st.names[0],
-              totalMentions: 0,
-              dailyMentions: {},
-            });
-          }
-          const item = stockStats.get(st.code);
-          item.totalMentions += 1;
-          item.dailyMentions[dStr] = (item.dailyMentions[dStr] || 0) + 1;
-        }
-      }
-    }
-
-    // 排序選出聲量最高的前 30 名股票
-    const sortedStocks = [...stockStats.values()]
-      .sort((a, b) => b.totalMentions - a.totalMentions)
-      .slice(0, 30);
-
-    // 為前 30 名股票抓取 Yahoo & TWSE 即時股價現價
-    const topCodes = sortedStocks.map(s => s.code);
-    const stockPriceMap = new Map();
-
-    if (topCodes.length > 0) {
-      // 1. 優先爬取 Yahoo
-      await Promise.all(topCodes.map(async code => {
-        try {
-          const info = await fetchStockFromYahoo(code);
-          if (info && info.price) stockPriceMap.set(code, info);
-        } catch {}
-      }));
-
-      // 2. 針對查無 Yahoo 現價的股票，使用 TWSE 官方 API 備援獲取
-      const missingCodes = topCodes.filter(c => !stockPriceMap.has(c));
-      if (missingCodes.length > 0) {
-        try {
-          const cookie = await ensureTWSESession();
-          const tseChs = missingCodes.map(c => `tse_${c}.tw|otc_${c}.tw`).join('|');
-          const twseUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=${tseChs}&_=${Date.now()}`;
-          const resp = await fetch(twseUrl, {
-            headers: {
-              'Cookie': cookie || '',
-              'User-Agent': 'Mozilla/5.0',
-              'Referer': 'https://mis.twse.com.tw/stock/fibest.jsp',
-            }
-          });
-          const json = await resp.json();
-          const msgArray = json.msgArray || [];
-          msgArray.forEach(s => {
-            const parsed = extractStockPrice(s);
-            if (parsed && parsed.price) {
-              stockPriceMap.set(s.c, {
-                code: s.c,
-                name: s.n,
-                price: parsed.price,
-                change: parsed.change,
-                changePct: parsed.changePct,
-              });
-            }
-          });
-        } catch (e) {
-          console.warn('[Analytics TWSE Fallback Error]', e.message);
-        }
-      }
-    }
-
-    // 組合最終結果
-    const finalTop30 = sortedStocks.map((s, rankIdx) => {
-      const pInfo = stockPriceMap.get(s.code) || {};
-      const avgMentions = (s.totalMentions / (uniqueDates.length || 1)).toFixed(1);
-
-      return {
-        rank: rankIdx + 1,
-        code: s.code,
-        name: s.name,
-        totalMentions: s.totalMentions,
-        avgMentions: Number(avgMentions),
-        dailyMentions: s.dailyMentions,
-        price: pInfo.price || null,
-        change: pInfo.change || null,
-        changePct: pInfo.changePct || null,
-      };
-    });
-
-    const responsePayload = {
-      success: true,
-      category,
-      dates: uniqueDates,
-      totalArticlesCount,
-      totalPushesAnalyzed,
-      top30: finalTop30,
-      timestamp: Date.now(),
-    };
-
-    tenDaysCache.data[category] = responsePayload;
-    tenDaysCache.fetchedAt = now;
-
-    res.json(responsePayload);
+    // 若第一次尚無檔案，現場計算並持久化寫入檔案
+    const data = await generateAndSaveTenDaysAnalytics(category);
+    res.json(data);
   } catch (err) {
     console.error('[Ten Days Analytics Error]', err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+
 
 // ── WebSocket 0.5 秒級即時串流廣播引擎 ─────────────────────
 const http      = require('http');
