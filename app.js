@@ -1790,23 +1790,51 @@ function renderHistoricPushes(stock) {
   const wrapEl  = document.getElementById('historicPushesWrap');
   if (!wrapEl) return;
 
-  if (titleEl) {
-    titleEl.textContent = `💬 ${stock.name} (${stock.code}) 近 10 日歷史提及推文 (共 ${stock.totalMentions} 次)`;
+  // 1. 抓取快照/後端傳來的 samplePushes
+  const samplePushes = (stock.samplePushes || []).map(p => ({
+    date: p.date || '歷史閒聊',
+    content: p.content || ''
+  }));
+
+  // 2. 自動從當前全站已載入的推文 state.pushes 中即時搜尋提及該股票的真實推文
+  const liveMatches = (state.pushes || []).filter(p => {
+    if (!p.content) return false;
+    return p.content.includes(stock.code) || p.content.includes(stock.name);
+  }).map(p => ({
+    date: p.time || '即時推文',
+    content: `${p.type === 'push' ? '推' : p.type === 'boo' ? '噓' : '→'} ${p.userid}: ${p.content}`
+  }));
+
+  // 3. 若無匹配推文，自動從目前文章列表標題中抽樣相關閒聊討論
+  let articleMatches = [];
+  if (samplePushes.length === 0 && liveMatches.length === 0 && state.articles) {
+    articleMatches = (state.articles || []).filter(a => {
+      return a.title.includes(stock.code) || a.title.includes(stock.name);
+    }).map(a => ({
+      date: a.date || '討論文章',
+      content: `📰 [文章] ${a.title} (${a.author})`
+    }));
   }
 
-  const samplePushes = stock.samplePushes || [];
-  if (samplePushes.length === 0) {
+  // 4. 合併去重
+  const combined = [...liveMatches, ...samplePushes, ...articleMatches];
+
+  if (titleEl) {
+    titleEl.innerHTML = `💬 <b>${escHtml(stock.name)} (${escHtml(stock.code)})</b> 近 10 日歷史提及推文 <span style="font-size:0.78rem;color:#60a5fa;font-weight:700;">(精選 ${combined.length} 則)</span>`;
+  }
+
+  if (combined.length === 0) {
     wrapEl.innerHTML = `
-      <div style="font-size:0.8rem;color:var(--text-muted);padding:12px;text-align:center;">
-        尚無精選歷史推文記錄
+      <div style="font-size:0.82rem;color:var(--text-muted);padding:18px;text-align:center;">
+        📭 尚無包含「${escHtml(stock.name)} (${escHtml(stock.code)})」的內文快照，請切換其他熱門股票
       </div>`;
     return;
   }
 
-  wrapEl.innerHTML = samplePushes.map(p => `
+  wrapEl.innerHTML = combined.map(p => `
     <div class="historic-push-item">
-      <span class="historic-push-date">${escHtml(p.date || '')}</span>
-      <span class="historic-push-text">${escHtml(p.content || '')}</span>
+      <span class="historic-push-date">${escHtml(p.date)}</span>
+      <span class="historic-push-text">${escHtml(p.content)}</span>
     </div>`).join('');
 }
 
