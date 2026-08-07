@@ -1743,7 +1743,7 @@ function renderTenDayAnalysis(data) {
       card.classList.add('selected');
       state.selectedTrendCode = card.dataset.code;
 
-      // 點擊個股卡片時，自動切換至「單股走勢」模式
+      // 1. 切換圖表為該股單股走勢
       state.trendChartMode = 'single';
       const btnMulti  = document.getElementById('btnMultiChartMode');
       const btnSingle = document.getElementById('btnSingleChartMode');
@@ -1751,6 +1751,9 @@ function renderTenDayAnalysis(data) {
       if (btnSingle) btnSingle.classList.add('active');
 
       drawTenDayTrendChart(card.dataset.code);
+
+      // 2. 🌟 開啟股票 Popup 視窗，即刻列出所有提及該股票的 PTT 推文！
+      openStockModal(card.dataset.code);
     });
   });
 
@@ -1988,11 +1991,17 @@ function renderDailyBreakdownTable(dates, top30) {
   // 渲染 Table Body
   dom.dailyTableBody.innerHTML = top30.map(s => {
     return `
-      <tr>
-        <td style="font-weight:700;color:var(--text-primary);">${escHtml(s.name)} (${s.code})</td>
+      <tr class="daily-table-row" data-code="${s.code}">
+        <td style="font-weight:700;color:#60a5fa;cursor:pointer;" title="點擊檢視 ${escHtml(s.name)} 提及推文與即時走勢">💬 ${escHtml(s.name)} (${s.code})</td>
         <td style="color:var(--accent);font-weight:700;">${s.totalMentions} 次</td>
         <td>${s.avgMentions} 次/日</td>
         ${dates.map(d => `<td>${s.dailyMentions[d] || 0}</td>`).join('')}
       </tr>`;
   }).join('');
+
+  dom.dailyTableBody.querySelectorAll('.daily-table-row').forEach(row => {
+    row.addEventListener('click', () => {
+      openStockModal(row.dataset.code);
+    });
+  });
 }
