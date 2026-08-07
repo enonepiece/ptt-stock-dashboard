@@ -539,15 +539,348 @@
       padding: 14px;
       min-width: 0;
     }
-    .chart-header {
-      font-size: 0.85rem;
+    /* ════════════════════════════════════════════════════════
+       TEN-DAY ANALYTICS RICH AESTHETICS & GRID LAYOUT
+    ════════════════════════════════════════════════════════ */
+    .view-switch-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(91, 156, 246, 0.4);
+      padding: 3px;
+      border-radius: var(--radius-md);
+      margin-left: 12px;
+      box-shadow: 0 0 16px rgba(91, 156, 246, 0.2);
+    }
+    .view-tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 6px 14px;
+      font-size: 0.84rem;
       font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .view-tab-btn:hover {
+      color: #ffffff;
+      background: rgba(255,255,255,0.08);
+    }
+    .view-tab-btn.active {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.5);
+    }
+
+    .analytics-view {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 18px 24px;
+      overflow-y: auto;
+      background: radial-gradient(circle at 50% 0%, #0f172a 0%, #080d1a 100%);
+    }
+
+    .analytics-summary-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .summary-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+    .summary-card:hover { transform: translateY(-2px); }
+    .summary-card.highlight {
+      border-color: rgba(245, 158, 11, 0.5);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(15, 23, 42, 0.8));
+    }
+    .summary-card .card-label {
+      font-size: 0.78rem;
       color: var(--text-secondary);
-      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    .summary-card .card-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .analytics-filter-toolbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 14px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .analytics-cat-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-secondary);
+      padding: 7px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .analytics-cat-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+    .analytics-cat-btn.active {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: #3b82f6;
+      color: #60a5fa;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+    }
+    .analytics-hint {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .analytics-main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .top30-rank-section, .trend-detail-section {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .top30-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
       gap: 12px;
+      overflow-y: auto;
+      padding-right: 6px;
+      flex: 1;
+    }
+
+    .top30-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .top30-card:hover {
+      transform: translateY(-3px);
+      border-color: #3b82f6;
+      background: rgba(30, 41, 59, 0.8);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+    }
+    .top30-card.selected {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.15);
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+
+    /* 前三名皇金白銀青銅 Medal Cards */
+    .top30-card.rank-1 {
+      border-color: rgba(245, 158, 11, 0.7);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.16), rgba(30, 41, 59, 0.6));
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
+    }
+    .top30-card.rank-2 {
+      border-color: rgba(203, 213, 225, 0.6);
+      background: linear-gradient(135deg, rgba(203, 213, 225, 0.14), rgba(30, 41, 59, 0.6));
+    }
+    .top30-card.rank-3 {
+      border-color: rgba(217, 119, 6, 0.6);
+      background: linear-gradient(135deg, rgba(217, 119, 6, 0.14), rgba(30, 41, 59, 0.6));
+    }
+
+    .rank-badge {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #64748b;
+    }
+    .rank-1 .rank-badge { color: #f59e0b; font-size: 1rem; }
+    .rank-2 .rank-badge { color: #cbd5e1; font-size: 1rem; }
+    .rank-3 .rank-badge { color: #d97706; font-size: 1rem; }
+
+    .top30-card-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .top30-stock-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .top30-stock-code {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .top30-price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2px 0;
+    }
+    .top30-price-row .price-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .top30-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+    .top30-price.up { color: #ff4455; }
+    .top30-price.down { color: #00e87a; }
+    .top30-price.flat { color: #94a3b8; }
+
+    .top30-change-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .top30-change-pill.up {
+      background: rgba(255, 68, 85, 0.15);
+      color: #ff4455;
+      border: 1px solid rgba(255, 68, 85, 0.3);
+    }
+    .top30-change-pill.down {
+      background: rgba(0, 232, 122, 0.15);
+      color: #00e87a;
+      border: 1px solid rgba(0, 232, 122, 0.3);
+    }
+
+    .top30-card-metrics {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+    }
+    .top30-total-badge {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .top30-avg-badge {
+      font-size: 0.74rem;
+      color: #94a3b8;
+    }
+
+    .top30-heat-wrap {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .top30-heat-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #a855f7);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+    .rank-1 .top30-heat-bar {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+    }
+
+    .trend-chart-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      height: 240px;
+    }
+
+    .daily-table-wrap {
+      flex: 1;
+      overflow: auto;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+    }
+    .daily-breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      text-align: center;
+    }
+    .daily-breakdown-table th, .daily-breakdown-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      white-space: nowrap;
+    }
+    .daily-breakdown-table th {
+      background: rgba(15,23,42,0.9);
+      color: var(--text-secondary);
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .daily-breakdown-table tbody tr:hover {
+      background: rgba(59, 130, 246, 0.08);
+    }
+
+    @media (max-width: 1100px) {
+      .analytics-summary-bar { grid-template-columns: repeat(2, 1fr); }
+      .analytics-main-grid { grid-template-columns: 1fr; }
     }
     .chart-canvas-wrap {
       width: 100%;
