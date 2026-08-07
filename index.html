@@ -1353,6 +1353,18 @@
 
   <div class="topbar-sep"></div>
 
+  <!-- 全頁切換視圖頁籤 (Desktop & Tablet) -->
+  <div class="view-switch-nav" id="viewSwitchNav">
+    <button class="view-tab-btn active" id="viewTabDashboard" data-view="dashboard">
+      <span class="tab-icon">💬</span> 即時看盤大廳
+    </button>
+    <button class="view-tab-btn" id="viewTabAnalytics" data-view="analytics">
+      <span class="tab-icon">📊</span> 近十日聲量 Top 30 分析
+    </button>
+  </div>
+
+  <div class="topbar-sep"></div>
+
   <div class="market-index-bar" id="marketIndexBar" title="大盤加權指數">
     <span class="index-label">加權指數</span>
     <span class="index-price" id="indexPrice">─</span>
@@ -1402,6 +1414,10 @@
     <span class="mobile-nav-text">偵測股票</span>
     <span class="badge mobile-stock-badge" id="mobileStockBadge">0</span>
   </button>
+  <button class="mobile-nav-btn" id="mobileTabAnalytics" data-tab="analytics">
+    <span class="mobile-nav-icon">📊</span>
+    <span class="mobile-nav-text">十日統計</span>
+  </button>
 </nav>
 
 <main class="dashboard" id="dashboard" data-mobile-view="articles" role="main">
@@ -1411,6 +1427,7 @@
     <div class="panel-header">
       <span class="panel-title">偵測股票</span>
       <span class="badge" id="stockCount">0</span>
+      <button class="btn btn-primary" id="btnAnalyticsShortcut" style="margin-left:auto;font-size:0.75rem;padding:4px 8px;background:var(--accent-dim);border-color:var(--accent);color:var(--accent);font-weight:600;"><span class="btn-icon">📊</span> 十日統計</button>
       <button class="btn btn-danger" id="clearStocks" aria-label="清空所有股票"><span class="btn-icon">✕</span><span class="btn-text"> 清空</span></button>
     </div>
 

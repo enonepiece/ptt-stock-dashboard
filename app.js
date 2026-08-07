@@ -236,9 +236,18 @@ function bindEvents() {
     });
   });
 
+  if ($('btnAnalyticsShortcut')) {
+    $('btnAnalyticsShortcut').addEventListener('click', () => switchMainView('analytics'));
+  }
+
   $$('.mobile-nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      setMobileTab(btn.dataset.tab);
+      if (btn.dataset.tab === 'analytics') {
+        switchMainView('analytics');
+      } else {
+        if (state.currentMainView !== 'dashboard') switchMainView('dashboard');
+        setMobileTab(btn.dataset.tab);
+      }
     });
   });
 
