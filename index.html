@@ -673,7 +673,7 @@
       min-height: 0;
     }
 
-    .top30-rank-section, .trend-detail-section {
+    .top30-rank-section {
       background: rgba(15, 23, 42, 0.7);
       border: 1px solid rgba(255,255,255,0.08);
       backdrop-filter: blur(12px);
@@ -685,6 +685,59 @@
       overflow: hidden;
       min-height: 0;
       box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .trend-detail-section {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      min-height: 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .historic-pushes-wrap {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      max-height: 320px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .historic-push-item {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 6px;
+      font-size: 0.84rem;
+    }
+    .historic-push-item:hover {
+      background: rgba(30, 41, 59, 0.8);
+      border-color: rgba(59,130,246,0.3);
+    }
+    .historic-push-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      color: #60a5fa;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .historic-push-text {
+      color: #f1f5f9;
+      word-break: break-all;
+      line-height: 1.4;
     }
 
     .top30-cards-grid {
@@ -2053,7 +2106,7 @@
       </div>
     </div>
 
-    <!-- 右欄：聲量推移圖表 & 每日分佈明細 -->
+    <!-- 右欄：聲量推移圖表 & 每日分佈明細 & 歷史推文 -->
     <div class="trend-detail-section">
       <div class="section-title-bar">
         <span id="trendChartTitle">🔥 近 10 日熱門提及 Top 5 聲量大比拼</span>
@@ -2086,6 +2139,15 @@
             <!-- 動態插入資料列 -->
           </tbody>
         </table>
+      </div>
+
+      <div class="section-title" style="margin-top: 14px;">
+        <span id="historicPushesTitle">💬 近 10 日歷史提及推文 (請選擇股票卡片)</span>
+      </div>
+      <div class="historic-pushes-wrap" id="historicPushesWrap">
+        <div style="font-size:0.8rem;color:var(--text-muted);padding:12px;text-align:center;">
+          💡 點擊左側 Top 30 股票卡片即可檢視近 10 日提及該股票的歷史 PTT 推文
+        </div>
       </div>
     </div>
   </div>

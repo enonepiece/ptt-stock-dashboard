@@ -1743,7 +1743,7 @@ function renderTenDayAnalysis(data) {
       card.classList.add('selected');
       state.selectedTrendCode = card.dataset.code;
 
-      // 1. 切換圖表為該股單股走勢
+      // 1. 切換右側聲量折線圖為該股單股走勢
       state.trendChartMode = 'single';
       const btnMulti  = document.getElementById('btnMultiChartMode');
       const btnSingle = document.getElementById('btnSingleChartMode');
@@ -1752,8 +1752,9 @@ function renderTenDayAnalysis(data) {
 
       drawTenDayTrendChart(card.dataset.code);
 
-      // 2. 🌟 開啟股票 Popup 視窗，即刻列出所有提及該股票的 PTT 推文！
-      openStockModal(card.dataset.code);
+      // 2. 🌟 渲染該股票近 10 日歷史提及推文列表！
+      const clickedStock = top30.find(s => s.code === card.dataset.code);
+      if (clickedStock) renderHistoricPushes(clickedStock);
     });
   });
 
@@ -1777,9 +1778,36 @@ function renderTenDayAnalysis(data) {
     });
   }
 
-  // 3. 繪製趨勢圖與明細表
+  // 3. 預設渲染第一名股票之聲量趨勢圖、每日明細表與歷史推文
+  const defaultStock = top30.find(s => s.code === state.selectedTrendCode) || top30[0];
   drawTenDayTrendChart(state.selectedTrendCode);
   renderDailyBreakdownTable(dates, top30);
+  if (defaultStock) renderHistoricPushes(defaultStock);
+}
+
+function renderHistoricPushes(stock) {
+  const titleEl = document.getElementById('historicPushesTitle');
+  const wrapEl  = document.getElementById('historicPushesWrap');
+  if (!wrapEl) return;
+
+  if (titleEl) {
+    titleEl.textContent = `💬 ${stock.name} (${stock.code}) 近 10 日歷史提及推文 (共 ${stock.totalMentions} 次)`;
+  }
+
+  const samplePushes = stock.samplePushes || [];
+  if (samplePushes.length === 0) {
+    wrapEl.innerHTML = `
+      <div style="font-size:0.8rem;color:var(--text-muted);padding:12px;text-align:center;">
+        尚無精選歷史推文記錄
+      </div>`;
+    return;
+  }
+
+  wrapEl.innerHTML = samplePushes.map(p => `
+    <div class="historic-push-item">
+      <span class="historic-push-date">${escHtml(p.date || '')}</span>
+      <span class="historic-push-text">${escHtml(p.content || '')}</span>
+    </div>`).join('');
 }
 
 function renderChartLegendBar(top5) {
@@ -2001,7 +2029,18 @@ function renderDailyBreakdownTable(dates, top30) {
 
   dom.dailyTableBody.querySelectorAll('.daily-table-row').forEach(row => {
     row.addEventListener('click', () => {
-      openStockModal(row.dataset.code);
+      const code = row.dataset.code;
+      state.selectedTrendCode = code;
+      state.trendChartMode = 'single';
+
+      const btnMulti  = document.getElementById('btnMultiChartMode');
+      const btnSingle = document.getElementById('btnSingleChartMode');
+      if (btnMulti)  btnMulti.classList.remove('active');
+      if (btnSingle) btnSingle.classList.add('active');
+
+      drawTenDayTrendChart(code);
+      const clickedStock = top30.find(s => s.code === code);
+      if (clickedStock) renderHistoricPushes(clickedStock);
     });
   });
 }

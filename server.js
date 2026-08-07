@@ -701,11 +701,15 @@ async function generateAndSaveTenDaysAnalytics(category = 'all') {
             name: st.names[0],
             totalMentions: 0,
             dailyMentions: {},
+            samplePushes: [],
           });
         }
         const item = stockStats.get(st.code);
         item.totalMentions += 1;
         item.dailyMentions[dStr] = (item.dailyMentions[dStr] || 0) + 1;
+        if (item.samplePushes.length < 25) {
+          item.samplePushes.push({ date: dStr, content: pushText });
+        }
       }
     }
   }
@@ -769,6 +773,7 @@ async function generateAndSaveTenDaysAnalytics(category = 'all') {
       totalMentions: s.totalMentions,
       avgMentions: Number(avgMentions),
       dailyMentions: s.dailyMentions,
+      samplePushes: s.samplePushes || [],
       price: pInfo.price !== undefined ? pInfo.price : null,
       change: pInfo.change !== undefined ? pInfo.change : null,
       changePct: pInfo.changePct !== undefined ? pInfo.changePct : null,
