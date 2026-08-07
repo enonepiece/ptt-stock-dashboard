@@ -702,19 +702,51 @@ app.get('/api/analytics/ten-days', async (req, res) => {
       .sort((a, b) => b.totalMentions - a.totalMentions)
       .slice(0, 30);
 
-    // 為前 30 名股票抓取 Yahoo 即時股價現價
+    // 為前 30 名股票抓取 Yahoo & TWSE 即時股價現價
     const topCodes = sortedStocks.map(s => s.code);
     const stockPriceMap = new Map();
 
     if (topCodes.length > 0) {
+      // 1. 優先爬取 Yahoo
       await Promise.all(topCodes.map(async code => {
         try {
           const info = await fetchStockFromYahoo(code);
-          stockPriceMap.set(code, info);
-        } catch (e) {
-          stockPriceMap.set(code, null);
-        }
+          if (info && info.price) stockPriceMap.set(code, info);
+        } catch {}
       }));
+
+      // 2. 針對查無 Yahoo 現價的股票，使用 TWSE 官方 API 備援獲取
+      const missingCodes = topCodes.filter(c => !stockPriceMap.has(c));
+      if (missingCodes.length > 0) {
+        try {
+          const cookie = await ensureTWSESession();
+          const tseChs = missingCodes.map(c => `tse_${c}.tw|otc_${c}.tw`).join('|');
+          const twseUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=${tseChs}&_=${Date.now()}`;
+          const resp = await fetch(twseUrl, {
+            headers: {
+              'Cookie': cookie || '',
+              'User-Agent': 'Mozilla/5.0',
+              'Referer': 'https://mis.twse.com.tw/stock/fibest.jsp',
+            }
+          });
+          const json = await resp.json();
+          const msgArray = json.msgArray || [];
+          msgArray.forEach(s => {
+            const parsed = extractStockPrice(s);
+            if (parsed && parsed.price) {
+              stockPriceMap.set(s.c, {
+                code: s.c,
+                name: s.n,
+                price: parsed.price,
+                change: parsed.change,
+                changePct: parsed.changePct,
+              });
+            }
+          });
+        } catch (e) {
+          console.warn('[Analytics TWSE Fallback Error]', e.message);
+        }
+      }
     }
 
     // 組合最終結果
