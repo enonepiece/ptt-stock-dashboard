@@ -424,6 +424,7 @@ export default {
       if (url.pathname === '/api/ptt/article')  return await handlePttArticle(request);
       if (url.pathname === '/api/stock')         return await handleStock(request);
       if (url.pathname === '/api/market-index')  return await handleMarketIndex(request);
+      if (url.pathname === '/api/analytics/ten-days') return await handlePttArticles(request);
 
       return new Response('PTT Stock Dashboard API\n\nEndpoints:\n  GET /api/ptt/articles\n  GET /api/ptt/article\n  GET /api/stock', {
         headers: { 'Content-Type': 'text/plain; charset=utf-8' },

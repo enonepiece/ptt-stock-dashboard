@@ -431,6 +431,7 @@ export default {
       if (url.pathname === '/api/stock')         return await handleStock(request);
       if (url.pathname === '/api/stock-chart')   return await handleStockChart(request);
       if (url.pathname === '/api/market-index')  return await handleMarketIndex(request);
+      if (url.pathname === '/api/analytics/ten-days') return await handlePttArticles(request);
 
       return env.ASSETS ? env.ASSETS.fetch(request) : new Response('Not Found', { status: 404 });
     } catch (err) {

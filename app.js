@@ -32,6 +32,10 @@ let state = {
   tempModalEntry:   null,        // 獨立 Modal 暫存（不污染左側偵測股票列表）
   chartHoverIndex:  null,        // 當前滑鼠懸停於走勢圖的數據 Index
   mobileTab:        'articles',  // 行動端分頁：pushes, articles, stocks
+  currentMainView:  'dashboard', // 主視圖：dashboard, analytics
+  analyticsCategory:'all',       // 分析類別：all, intraday, afterHours
+  analyticsData:    null,        // 近十日大數據 API 資料
+  selectedTrendCode:null,        // 當前看趨勢圖的股票代號
 };
 
 /* ════════════════════════════════════════════════════════
@@ -42,6 +46,9 @@ const $$ = sel => document.querySelectorAll(sel);
 
 const dom = {
   dashboard:            $('dashboard'),
+  tenDayAnalysisView:   $('tenDayAnalysisView'),
+  viewTabDashboard:     $('viewTabDashboard'),
+  viewTabAnalytics:     $('viewTabAnalytics'),
   mobileTabPushes:      $('mobileTabPushes'),
   mobileTabArticles:    $('mobileTabArticles'),
   mobileTabStocks:      $('mobileTabStocks'),
@@ -68,6 +75,15 @@ const dom = {
   articleHeaderContent: $('articleHeaderContent'),
   articleHeaderTitle:   $('articleHeaderTitle'),
   articleHeaderMeta:    $('articleHeaderMeta'),
+  analyticsDateRange:   $('analyticsDateRange'),
+  analyticsArticleCount:$('analyticsArticleCount'),
+  analyticsPushCount:   $('analyticsPushCount'),
+  analyticsTopStock:    $('analyticsTopStock'),
+  top30CardsGrid:       $('top30CardsGrid'),
+  trendChartTitle:      $('trendChartTitle'),
+  tenDayTrendCanvas:    $('tenDayTrendCanvas'),
+  dailyTableHeadRow:    $('dailyTableHeadRow'),
+  dailyTableBody:       $('dailyTableBody'),
   sentimentWrap:        $('sentimentWrap'),
   sentimentUp:          $('sentimentUp'),
   sentimentDown:        $('sentimentDown'),
@@ -204,6 +220,22 @@ function setMobileTab(tabName) {
    EVENT BINDING
 ════════════════════════════════════════════════════════ */
 function bindEvents() {
+  if (dom.viewTabDashboard) {
+    dom.viewTabDashboard.addEventListener('click', () => switchMainView('dashboard'));
+  }
+  if (dom.viewTabAnalytics) {
+    dom.viewTabAnalytics.addEventListener('click', () => switchMainView('analytics'));
+  }
+
+  $$('.analytics-cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.analytics-cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.analyticsCategory = btn.dataset.cat;
+      fetchTenDayAnalytics(state.analyticsCategory);
+    });
+  });
+
   $$('.mobile-nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       setMobileTab(btn.dataset.tab);
@@ -1567,4 +1599,240 @@ function showToast(message, type = 'info', duration = 3500) {
     toast.style.animation = 'toastOut 0.3s ease forwards';
     setTimeout(() => toast.remove(), 320);
   }, duration);
+}
+
+/* ════════════════════════════════════════════════════════
+   TEN-DAY ANALYTICS CONTROLLER & RENDERER
+════════════════════════════════════════════════════════ */
+function switchMainView(viewName) {
+  state.currentMainView = viewName;
+
+  if (dom.viewTabDashboard) dom.viewTabDashboard.classList.toggle('active', viewName === 'dashboard');
+  if (dom.viewTabAnalytics) dom.viewTabAnalytics.classList.toggle('active', viewName === 'analytics');
+
+  if (viewName === 'dashboard') {
+    if (dom.dashboard) dom.dashboard.style.display = 'flex';
+    if (dom.tenDayAnalysisView) dom.tenDayAnalysisView.style.display = 'none';
+  } else {
+    if (dom.dashboard) dom.dashboard.style.display = 'none';
+    if (dom.tenDayAnalysisView) dom.tenDayAnalysisView.style.display = 'flex';
+    fetchTenDayAnalytics(state.analyticsCategory);
+  }
+}
+
+async function fetchTenDayAnalytics(category = 'all') {
+  if (!dom.top30CardsGrid) return;
+
+  dom.top30CardsGrid.innerHTML = `
+    <div class="article-loading" style="grid-column: 1 / -1; padding: 40px 0;">
+      <div class="spinner"></div>
+      <span>正在計算隔日封頂近十日歷史大數據...</span>
+    </div>`;
+
+  try {
+    const res  = await fetch(`${API_BASE}/api/analytics/ten-days?category=${category}&_=${Date.now()}`);
+    const data = await res.json();
+
+    if (!data.success) throw new Error(data.error || '載入近十日數據失敗');
+
+    state.analyticsData = data;
+    renderTenDayAnalysis(data);
+    showToast(`近十日聲量大數據載入完成 (${data.dates.length} 個歷史交易日)`, 'success');
+  } catch (err) {
+    dom.top30CardsGrid.innerHTML = `
+      <div class="article-loading" style="grid-column: 1 / -1; color: var(--down); padding: 40px 0;">
+        ⚠ 近十日聲量載入失敗：${err.message}
+      </div>`;
+    showToast(`載入分析失敗：${err.message}`, 'error');
+  }
+}
+
+function renderTenDayAnalysis(data) {
+  if (!data || !data.top30) return;
+
+  const { dates, totalArticlesCount, totalPushesAnalyzed, top30 } = data;
+
+  // 1. 渲染頂部 Summary Bar
+  if (dom.analyticsDateRange) {
+    const dStart = dates[0] || '';
+    const dEnd   = dates[dates.length - 1] || '';
+    dom.analyticsDateRange.textContent = dates.length ? `${dStart} ~ ${dEnd}` : '隔日統計近 10 交易日';
+  }
+  if (dom.analyticsArticleCount) dom.analyticsArticleCount.textContent = `${totalArticlesCount} 篇`;
+  if (dom.analyticsPushCount)    dom.analyticsPushCount.textContent    = `${totalPushesAnalyzed.toLocaleString('zh-TW')} 則`;
+  if (dom.analyticsTopStock) {
+    const top1 = top30[0];
+    dom.analyticsTopStock.textContent = top1 ? `${top1.name} (${top1.totalMentions}次)` : '─';
+  }
+
+  // 2. 渲染 Top 30 排行榜 Cards
+  if (top30.length === 0) {
+    dom.top30CardsGrid.innerHTML = `<div class="article-loading" style="grid-column: 1 / -1;">無符合的歷史資料</div>`;
+    return;
+  }
+
+  // 預設選中第一名
+  if (!state.selectedTrendCode || !top30.some(s => s.code === state.selectedTrendCode)) {
+    state.selectedTrendCode = top30[0]?.code;
+  }
+
+  dom.top30CardsGrid.innerHTML = top30.map(s => {
+    const isSelected = s.code === state.selectedTrendCode;
+    const { dir, symbol, dirSign } = getStockDirInfo(s.change, s.changePct);
+    const hasPrice = s.price !== null && s.price > 0;
+    const priceStr = hasPrice ? formatNum(s.price) : '─';
+
+    return `
+      <div class="top30-card rank-${s.rank} ${isSelected ? 'selected' : ''}" data-code="${s.code}">
+        <span class="rank-badge">#${s.rank}</span>
+        <div class="top30-card-header">
+          <span class="top30-stock-name">${escHtml(s.name)}</span>
+          <span class="top30-stock-code">${escHtml(s.code)}</span>
+        </div>
+        <div class="top30-card-metrics">
+          <span class="top30-total-badge">💬 ${s.totalMentions} 次</span>
+          <span class="card-price ${hasPrice ? dir : 'flat'}" style="font-size:0.92rem;font-weight:700;">${priceStr}</span>
+        </div>
+      </div>`;
+  }).join('');
+
+  // 綁定卡片點擊
+  dom.top30CardsGrid.querySelectorAll('.top30-card').forEach(card => {
+    card.addEventListener('click', () => {
+      dom.top30CardsGrid.querySelectorAll('.top30-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      state.selectedTrendCode = card.dataset.code;
+      drawTenDayTrendChart(card.dataset.code);
+    });
+  });
+
+  // 3. 繪製趨勢圖與明細表
+  drawTenDayTrendChart(state.selectedTrendCode);
+  renderDailyBreakdownTable(dates, top30);
+}
+
+function drawTenDayTrendChart(code) {
+  if (!state.analyticsData || !dom.tenDayTrendCanvas) return;
+
+  const { dates, top30 } = state.analyticsData;
+  const stock = top30.find(s => s.code === code) || top30[0];
+  if (!stock) return;
+
+  if (dom.trendChartTitle) {
+    dom.trendChartTitle.textContent = `📈 ${stock.name} (${stock.code}) 近 10 日聲量推移趨勢圖`;
+  }
+
+  const canvas = dom.tenDayTrendCanvas;
+  const ctx    = canvas.getContext('2d');
+  const w      = canvas.width;
+  const h      = canvas.height;
+
+  ctx.clearRect(0, 0, w, h);
+
+  const values = dates.map(d => stock.dailyMentions[d] || 0);
+  const maxVal = Math.max(...values, 5);
+
+  const pad = { top: 30, right: 30, bottom: 40, left: 45 };
+  const chartW = w - pad.left - pad.right;
+  const chartH = h - pad.top - pad.bottom;
+
+  // 背景網格
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+  ctx.lineWidth   = 1;
+  ctx.font        = '10px JetBrains Mono, monospace';
+  ctx.fillStyle   = '#64748b';
+  ctx.textAlign   = 'right';
+
+  for (let i = 0; i <= 4; i++) {
+    const yVal = Math.round((maxVal / 4) * i);
+    const yPx  = pad.top + chartH - (chartH * (i / 4));
+
+    ctx.beginPath();
+    ctx.moveTo(pad.left, yPx);
+    ctx.lineTo(w - pad.right, yPx);
+    ctx.stroke();
+
+    ctx.fillText(yVal, pad.left - 6, yPx + 3);
+  }
+
+  if (dates.length === 0) return;
+
+  // X 軸刻度與折線點位
+  const pts = dates.map((dStr, idx) => {
+    const xPx = pad.left + (chartW / Math.max(1, dates.length - 1)) * idx;
+    const val = stock.dailyMentions[dStr] || 0;
+    const yPx = pad.top + chartH - (chartH * (val / maxVal));
+    return { xPx, yPx, val, dStr };
+  });
+
+  // 繪製 X 軸日期文字
+  ctx.textAlign   = 'center';
+  ctx.textBaseline = 'top';
+  pts.forEach(p => {
+    ctx.fillText(p.dStr, p.xPx, pad.top + chartH + 8);
+  });
+
+  // 漸層填滿
+  const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
+  grad.addColorStop(0, 'rgba(91, 156, 246, 0.35)');
+  grad.addColorStop(1, 'rgba(91, 156, 246, 0.0)');
+
+  ctx.beginPath();
+  ctx.moveTo(pts[0].xPx, pad.top + chartH);
+  pts.forEach(p => ctx.lineTo(p.xPx, p.yPx));
+  ctx.lineTo(pts[pts.length - 1].xPx, pad.top + chartH);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // 折線
+  ctx.beginPath();
+  pts.forEach((p, i) => {
+    if (i === 0) ctx.moveTo(p.xPx, p.yPx);
+    else ctx.lineTo(p.xPx, p.yPx);
+  });
+  ctx.strokeStyle = '#5b9cf6';
+  ctx.lineWidth   = 2.5;
+  ctx.stroke();
+
+  // 節點 Data Points
+  pts.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.xPx, p.yPx, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#1e293b';
+    ctx.fill();
+    ctx.strokeStyle = '#5b9cf6';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // 數據數值 Label
+    if (p.val > 0) {
+      ctx.fillStyle = '#edf4ff';
+      ctx.font = '11px JetBrains Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(p.val, p.xPx, p.yPx - 16);
+    }
+  });
+}
+
+function renderDailyBreakdownTable(dates, top30) {
+  if (!dom.dailyTableHeadRow || !dom.dailyTableBody) return;
+
+  // 動態渲染標頭
+  dom.dailyTableHeadRow.innerHTML = `
+    <th>股票</th>
+    <th>10日總聲量</th>
+    <th>日均聲量</th>
+    ${dates.map(d => `<th>${d}</th>`).join('')}`;
+
+  // 渲染 Table Body
+  dom.dailyTableBody.innerHTML = top30.map(s => {
+    return `
+      <tr>
+        <td style="font-weight:700;color:var(--text-primary);">${escHtml(s.name)} (${s.code})</td>
+        <td style="color:var(--accent);font-weight:700;">${s.totalMentions} 次</td>
+        <td>${s.avgMentions} 次/日</td>
+        ${dates.map(d => `<td>${s.dailyMentions[d] || 0}</td>`).join('')}
+      </tr>`;
+  }).join('');
 }

@@ -1500,6 +1500,88 @@
   </section>
 </main>
 
+<!-- ═══════════════════════════════════════════════════════════
+  TEN-DAY ANALYTICS VIEW (近十日聲量 Top 30 分析大廳)
+═══════════════════════════════════════════════════════════ -->
+<main class="analytics-view" id="tenDayAnalysisView" style="display: none;">
+  <!-- 頂部統計指標 Summary Bar -->
+  <div class="analytics-summary-bar">
+    <div class="summary-card">
+      <span class="card-label">📅 統計時間跨度</span>
+      <span class="card-val" id="analyticsDateRange">隔日統計近 10 交易日</span>
+    </div>
+    <div class="summary-card">
+      <span class="card-label">📰 分析文章總數</span>
+      <span class="card-val" id="analyticsArticleCount">─ 篇</span>
+    </div>
+    <div class="summary-card">
+      <span class="card-label">💬 分析推文總筆數</span>
+      <span class="card-val" id="analyticsPushCount">─ 則</span>
+    </div>
+    <div class="summary-card highlight">
+      <span class="card-label">🏆 近10日聲量冠軍</span>
+      <span class="card-val" id="analyticsTopStock">─</span>
+    </div>
+  </div>
+
+  <!-- 分類篩選列 -->
+  <div class="analytics-filter-toolbar">
+    <div class="filter-group">
+      <button class="analytics-cat-btn active" data-cat="all">🔥 全部 (盤中+盤後)</button>
+      <button class="analytics-cat-btn" data-cat="intraday">📈 僅盤中閒聊</button>
+      <button class="analytics-cat-btn" data-cat="afterHours">📊 僅盤後閒聊</button>
+    </div>
+    <div class="analytics-hint">
+      💡 註：每日統計於隔日封頂進行（排除今日進行中文章），確保歷史數據 100% 穩定且零變動。
+    </div>
+  </div>
+
+  <!-- 分析內容主區塊 (雙欄) -->
+  <div class="analytics-main-grid">
+    <!-- 左欄：Top 30 排行榜 Cards Grid -->
+    <div class="top30-rank-section">
+      <div class="section-title">
+        <span>🏆 近 10 日熱門提及聲量 Top 30 排行榜</span>
+      </div>
+      <div class="top30-cards-grid" id="top30CardsGrid">
+        <div class="article-loading" style="grid-column: 1 / -1; padding: 40px 0;">
+          <div class="spinner"></div>
+          <span>計算分析近十日歷史大數據中...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右欄：聲量推移圖表 & 每日分佈明細 -->
+    <div class="trend-detail-section">
+      <div class="section-title">
+        <span id="trendChartTitle">📈 聲量推移趨勢圖 (請點選左側股票卡片)</span>
+      </div>
+      <div class="trend-chart-box">
+        <canvas id="tenDayTrendCanvas" width="600" height="220"></canvas>
+      </div>
+
+      <div class="section-title" style="margin-top: 14px;">
+        <span>📅 近 10 日每日提及次數明細表</span>
+      </div>
+      <div class="daily-table-wrap">
+        <table class="daily-breakdown-table" id="dailyBreakdownTable">
+          <thead>
+            <tr id="dailyTableHeadRow">
+              <th>股票</th>
+              <th>10日總聲量</th>
+              <th>日均聲量</th>
+              <!-- 動態插入日期標頭 -->
+            </tr>
+          </thead>
+          <tbody id="dailyTableBody">
+            <!-- 動態插入資料列 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
 <!-- Toast Container -->
 <div id="toastContainer" aria-live="assertive"></div>
 

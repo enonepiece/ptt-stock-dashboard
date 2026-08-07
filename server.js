@@ -565,6 +565,196 @@ app.get('/api/market-index', async (req, res) => {
   }
 });
 
+// ── 路由：近十日閒聊聲量 Top 30 統計與分析 ──────────────────
+const { detectStocks, STOCK_DICT } = require('./stockDict');
+
+let tenDaysCache = {
+  data: {},
+  fetchedAt: 0,
+};
+
+app.get('/api/analytics/ten-days', async (req, res) => {
+  try {
+    const category = req.query.category || 'all'; // all, intraday, afterHours
+    const now = Date.now();
+
+    // 歷史資料不可變，快取 15 分鐘
+    if (tenDaysCache.data[category] && (now - tenDaysCache.fetchedAt < 15 * 60 * 1000)) {
+      return res.json(tenDaysCache.data[category]);
+    }
+
+    const todayObj = new Date();
+    const todayYMD = `${todayObj.getFullYear()}/${String(todayObj.getMonth() + 1).padStart(2, '0')}/${String(todayObj.getDate()).padStart(2, '0')}`;
+    const todayMD  = `${todayObj.getMonth() + 1}/${String(todayObj.getDate()).padStart(2, '0')}`;
+    const todayMDShort = `${todayObj.getMonth() + 1}/${todayObj.getDate()}`;
+
+    // 爬取 PTT 原生搜尋文章 (搜尋「閒聊」)
+    const scannedArticles = [];
+    let pageUrl = 'https://www.ptt.cc/bbs/Stock/search?q=' + encodeURIComponent('閒聊');
+
+    for (let p = 0; p < 8; p++) {
+      let html;
+      try { html = await fetchPTT(pageUrl); } catch { break; }
+      const $ = cheerio.load(html);
+
+      $('.r-ent').each((_, el) => {
+        const $a     = $(el).find('.title a');
+        const title  = $a.text().trim();
+        const href   = $a.attr('href');
+        const rawDate = $(el).find('.date').text().trim();
+        const author = $(el).find('.author').text().trim();
+
+        if (href) {
+          const m = title.match(/(\d{4}\/\d{2}\/\d{2})/);
+          const fullDate = m ? m[1] : rawDate;
+          scannedArticles.push({ title, url: 'https://www.ptt.cc' + href, date: fullDate, rawDate, author });
+        }
+      });
+
+      const prevHref = $('.btn-group-paging a').filter((_, el) => $(el).text().includes('上頁')).attr('href');
+      if (!prevHref) break;
+      pageUrl = 'https://www.ptt.cc' + prevHref;
+    }
+
+    // 依據類別過濾，並嚴格排除「今日當天」
+    const filteredArticles = scannedArticles.filter(a => {
+      // 排除今日
+      if (a.date.includes(todayYMD) || a.rawDate === todayMD || a.rawDate === todayMDShort) return false;
+
+      const isIntraday   = a.title.includes('盤中') || a.title.includes('盤中閒聊');
+      const isAfterHours = a.title.includes('盤後') || a.title.includes('盤後閒聊');
+
+      if (category === 'intraday') return isIntraday;
+      if (category === 'afterHours') return isAfterHours;
+      return isIntraday || isAfterHours;
+    });
+
+    // 依日期與類別分組，最多保留近 10 個有文章的最新歷史日期
+    const dateMap = new Map();
+    for (const art of filteredArticles) {
+      if (!dateMap.has(art.date)) {
+        if (dateMap.size >= 10) break;
+        dateMap.set(art.date, []);
+      }
+      dateMap.get(art.date).push(art);
+    }
+
+    const uniqueDates = [...dateMap.keys()].reverse(); // 依時間由舊到新
+    const stockStats  = new Map(); // code -> { code, name, totalMentions, dailyMentions: { [date]: count } }
+    let totalPushesAnalyzed = 0;
+    let totalArticlesCount  = 0;
+
+    // 扁平化所有需爬取的歷史文章
+    const allArtsToFetch = [];
+    for (const [dStr, arts] of dateMap.entries()) {
+      totalArticlesCount += arts.length;
+      arts.forEach(a => allArtsToFetch.push({ date: dStr, url: a.url }));
+    }
+
+    // 分批次 (每批 3 篇) 避免觸發 PTT Rate Limit
+    const batchSize = 3;
+    const articleResults = [];
+
+    for (let i = 0; i < allArtsToFetch.length; i += batchSize) {
+      const chunk = allArtsToFetch.slice(i, i + batchSize);
+      const chunkResults = await Promise.all(chunk.map(async item => {
+        try {
+          const html = await fetchPTT(item.url);
+          const $ = cheerio.load(html);
+          const pushes = [];
+          $('.push').each((_, el) => {
+            const content = $(el).find('.push-content').text().replace(/^:\s*/, '').trim();
+            if (content) pushes.push(content);
+          });
+          return { date: item.date, pushes };
+        } catch {
+          return { date: item.date, pushes: [] };
+        }
+      }));
+      articleResults.push(...chunkResults);
+      await new Promise(r => setTimeout(r, 120));
+    }
+
+    for (const resItem of articleResults) {
+      const dStr = resItem.date;
+      totalPushesAnalyzed += resItem.pushes.length;
+
+      for (const pushText of resItem.pushes) {
+        const detected = detectStocks(pushText);
+        for (const st of detected) {
+          if (!stockStats.has(st.code)) {
+            stockStats.set(st.code, {
+              code: st.code,
+              name: st.names[0],
+              totalMentions: 0,
+              dailyMentions: {},
+            });
+          }
+          const item = stockStats.get(st.code);
+          item.totalMentions += 1;
+          item.dailyMentions[dStr] = (item.dailyMentions[dStr] || 0) + 1;
+        }
+      }
+    }
+
+    // 排序選出聲量最高的前 30 名股票
+    const sortedStocks = [...stockStats.values()]
+      .sort((a, b) => b.totalMentions - a.totalMentions)
+      .slice(0, 30);
+
+    // 為前 30 名股票抓取 Yahoo 即時股價現價
+    const topCodes = sortedStocks.map(s => s.code);
+    const stockPriceMap = new Map();
+
+    if (topCodes.length > 0) {
+      await Promise.all(topCodes.map(async code => {
+        try {
+          const info = await fetchStockFromYahoo(code);
+          stockPriceMap.set(code, info);
+        } catch (e) {
+          stockPriceMap.set(code, null);
+        }
+      }));
+    }
+
+    // 組合最終結果
+    const finalTop30 = sortedStocks.map((s, rankIdx) => {
+      const pInfo = stockPriceMap.get(s.code) || {};
+      const avgMentions = (s.totalMentions / (uniqueDates.length || 1)).toFixed(1);
+
+      return {
+        rank: rankIdx + 1,
+        code: s.code,
+        name: s.name,
+        totalMentions: s.totalMentions,
+        avgMentions: Number(avgMentions),
+        dailyMentions: s.dailyMentions,
+        price: pInfo.price || null,
+        change: pInfo.change || null,
+        changePct: pInfo.changePct || null,
+      };
+    });
+
+    const responsePayload = {
+      success: true,
+      category,
+      dates: uniqueDates,
+      totalArticlesCount,
+      totalPushesAnalyzed,
+      top30: finalTop30,
+      timestamp: Date.now(),
+    };
+
+    tenDaysCache.data[category] = responsePayload;
+    tenDaysCache.fetchedAt = now;
+
+    res.json(responsePayload);
+  } catch (err) {
+    console.error('[Ten Days Analytics Error]', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ── WebSocket 0.5 秒級即時串流廣播引擎 ─────────────────────
 const http      = require('http');
 const WebSocket = require('ws');
@@ -671,7 +861,7 @@ wss.on('connection', ws => {
         activeWatchPushes = [];
         if (watchInterval) clearInterval(watchInterval);
         checkPttStream();
-        watchInterval = setInterval(checkPttStream, 2000); // 2 秒高頻極速掃描
+        watchInterval = setInterval(checkPttStream, 1000); // 1 秒高頻極速掃描
       }
     } catch (e) {}
   });
