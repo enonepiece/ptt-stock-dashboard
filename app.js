@@ -1610,6 +1610,35 @@ function showToast(message, type = 'info', duration = 3500) {
   }, duration);
 }
 
+/**
+ * 全站統一抓取實時股票價格 API (整合 TWSE / Yahoo 雙源)
+ * @param {Array<string>} codes - 股票代號陣列 (如 ['2330', '2327'])
+ */
+async function fetchStockPrices(codes) {
+  if (!codes || codes.length === 0) return [];
+  try {
+    const res = await fetch(`${API_BASE}/api/stock?codes=${encodeURIComponent(codes.join(','))}`);
+    const data = await res.json();
+    if (data.success && data.stocks) {
+      data.stocks.forEach(st => {
+        if (st && st.code) {
+          const existing = state.stocks.get(st.code) || { code: st.code, name: st.name, mentionCount: 0 };
+          state.stocks.set(st.code, {
+            ...existing,
+            price: st.price !== undefined ? st.price : existing.price,
+            change: st.change !== undefined ? st.change : existing.change,
+            changePct: st.changePct !== undefined ? st.changePct : existing.changePct,
+          });
+        }
+      });
+      return data.stocks;
+    }
+  } catch (e) {
+    console.warn('[Fetch Stock Prices Error]', e.message);
+  }
+  return [];
+}
+
 /* ════════════════════════════════════════════════════════
    TEN-DAY ANALYTICS CONTROLLER & RENDERER
 ════════════════════════════════════════════════════════ */
