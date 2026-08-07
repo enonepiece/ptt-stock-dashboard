@@ -1942,16 +1942,13 @@ function isPushRelatedToStock(item, stock) {
   const code = (stock.code || '').toLowerCase();
   const rawName = (stock.name || '').replace(/\*$/, '').toLowerCase();
 
-  // 1. 代號精確比對 (如 2330, 2327, 0050)
+  // 代號、名稱與俗稱精確匹配
   if (code && text.includes(code)) return true;
-
-  // 2. 名稱精確比對 (如 台積電, 國巨, 南亞科)
   if (rawName && rawName.length >= 2 && text.includes(rawName)) return true;
 
-  // 3. 特殊暱稱對應
   if (code === '2330' && (text.includes('gg') || text.includes('積電') || text.includes('護國神山'))) return true;
-  if (code === '00632R' && (text.includes('反1') || text.includes('反一'))) return true;
-  if (code === '00631L' && (text.includes('正2') || text.includes('正二'))) return true;
+  if (code === '00632R' && (text.includes('反1') || text.includes('反一') || text.includes('50反'))) return true;
+  if (code === '00631L' && (text.includes('正2') || text.includes('正二') || text.includes('50正'))) return true;
 
   return false;
 }
@@ -1961,88 +1958,62 @@ function renderHistoricPushes(stock) {
   const wrapEl  = document.getElementById('historicPushesWrap');
   if (!wrapEl || !stock) return;
 
-  // 1. 從快照與即時推文庫中，使用 isPushRelatedToStock 嚴格過濾專屬推文
-  const rawCandidatePushes = [
-    ...(stock.realPushes || stock.samplePushes || []).map(p => ({
-      date: p.date || '歷史閒聊',
-      content: `${p.tag ? p.tag + ' ' : ''}${p.userid ? p.userid + ': ' : ''}${p.content || ''}`,
-      rawContent: p.content || ''
-    })),
-    ...(state.pushes || []).map(p => ({
-      date: p.time || '即時推文',
-      content: `${p.type === 'push' ? '推' : p.type === 'boo' ? '噓' : '→'} ${p.userid}: ${p.content}`,
-      rawContent: p.content || ''
-    }))
-  ];
+  // 1. 紀錄當前渲染的股票代號，防止任何 Race Condition
+  state.currentPushStockCode = stock.code;
+
+  // 2. 優先提取近 10 日閒聊歷史大數據文章中收集到的真實推文
+  const historyPushes = (stock.realPushes || stock.samplePushes || []).map(p => ({
+    date: p.date || '歷史閒聊',
+    content: `${p.tag ? p.tag + ' ' : ''}${p.userid ? p.userid + ': ' : ''}${p.content || ''}`,
+    rawContent: p.content || ''
+  }));
+
+  // 3. 備用：全站即時推文庫中提及該股票的推文
+  const livePushes = (state.pushes || []).map(p => ({
+    date: p.time || '即時閒聊',
+    content: `${p.type === 'push' ? '推' : p.type === 'boo' ? '噓' : '→'} ${p.userid}: ${p.content}`,
+    rawContent: p.content || ''
+  }));
 
   const matchedPushes = [];
   const seenTexts = new Set();
 
-  for (const item of rawCandidatePushes) {
+  // 優先放入該股票的歷史大數據推文
+  for (const item of historyPushes) {
+    if (!seenTexts.has(item.content)) {
+      seenTexts.add(item.content);
+      matchedPushes.push(item);
+    }
+  }
+
+  // 補強：放入即時符合的推文
+  for (const item of livePushes) {
     if (isPushRelatedToStock(item, stock) && !seenTexts.has(item.content)) {
       seenTexts.add(item.content);
       matchedPushes.push(item);
     }
   }
 
-  // 渲染專屬推文列表
-  const renderList = (list) => {
-    const displayList = list.slice(0, 100);
-    if (titleEl) {
-      titleEl.innerHTML = `💬 <b>${escHtml(stock.name)} (${escHtml(stock.code)})</b> 專屬 PTT 提及推文 <span style="font-size:0.78rem;color:#60a5fa;font-weight:700;">(共 ${displayList.length} 則相關推文)</span>`;
-    }
-    wrapEl.innerHTML = displayList.map(p => `
-      <div class="historic-push-item">
-        <span class="historic-push-date-badge">${escHtml(p.date)}</span>
-        <span class="historic-push-text">${escHtml(p.content)}</span>
-      </div>`).join('');
-  };
+  const final100List = matchedPushes.slice(0, 100);
 
-  // 2. 若快照中的專屬關聯推文少於 30 則，主動連線 PTT 撈取文章補充至 100 則專屬推文！
-  if (matchedPushes.length < 30) {
-    wrapEl.innerHTML = `
-      <div style="font-size:0.82rem;color:#60a5fa;padding:24px;text-align:center;">
-        <div class="spinner" style="width:18px;height:18px;margin:0 auto 10px;"></div>
-        正在連線 PTT 搜尋並彙整提及「${escHtml(stock.name)} (${escHtml(stock.code)})」的近 100 則專屬推文...
-      </div>`;
-
-    fetch(`${API_BASE}/api/ptt/articles?keyword=${encodeURIComponent(stock.code)}&pages=5`)
-      .then(res => res.json())
-      .then(async data => {
-        if (data.success && data.articles && data.articles.length > 0) {
-          const sampleArticles = data.articles.slice(0, 6);
-          for (const art of sampleArticles) {
-            try {
-              const artRes = await fetch(`${API_BASE}/api/ptt/article?url=${encodeURIComponent(art.url)}`);
-              const artData = await artRes.json();
-              if (artData.success && artData.pushes) {
-                artData.pushes.forEach(p => {
-                  const item = {
-                    date: art.date || '歷史推文',
-                    content: `${p.type === 'push' ? '推' : p.type === 'boo' ? '噓' : '→'} ${escHtml(p.userid)}: ${p.content}`,
-                    rawContent: p.content
-                  };
-                  if (isPushRelatedToStock(item, stock) && !seenTexts.has(item.content)) {
-                    seenTexts.add(item.content);
-                    matchedPushes.push(item);
-                  }
-                });
-              }
-            } catch {}
-          }
-        }
-        if (matchedPushes.length > 0) {
-          renderList(matchedPushes);
-        } else {
-          wrapEl.innerHTML = `<div style="font-size:0.82rem;color:var(--text-muted);padding:24px;text-align:center;">📭 尚無包含「${escHtml(stock.name)} (${escHtml(stock.code)})」的關聯推文</div>`;
-        }
-      }).catch(() => {
-        if (matchedPushes.length > 0) renderList(matchedPushes);
-        else wrapEl.innerHTML = `<div style="font-size:0.82rem;color:var(--text-muted);padding:24px;text-align:center;">📭 無法載入相關推文</div>`;
-      });
-  } else {
-    renderList(matchedPushes);
+  // 4. 同步更新標題與推文內容，100% 絕對一致！
+  if (titleEl) {
+    titleEl.innerHTML = `💬 <b>${escHtml(stock.name)} (${escHtml(stock.code)})</b> 近 10 日歷史閒聊提及推文 <span style="font-size:0.78rem;color:#60a5fa;font-weight:700;">(共 ${final100List.length} 則歷史記錄)</span>`;
   }
+
+  if (final100List.length === 0) {
+    wrapEl.innerHTML = `
+      <div style="font-size:0.82rem;color:var(--text-muted);padding:24px;text-align:center;">
+        📭 過去 10 個交易日閒聊文中尚無「${escHtml(stock.name)} (${escHtml(stock.code)})」的推文記錄
+      </div>`;
+    return;
+  }
+
+  wrapEl.innerHTML = final100List.map(p => `
+    <div class="historic-push-item">
+      <span class="historic-push-date-badge">${escHtml(p.date)}</span>
+      <span class="historic-push-text">${escHtml(p.content)}</span>
+    </div>`).join('');
 }
 
 function renderChartLegendBar(top5) {

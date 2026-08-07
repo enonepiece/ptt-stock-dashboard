@@ -710,7 +710,7 @@ async function generateAndSaveTenDaysAnalytics(category = 'all') {
         const item = stockStats.get(st.code);
         item.totalMentions += 1;
         item.dailyMentions[dStr] = (item.dailyMentions[dStr] || 0) + 1;
-        if (item.realPushes.length < 50) {
+        if (item.realPushes.length < 100) {
           item.realPushes.push({
             date: dStr,
             tag: pushObj.tag || '推',
