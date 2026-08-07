@@ -1696,11 +1696,18 @@ function renderTenDayAnalysis(data) {
 
   dom.top30CardsGrid.innerHTML = top30.map(s => {
     const isSelected = s.code === state.selectedTrendCode;
-    const { dir, symbol, dirSign } = getStockDirInfo(s.change, s.changePct);
-    const hasPrice = s.price !== null && s.price > 0;
-    const priceStr = hasPrice ? formatNum(s.price) : '─';
-    const changeStr = (hasPrice && s.change !== null)
-      ? `${symbol} ${dirSign}${Math.abs(s.change)} (${dirSign}${Math.abs(s.changePct).toFixed(2)}%)`
+
+    // 🌟【股價實時雙重對齊】：優先從 state.stocks（即時看板最新行情）讀取股價
+    const liveStock = state.stocks.get(s.code);
+    const pVal = (liveStock && liveStock.price !== null && liveStock.price > 0) ? liveStock.price : s.price;
+    const cVal = (liveStock && liveStock.change !== null) ? liveStock.change : s.change;
+    const cPct = (liveStock && liveStock.changePct !== undefined) ? liveStock.changePct : s.changePct;
+
+    const { dir, symbol, dirSign } = getStockDirInfo(cVal, cPct);
+    const hasPrice = pVal !== null && pVal > 0;
+    const priceStr = hasPrice ? formatNum(pVal) : '─';
+    const changeStr = (hasPrice && cVal !== null && cVal !== undefined)
+      ? `${symbol} ${dirSign}${formatNum(Math.abs(cVal))} (${dirSign}${formatNum(Math.abs(cPct))}%)`
       : '';
 
     const heatPct = Math.round((s.totalMentions / maxMentions) * 100);
@@ -1709,6 +1716,15 @@ function renderTenDayAnalysis(data) {
     if (s.rank === 1) rankBadgeText = `👑 1`;
     else if (s.rank === 2) rankBadgeText = `🥈 2`;
     else if (s.rank === 3) rankBadgeText = `🥉 3`;
+
+    // 🌟【推文預覽直觀呈現】：抓取最新一條真實推文預覽
+    const firstPush = (s.realPushes && s.realPushes.length > 0) ? s.realPushes[0] : ((s.samplePushes && s.samplePushes[0]) || null);
+    let pushPreviewStr = '';
+    if (firstPush) {
+      const pDate = firstPush.date ? `[${firstPush.date}] ` : '';
+      const pUser = firstPush.userid ? `${firstPush.userid}: ` : '';
+      pushPreviewStr = `${pDate}${pUser}${firstPush.content}`;
+    }
 
     return `
       <div class="top30-card rank-${s.rank} ${isSelected ? 'selected' : ''}" data-code="${s.code}">
@@ -1729,6 +1745,11 @@ function renderTenDayAnalysis(data) {
           <span class="top30-total-badge">💬 ${s.totalMentions} 次</span>
           <span class="top30-avg-badge">日均 ${s.avgMentions}次</span>
         </div>
+
+        ${pushPreviewStr ? `
+          <div class="top30-push-preview" title="${escHtml(pushPreviewStr)}">
+            💬 ${escHtml(pushPreviewStr)}
+          </div>` : ''}
 
         <div class="top30-heat-wrap" title="聲量佔比 ${heatPct}%">
           <div class="top30-heat-bar" style="width: ${heatPct}%;"></div>
