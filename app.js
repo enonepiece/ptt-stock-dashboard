@@ -1451,6 +1451,7 @@ async function fetchStockPrices(codes) {
       }
     }
 
+    // 🌟【自動股價刷出修復】：價格更新後立刻強制刷新股票卡片 UI，點擊文章第一秒即顯示股價！
     renderStockCards();
 
     if (state.currentModalCode) {
@@ -2036,11 +2037,63 @@ function renderHistoricPushes(stock) {
     titleEl.innerHTML = `💬 <b>${escHtml(stock.name)} (${escHtml(stock.code)})</b> 近 10 日真實 PTT 提及推文 <span style="font-size:0.78rem;color:#60a5fa;font-weight:700;">(共 ${final100List.length} 則真實記錄)</span>`;
   }
 
-  if (final100List.length === 0) {
+  // 3. 🌟【全自動推文撈取防禦】：若數量不足 20 則，系統自動即刻向 PTT 發起關鍵字檢索與撈取！不用點擊任何貼文！
+  if (final100List.length < 20) {
     wrapEl.innerHTML = `
-      <div style="font-size:0.82rem;color:var(--text-muted);padding:24px;text-align:center;">
-        📭 過去 10 個交易日閒聊文中尚無「${escHtml(stock.name)} (${escHtml(stock.code)})」的推文記錄
+      <div style="font-size:0.82rem;color:#60a5fa;padding:24px;text-align:center;">
+        <div class="spinner" style="width:18px;height:18px;margin:0 auto 10px;"></div>
+        全自動即時撈取 PTT 最新提及「${escHtml(stock.name)} (${escHtml(stock.code)})」的 100 則真實推文...
       </div>`;
+
+    fetch(`${API_BASE}/api/ptt/articles?keyword=${encodeURIComponent(stock.code)}&pages=5`)
+      .then(res => res.json())
+      .then(async data => {
+        if (data.success && data.articles && data.articles.length > 0) {
+          const sampleArticles = data.articles.slice(0, 6);
+          for (const art of sampleArticles) {
+            try {
+              const artRes = await fetch(`${API_BASE}/api/ptt/article?url=${encodeURIComponent(art.url)}`);
+              const artData = await artRes.json();
+              if (artData.success && artData.pushes) {
+                artData.pushes.forEach(p => {
+                  const item = {
+                    date: art.date || '最新推文',
+                    content: `${p.type === 'push' ? '推' : p.type === 'boo' ? '噓' : '→'} ${escHtml(p.userid)}: ${p.content}`,
+                    rawContent: p.content
+                  };
+                  if (isPushRelatedToStock(item, stock) && !seenTexts.has(item.content)) {
+                    seenTexts.add(item.content);
+                    matchedPushes.push(item);
+                  }
+                });
+              }
+            } catch {}
+          }
+        }
+        const updated100List = matchedPushes.slice(0, 100);
+        if (updated100List.length > 0) {
+          if (titleEl) {
+            titleEl.innerHTML = `💬 <b>${escHtml(stock.name)} (${escHtml(stock.code)})</b> 近 10 日真實 PTT 提及推文 <span style="font-size:0.78rem;color:#60a5fa;font-weight:700;">(共 ${updated100List.length} 則真實記錄)</span>`;
+          }
+          wrapEl.innerHTML = updated100List.map(p => `
+            <div class="historic-push-item">
+              <span class="historic-push-date-badge">${escHtml(p.date)}</span>
+              <span class="historic-push-text">${escHtml(p.content)}</span>
+            </div>`).join('');
+        } else {
+          wrapEl.innerHTML = `<div style="font-size:0.82rem;color:var(--text-muted);padding:24px;text-align:center;">📭 尚無包含「${escHtml(stock.name)} (${escHtml(stock.code)})」的推文紀錄</div>`;
+        }
+      }).catch(() => {
+        if (final100List.length > 0) {
+          wrapEl.innerHTML = final100List.map(p => `
+            <div class="historic-push-item">
+              <span class="historic-push-date-badge">${escHtml(p.date)}</span>
+              <span class="historic-push-text">${escHtml(p.content)}</span>
+            </div>`).join('');
+        } else {
+          wrapEl.innerHTML = `<div style="font-size:0.82rem;color:var(--text-muted);padding:24px;text-align:center;">📭 無法載入最新推文</div>`;
+        }
+      });
     return;
   }
 
