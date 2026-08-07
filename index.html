@@ -688,8 +688,8 @@
 
     .top30-cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
       overflow-y: auto;
       padding-right: 6px;
       flex: 1;
@@ -699,12 +699,15 @@
       background: rgba(30, 41, 59, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-md);
-      padding: 14px;
+      padding: 10px 12px;
+      min-height: 98px;
+      box-sizing: border-box;
       cursor: pointer;
       transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 4px;
       position: relative;
       overflow: hidden;
     }
@@ -737,29 +740,30 @@
 
     .rank-badge {
       position: absolute;
-      top: 10px;
-      right: 12px;
+      top: 8px;
+      right: 10px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.82rem;
       font-weight: 800;
       color: #64748b;
     }
-    .rank-1 .rank-badge { color: #f59e0b; font-size: 1rem; }
-    .rank-2 .rank-badge { color: #cbd5e1; font-size: 1rem; }
-    .rank-3 .rank-badge { color: #d97706; font-size: 1rem; }
+    .rank-1 .rank-badge { color: #f59e0b; font-size: 0.95rem; }
+    .rank-2 .rank-badge { color: #cbd5e1; font-size: 0.95rem; }
+    .rank-3 .rank-badge { color: #d97706; font-size: 0.95rem; }
 
     .top30-card-header {
       display: flex;
-      align-items: baseline;
-      gap: 8px;
+      align-items: center;
+      gap: 6px;
     }
     .top30-stock-name {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 800;
       color: #f8fafc;
+      white-space: nowrap;
     }
     .top30-stock-code {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: #94a3b8;
       font-family: 'JetBrains Mono', monospace;
     }
@@ -768,17 +772,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 2px 0;
+      margin: 1px 0;
     }
     .top30-price-row .price-wrap {
       display: flex;
       align-items: baseline;
-      gap: 8px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
     .top30-price {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.2rem;
+      font-size: 1.12rem;
       font-weight: 800;
+      line-height: 1.2;
     }
     .top30-price.up { color: #ff4455; }
     .top30-price.down { color: #00e87a; }
@@ -786,13 +792,14 @@
 
     .top30-change-pill {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 2px 6px;
       border-radius: 4px;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
+      line-height: 1.2;
     }
     .top30-change-pill.up {
       background: rgba(255, 68, 85, 0.15);
@@ -809,17 +816,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
     }
     .top30-total-badge {
       background: rgba(59, 130, 246, 0.15);
       color: #60a5fa;
-      padding: 3px 8px;
+      padding: 2px 6px;
       border-radius: 4px;
       font-weight: 700;
     }
     .top30-avg-badge {
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       color: #94a3b8;
     }
 
@@ -829,7 +836,7 @@
       background: rgba(255,255,255,0.06);
       border-radius: 2px;
       overflow: hidden;
-      margin-top: 4px;
+      margin-top: 2px;
     }
     .top30-heat-bar {
       height: 100%;
@@ -845,8 +852,19 @@
       background: rgba(15, 23, 42, 0.6);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: var(--radius-md);
-      padding: 14px;
-      height: 240px;
+      padding: 12px 14px;
+      height: 250px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .trend-chart-box canvas {
+      width: 100% !important;
+      height: 100% !important;
+      flex: 1;
+      display: block;
     }
 
     .daily-table-wrap {

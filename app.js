@@ -1754,34 +1754,49 @@ function renderTenDayAnalysis(data) {
 function drawTenDayTrendChart(code) {
   if (!state.analyticsData || !dom.tenDayTrendCanvas) return;
 
-  const { dates, top30 } = state.analyticsData;
-  const stock = top30.find(s => s.code === code) || top30[0];
-  if (!stock) return;
-
-  if (dom.trendChartTitle) {
-    dom.trendChartTitle.textContent = `📈 ${stock.name} (${stock.code}) 近 10 日聲量推移趨勢圖`;
+  const canvas = dom.tenDayTrendCanvas;
+  const parent = canvas.parentElement;
+  if (parent) {
+    const rect = parent.getBoundingClientRect();
+    if (rect.width > 0) {
+      canvas.width = Math.floor(rect.width);
+      canvas.height = Math.floor(rect.height) || 240;
+    }
   }
 
-  const canvas = dom.tenDayTrendCanvas;
-  const ctx    = canvas.getContext('2d');
-  const w      = canvas.width;
-  const h      = canvas.height;
+  const ctx = canvas.getContext('2d');
+  const w   = canvas.width;
+  const h   = canvas.height;
 
   ctx.clearRect(0, 0, w, h);
 
-  const values = dates.map(d => stock.dailyMentions[d] || 0);
+  const { dates, top30 } = state.analyticsData;
+  if (!dates || dates.length === 0 || !top30 || top30.length === 0) return;
+
+  const stock = top30.find(s => s.code === code) || top30[0];
+
+  if (dom.trendChartTitle) {
+    dom.trendChartTitle.innerHTML = `
+      <span>📈 ${escHtml(stock.name)} (${escHtml(stock.code)}) 近 10 日聲量走勢</span>
+      <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">💡 點擊下方 Top 30 卡片切換對應股票走勢</span>`;
+  }
+
+  // 計算 Top 5 多股與當前股的最高 MaxVal
+  const targetStock = stock;
+  const values = dates.map(d => targetStock.dailyMentions[d] || 0);
   const maxVal = Math.max(...values, 5);
 
-  const pad = { top: 30, right: 30, bottom: 40, left: 45 };
+  const pad = { top: 25, right: 25, bottom: 35, left: 40 };
   const chartW = w - pad.left - pad.right;
   const chartH = h - pad.top - pad.bottom;
 
-  // 背景網格
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+  // 1. 繪製背景橫線與 Y 軸標籤
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
   ctx.lineWidth   = 1;
-  ctx.font        = '10px JetBrains Mono, monospace';
+  ctx.font        = '11px "JetBrains Mono", monospace';
   ctx.fillStyle   = '#64748b';
   ctx.textAlign   = 'right';
+  ctx.textBaseline = 'middle';
 
   for (let i = 0; i <= 4; i++) {
     const yVal = Math.round((maxVal / 4) * i);
@@ -1792,30 +1807,32 @@ function drawTenDayTrendChart(code) {
     ctx.lineTo(w - pad.right, yPx);
     ctx.stroke();
 
-    ctx.fillText(yVal, pad.left - 6, yPx + 3);
+    ctx.fillText(yVal, pad.left - 6, yPx);
   }
 
-  if (dates.length === 0) return;
-
-  // X 軸刻度與折線點位
+  // 2. 計算 X 軸點位 coordinates
   const pts = dates.map((dStr, idx) => {
     const xPx = pad.left + (chartW / Math.max(1, dates.length - 1)) * idx;
-    const val = stock.dailyMentions[dStr] || 0;
+    const val = targetStock.dailyMentions[dStr] || 0;
     const yPx = pad.top + chartH - (chartH * (val / maxVal));
-    return { xPx, yPx, val, dStr };
+    const shortDate = dStr.replace(/^\d{4}\//, ''); // 將 2026/07/24 簡化成 07/24
+    return { xPx, yPx, val, dStr, shortDate };
   });
 
-  // 繪製 X 軸日期文字
-  ctx.textAlign   = 'center';
+  // 3. 繪製 X 軸簡化日期 (07/24, 07/27...) 絕不重疊
+  ctx.textAlign    = 'center';
   ctx.textBaseline = 'top';
+  ctx.fillStyle    = '#94a3b8';
+  ctx.font         = '11px "JetBrains Mono", monospace';
+
   pts.forEach(p => {
-    ctx.fillText(p.dStr, p.xPx, pad.top + chartH + 8);
+    ctx.fillText(p.shortDate, p.xPx, pad.top + chartH + 10);
   });
 
-  // 漸層填滿
+  // 4. 漸層背景填滿
   const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
-  grad.addColorStop(0, 'rgba(91, 156, 246, 0.35)');
-  grad.addColorStop(1, 'rgba(91, 156, 246, 0.0)');
+  grad.addColorStop(0, 'rgba(59, 130, 246, 0.35)');
+  grad.addColorStop(1, 'rgba(59, 130, 246, 0.01)');
 
   ctx.beginPath();
   ctx.moveTo(pts[0].xPx, pad.top + chartH);
@@ -1825,33 +1842,33 @@ function drawTenDayTrendChart(code) {
   ctx.fillStyle = grad;
   ctx.fill();
 
-  // 折線
+  // 5. 繪製主折線
   ctx.beginPath();
   pts.forEach((p, i) => {
     if (i === 0) ctx.moveTo(p.xPx, p.yPx);
     else ctx.lineTo(p.xPx, p.yPx);
   });
-  ctx.strokeStyle = '#5b9cf6';
-  ctx.lineWidth   = 2.5;
+  ctx.strokeStyle = '#3b82f6';
+  ctx.lineWidth   = 3;
   ctx.stroke();
 
-  // 節點 Data Points
+  // 6. 繪製數據節點與頂部數字標籤
   pts.forEach(p => {
+    // 圓圈外框與核心
     ctx.beginPath();
-    ctx.arc(p.xPx, p.yPx, 4, 0, Math.PI * 2);
+    ctx.arc(p.xPx, p.yPx, 5, 0, Math.PI * 2);
     ctx.fillStyle = '#1e293b';
     ctx.fill();
-    ctx.strokeStyle = '#5b9cf6';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#60a5fa';
+    ctx.lineWidth = 2.5;
     ctx.stroke();
 
-    // 數據數值 Label
-    if (p.val > 0) {
-      ctx.fillStyle = '#edf4ff';
-      ctx.font = '11px JetBrains Mono, monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(p.val, p.xPx, p.yPx - 16);
-    }
+    // 數據數字 (避開頂部邊界)
+    const textY = Math.max(pad.top + 2, p.yPx - 16);
+    ctx.font = 'bold 11px "JetBrains Mono", monospace';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.fillText(p.val, p.xPx, textY);
   });
 }
 
