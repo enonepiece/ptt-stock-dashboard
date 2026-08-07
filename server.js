@@ -676,8 +676,10 @@ async function generateAndSaveTenDaysAnalytics(category = 'all') {
         const $ = cheerio.load(html);
         const pushes = [];
         $('.push').each((_, el) => {
+          const tag     = $(el).find('.push-tag').text().trim();
+          const userid  = $(el).find('.push-userid').text().trim();
           const content = $(el).find('.push-content').text().replace(/^:\s*/, '').trim();
-          if (content) pushes.push(content);
+          if (content) pushes.push({ tag, userid, content });
         });
         return { date: item.date, pushes };
       } catch {
@@ -692,7 +694,8 @@ async function generateAndSaveTenDaysAnalytics(category = 'all') {
     const dStr = resItem.date;
     totalPushesAnalyzed += resItem.pushes.length;
 
-    for (const pushText of resItem.pushes) {
+    for (const pushObj of resItem.pushes) {
+      const pushText = pushObj.content;
       const detected = detectStocks(pushText);
       for (const st of detected) {
         if (!stockStats.has(st.code)) {
@@ -701,14 +704,19 @@ async function generateAndSaveTenDaysAnalytics(category = 'all') {
             name: st.names[0],
             totalMentions: 0,
             dailyMentions: {},
-            samplePushes: [],
+            realPushes: [],
           });
         }
         const item = stockStats.get(st.code);
         item.totalMentions += 1;
         item.dailyMentions[dStr] = (item.dailyMentions[dStr] || 0) + 1;
-        if (item.samplePushes.length < 25) {
-          item.samplePushes.push({ date: dStr, content: pushText });
+        if (item.realPushes.length < 50) {
+          item.realPushes.push({
+            date: dStr,
+            tag: pushObj.tag || '推',
+            userid: pushObj.userid || '',
+            content: pushObj.content,
+          });
         }
       }
     }
@@ -773,7 +781,7 @@ async function generateAndSaveTenDaysAnalytics(category = 'all') {
       totalMentions: s.totalMentions,
       avgMentions: Number(avgMentions),
       dailyMentions: s.dailyMentions,
-      samplePushes: s.samplePushes || [],
+      realPushes: s.realPushes || [],
       price: pInfo.price !== undefined ? pInfo.price : null,
       change: pInfo.change !== undefined ? pInfo.change : null,
       changePct: pInfo.changePct !== undefined ? pInfo.changePct : null,
@@ -960,12 +968,18 @@ wss.on('connection', ws => {
 });
 
 // ── 啟動 ──────────────────────────────────────────────────
-server.listen(PORT, () => {
-  console.log('');
-  console.log('  ╔═══════════════════════════════════════════╗');
-  console.log('  ║   PTT 輿情 × 台股看板  已啟動 (WS 即時)  ║');
-  console.log(`  ║   http://localhost:${PORT}                    ║`);
-  console.log('  ║   ws://localhost:' + PORT + '/ws                     ║');
-  console.log('  ╚═══════════════════════════════════════════╝');
-  console.log('');
-});
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log('');
+    console.log('  ╔═══════════════════════════════════════════╗');
+    console.log('  ║   PTT 輿情 × 台股看板  已啟動 (WS 即時)  ║');
+    console.log(`  ║   http://localhost:${PORT}                    ║`);
+    console.log('  ║   ws://localhost:' + PORT + '/ws                     ║');
+    console.log('  ╚═══════════════════════════════════════════╝');
+    console.log('');
+  });
+}
+
+module.exports = {
+  generateAndSaveTenDaysAnalytics
+};

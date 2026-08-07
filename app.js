@@ -1790,13 +1790,17 @@ function renderHistoricPushes(stock) {
   const wrapEl  = document.getElementById('historicPushesWrap');
   if (!wrapEl) return;
 
-  // 1. 抓取快照/後端傳來的 samplePushes
-  const samplePushes = (stock.samplePushes || []).map(p => ({
-    date: p.date || '歷史閒聊',
-    content: p.content || ''
-  }));
+  // 1. 抓取從 10 日 PTT 閒聊文章中抓取的真實推文
+  const realPushes = (stock.realPushes || stock.samplePushes || []).map(p => {
+    const tagStr  = p.tag ? `${p.tag} ` : '';
+    const userStr = p.userid ? `${p.userid}: ` : '';
+    return {
+      date: p.date || '歷史閒聊',
+      content: `${tagStr}${userStr}${p.content || ''}`
+    };
+  });
 
-  // 2. 自動從當前全站已載入的推文 state.pushes 中即時搜尋提及該股票的真實推文
+  // 2. 結合當前即時推文庫 (state.pushes) 中提及該股票的真實推文
   const liveMatches = (state.pushes || []).filter(p => {
     if (!p.content) return false;
     return p.content.includes(stock.code) || p.content.includes(stock.name);
@@ -1805,28 +1809,25 @@ function renderHistoricPushes(stock) {
     content: `${p.type === 'push' ? '推' : p.type === 'boo' ? '噓' : '→'} ${p.userid}: ${p.content}`
   }));
 
-  // 3. 若無匹配推文，自動從目前文章列表標題中抽樣相關閒聊討論
-  let articleMatches = [];
-  if (samplePushes.length === 0 && liveMatches.length === 0 && state.articles) {
-    articleMatches = (state.articles || []).filter(a => {
-      return a.title.includes(stock.code) || a.title.includes(stock.name);
-    }).map(a => ({
-      date: a.date || '討論文章',
-      content: `📰 [文章] ${a.title} (${a.author})`
-    }));
+  // 3. 去重與合併 (Deduplicate & Combine)
+  const combined = [];
+  const seenTexts = new Set();
+
+  for (const item of [...realPushes, ...liveMatches]) {
+    if (!seenTexts.has(item.content)) {
+      seenTexts.add(item.content);
+      combined.push(item);
+    }
   }
 
-  // 4. 合併去重
-  const combined = [...liveMatches, ...samplePushes, ...articleMatches];
-
   if (titleEl) {
-    titleEl.innerHTML = `💬 <b>${escHtml(stock.name)} (${escHtml(stock.code)})</b> 近 10 日歷史提及推文 <span style="font-size:0.78rem;color:#60a5fa;font-weight:700;">(精選 ${combined.length} 則)</span>`;
+    titleEl.innerHTML = `💬 <b>${escHtml(stock.name)} (${escHtml(stock.code)})</b> 近 10 日真實 PTT 提及推文 <span style="font-size:0.78rem;color:#60a5fa;font-weight:700;">(共 ${combined.length} 則真實記錄)</span>`;
   }
 
   if (combined.length === 0) {
     wrapEl.innerHTML = `
       <div style="font-size:0.82rem;color:var(--text-muted);padding:18px;text-align:center;">
-        📭 尚無包含「${escHtml(stock.name)} (${escHtml(stock.code)})」的內文快照，請切換其他熱門股票
+        📭 近 10 日閒聊文中尚無包含「${escHtml(stock.name)} (${escHtml(stock.code)})」的推文紀錄
       </div>`;
     return;
   }
