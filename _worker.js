@@ -181,6 +181,8 @@ function extractStockPrice(s) {
   const pz        = parseFloat(s.pz);
   const open      = parseFloat(s.o);
   const prevClose = parseFloat(s.y) || 0;
+  const b1        = s.b ? parseFloat(s.b.split('_')[0]) : NaN;
+  const a1        = s.a ? parseFloat(s.a.split('_')[0]) : NaN;
 
   let price  = null;
   let isLive = false;
@@ -190,6 +192,12 @@ function extractStockPrice(s) {
     isLive = true;
   } else if (!isNaN(pz) && pz > 0) {
     price  = pz;
+    isLive = true;
+  } else if (!isNaN(a1) && a1 > 0) {
+    price  = a1;
+    isLive = true;
+  } else if (!isNaN(b1) && b1 > 0) {
+    price  = b1;
     isLive = true;
   } else if (!isNaN(open) && open > 0) {
     price  = open;
@@ -211,56 +219,69 @@ function extractStockPrice(s) {
 
 async function fetchStockFromYahoo(code) {
   try {
-    const url  = `https://tw.stock.yahoo.com/quote/${encodeURIComponent(code)}`;
-    const resp = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      },
+    const resp = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(code)}.TW?interval=1d&range=1d`, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
     });
+    const data = await resp.json();
+    if (data?.chart?.result?.[0]?.meta) {
+      const meta = data.chart.result[0].meta;
+      const price = meta.regularMarketPrice;
+      const prevClose = meta.chartPreviousClose || meta.previousClose || price;
+      if (price && price > 0) {
+        const change = +(price - prevClose).toFixed(2);
+        const changePct = prevClose > 0 ? +((change / prevClose) * 100).toFixed(2) : 0;
+        return {
+          code,
+          name: code,
+          price: +price.toFixed(2),
+          isLive: true,
+          prevClose: +prevClose.toFixed(2),
+          open: meta.regularMarketDayOpen || price,
+          high: meta.regularMarketDayHigh || price,
+          low: meta.regularMarketDayLow || price,
+          volume: meta.regularMarketVolume || 0,
+          change,
+          changePct,
+          tradeTime: '',
+          hasLiveData: true
+        };
+      }
+    }
+  } catch (err) {}
 
-    if (!resp.ok) return null;
+  try {
+    const resp2 = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(code)}.TWO?interval=1d&range=1d`, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    const data2 = await resp2.json();
+    if (data2?.chart?.result?.[0]?.meta) {
+      const meta2 = data2.chart.result[0].meta;
+      const price = meta2.regularMarketPrice;
+      const prevClose = meta2.chartPreviousClose || meta2.previousClose || price;
+      if (price && price > 0) {
+        const change = +(price - prevClose).toFixed(2);
+        const changePct = prevClose > 0 ? +((change / prevClose) * 100).toFixed(2) : 0;
+        return {
+          code,
+          name: code,
+          price: +price.toFixed(2),
+          isLive: true,
+          prevClose: +prevClose.toFixed(2),
+          open: meta2.regularMarketDayOpen || price,
+          high: meta2.regularMarketDayHigh || price,
+          low: meta2.regularMarketDayLow || price,
+          volume: meta2.regularMarketVolume || 0,
+          change,
+          changePct,
+          tradeTime: '',
+          hasLiveData: true
+        };
+      }
+    }
+  } catch (err2) {}
 
-    const html = await resp.text();
-
-    const fzMatch   = html.match(/Fz\(32px\)[^>]*>([0-9\.,]+)</);
-    const regMatch  = html.match(/"regularMarketPrice":([0-9\.]+)/);
-    const prevMatch = html.match(/"previousClose":([0-9\.]+)/);
-    const highMatch = html.match(/"regularMarketDayHigh":([0-9\.]+)/) || html.match(/"dayHigh":([0-9\.]+)/);
-    const lowMatch  = html.match(/"regularMarketDayLow":([0-9\.]+)/) || html.match(/"dayLow":([0-9\.]+)/);
-    const volMatch  = html.match(/"regularMarketVolume":([0-9\.]+)/) || html.match(/"dayVolume":([0-9\.]+)/);
-
-    const priceText = fzMatch ? fzMatch[1].replace(/,/g, '') : (regMatch ? regMatch[1] : null);
-    if (!priceText) return null;
-
-    const price     = parseFloat(priceText);
-    const prevClose = prevMatch ? parseFloat(prevMatch[1]) : price;
-    if (isNaN(price) || price <= 0) return null;
-
-    const change    = +(price - prevClose).toFixed(2);
-    const changePct = prevClose > 0 ? +((change / prevClose) * 100).toFixed(2) : 0;
-    const high      = highMatch ? parseFloat(highMatch[1]) : Math.max(price, prevClose);
-    const low       = lowMatch ? parseFloat(lowMatch[1]) : Math.min(price, prevClose);
-    const volume    = volMatch ? parseInt(volMatch[1]) : 0;
-
-    return {
-      code,
-      name:        code,
-      price:       +price.toFixed(2),
-      isLive:      true,
-      prevClose:   +prevClose.toFixed(2),
-      open:        price,
-      high:        +high.toFixed(2),
-      low:         +low.toFixed(2),
-      volume:      volume,
-      change:      change,
-      changePct:   changePct,
-      tradeTime:   '',
-      hasLiveData: true,
-    };
-  } catch (err) {
-    return null;
-  }
+  return null;
+}
 }
 
 async function handleStock(request) {
