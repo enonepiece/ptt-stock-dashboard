@@ -12,8 +12,32 @@ const MAX_PRICE_PTS = 90;
 const MAX_CARDS     = 30;           // 保留 Top 30 股票卡片
 
 /* ════════════════════════════════════════════════════════
-   STATE
+   STATE & PRICE CACHE
 ════════════════════════════════════════════════════════ */
+// 🌟【全域即時股價持久快取】：跨文章、跨頁籤 100% 保持最新行情，點擊文章第一幀 (0ms) 立即出價！
+const globalPriceCache = new Map();
+
+function saveToPriceCache(s) {
+  if (!s || !s.code || !s.price) return;
+  globalPriceCache.set(s.code, {
+    price:     s.price,
+    isLive:    s.isLive !== undefined ? s.isLive : true,
+    prevClose: s.prevClose || s.price,
+    change:    s.change || 0,
+    changePct: s.changePct || 0,
+    open:      s.open || s.price,
+    high:      s.high || s.price,
+    low:       s.low || s.price,
+    volume:    s.volume || 0,
+    name:      s.name,
+    ts:        Date.now(),
+  });
+}
+
+function getFromPriceCache(code) {
+  return globalPriceCache.get(code) || null;
+}
+
 let state = {
   articles:         [],
   filteredArticles: [],
@@ -144,6 +168,14 @@ document.addEventListener('DOMContentLoaded', () => {
   triggerArticleSearch();
   fetchMarketIndex();
   startMonitoring();
+
+  // 🌟【背景預熱 Top 30 熱門權值股行情】：打開網頁時立即背景預載熱門標的行情至 globalPriceCache，點擊任何閒聊 0 秒直接出價！
+  fetchStockPrices([
+    '2330', '2454', '2317', '0050', '00632R', '00631L', '2408', '8299',
+    '2327', '5347', '2303', '2885', '3481', '2344', '2492', '2603',
+    '2609', '2615', '3231', '2382', '2356', '00981A', '00988A', '3037',
+    '3035', '6443', '3711', '2376', '2301', '2881'
+  ]);
 });
 
 /**
@@ -1359,18 +1391,24 @@ async function processStocksFromPushes(pushes) {
     const detected = getCachedPushProcess(push.content).detected;
     for (const stockInfo of detected) {
       if (!state.stocks.has(stockInfo.code)) {
+        // 🌟【0秒快取直出】：若全域快取已有即時價格，建立物件時直接賦值，第一幀 (0ms) 立即顯示真實行情！
+        const cached = getFromPriceCache(stockInfo.code);
         state.stocks.set(stockInfo.code, {
           code:         stockInfo.code,
-          name:         stockInfo.names[0],
+          name:         cached?.name || stockInfo.names[0],
           market:       stockInfo.market,
-          price:        null,
-          isLive:       false,
-          prevClose:    0,
-          change:       0,
-          changePct:    0,
+          price:        cached ? cached.price : null,
+          isLive:       cached ? cached.isLive : false,
+          prevClose:    cached ? cached.prevClose : 0,
+          open:         cached ? cached.open : 0,
+          high:         cached ? cached.high : 0,
+          low:          cached ? cached.low : 0,
+          volume:       cached ? cached.volume : 0,
+          change:       cached ? cached.change : 0,
+          changePct:    cached ? cached.changePct : 0,
           mentionCount: 0,
           mentions:     [],
-          priceHistory: [],
+          priceHistory: cached && cached.price ? [{ ts: Date.now(), price: cached.price }] : [],
         });
       }
       const entry = state.stocks.get(stockInfo.code);
@@ -1391,12 +1429,12 @@ async function processStocksFromPushes(pushes) {
     state.stocks = new Map(sorted.slice(0, MAX_CARDS));
   }
 
-  // 1. 先畫出股票卡片（包含提及次數與最新留言預覽）
+  // 1. 先畫出股票卡片（若快取命中，此時已帶有股價與漲跌色）
   renderStockCards();
 
-  // 2. 🌟【100% 第一秒股價刷出修復】：即刻併發抓取個股最新價格
+  // 2. 🌟【100% 即刻併發更新最新價格】：不等待阻塞，立即發起網路請求
   if (state.stocks.size > 0) {
-    await fetchStockPrices([...state.stocks.keys()]);
+    fetchStockPrices([...state.stocks.keys()]);
   }
 }
 
@@ -1414,6 +1452,9 @@ async function fetchStockPrices(codes) {
 
     const now = Date.now();
     for (const s of data.stocks) {
+      // 🌟【寫入全域持久快取】：所有取得的最新股價即刻保存在記憶體中
+      saveToPriceCache(s);
+
       let entry = state.stocks.get(s.code);
       if (!entry && state.currentModalCode === s.code && state.tempModalEntry) {
         entry = state.tempModalEntry;
