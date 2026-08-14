@@ -1839,15 +1839,6 @@ function renderTenDayCardsOnly(top30, maxMentions) {
     else if (s.rank === 2) rankBadgeText = `🥈 2`;
     else if (s.rank === 3) rankBadgeText = `🥉 3`;
 
-    // 抓取最新一條真實推文預覽
-    const firstPush = (s.realPushes && s.realPushes.length > 0) ? s.realPushes[0] : ((s.samplePushes && s.samplePushes[0]) || null);
-    let pushPreviewStr = '';
-    if (firstPush) {
-      const pDate = firstPush.date ? `[${firstPush.date}] ` : '';
-      const pUser = firstPush.userid ? `${firstPush.userid}: ` : '';
-      pushPreviewStr = `${pDate}${pUser}${firstPush.content}`;
-    }
-
     return `
       <div class="top30-card rank-${s.rank} ${isSelected ? 'selected' : ''}" data-code="${s.code}">
         <span class="rank-badge">${rankBadgeText}</span>
@@ -1867,11 +1858,6 @@ function renderTenDayCardsOnly(top30, maxMentions) {
           <span class="top30-total-badge">💬 ${s.totalMentions} 次</span>
           <span class="top30-avg-badge">日均 ${s.avgMentions}次</span>
         </div>
-
-        ${pushPreviewStr ? `
-          <div class="top30-push-preview" title="${escHtml(pushPreviewStr)}">
-            💬 ${escHtml(pushPreviewStr)}
-          </div>` : ''}
 
         <div class="top30-heat-wrap" title="聲量佔比 ${heatPct}%">
           <div class="top30-heat-bar" style="width: ${heatPct}%;"></div>
