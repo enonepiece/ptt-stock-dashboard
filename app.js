@@ -1974,6 +1974,13 @@ function renderHistoricPushes(stock) {
     }
   }
 
+  // 3. 🌟【按日期新到舊嚴格排序】：確保近 10 日最新推文排在最上方
+  matchedPushes.sort((a, b) => {
+    const dateA = a.date || '';
+    const dateB = b.date || '';
+    return dateB.localeCompare(dateA);
+  });
+
   const final100List = matchedPushes.slice(0, 100);
 
   // 同步更新標題與畫面，100% 絕對一致且必出！
@@ -2014,6 +2021,11 @@ function renderHistoricPushes(stock) {
             } catch {}
           }
         }
+        matchedPushes.sort((a, b) => {
+          const dateA = a.date || '';
+          const dateB = b.date || '';
+          return dateB.localeCompare(dateA);
+        });
         const updated100List = matchedPushes.slice(0, 100);
         if (updated100List.length > 0) {
           if (titleEl) {
