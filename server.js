@@ -601,6 +601,37 @@ function saveAnalyticsCacheToFile(cacheData) {
 
 let tenDaysCache = loadAnalyticsCacheFromFile();
 
+/**
+ * 徹底校驗並正規化 PTT 閒聊文章日期，100% 對齊交易日標籤
+ */
+function normalizePttArticleDate(title, rawDate) {
+  const currentYear = new Date().getFullYear();
+  const matchFull = title.match(/(\d{4})[\/\.\-](\d{1,2})[\/\.\-](\d{1,2})/);
+  if (matchFull) {
+    const yyyy = matchFull[1];
+    const mm   = String(matchFull[2]).padStart(2, '0');
+    const dd   = String(matchFull[3]).padStart(2, '0');
+    return `${yyyy}/${mm}/${dd}`;
+  }
+
+  const matchShort = title.match(/(\d{1,2})[\/\.\-](\d{1,2})/);
+  if (matchShort) {
+    const mm = String(matchShort[1]).padStart(2, '0');
+    const dd = String(matchShort[2]).padStart(2, '0');
+    return `${currentYear}/${mm}/${dd}`;
+  }
+
+  if (rawDate) {
+    const parts = rawDate.trim().split('/');
+    if (parts.length === 2) {
+      const mm = String(parts[0]).padStart(2, '0');
+      const dd = String(parts[1]).padStart(2, '0');
+      return `${currentYear}/${mm}/${dd}`;
+    }
+  }
+  return '';
+}
+
 async function generateAndSaveTenDaysAnalytics(category = 'all') {
   const todayObj = new Date();
   const todayYMD = `${todayObj.getFullYear()}/${String(todayObj.getMonth() + 1).padStart(2, '0')}/${String(todayObj.getDate()).padStart(2, '0')}`;
@@ -623,9 +654,11 @@ async function generateAndSaveTenDaysAnalytics(category = 'all') {
       const author = $(el).find('.author').text().trim();
 
       if (href) {
-        const m = title.match(/(\d{4}\/\d{2}\/\d{2})/);
-        const fullDate = m ? m[1] : rawDate;
-        scannedArticles.push({ title, url: 'https://www.ptt.cc' + href, date: fullDate, rawDate, author });
+        // 🌟【100% 精準對齊】：使用正規化日期解析器
+        const fullDate = normalizePttArticleDate(title, rawDate);
+        if (fullDate) {
+          scannedArticles.push({ title, url: 'https://www.ptt.cc' + href, date: fullDate, rawDate, author });
+        }
       }
     });
 
