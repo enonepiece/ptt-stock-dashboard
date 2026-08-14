@@ -255,7 +255,6 @@ async function fetchStockFromYahoo(code) {
 
   return null;
 }
-}
 
 function extractStockPrice(s) {
   const z         = parseFloat(s.z);

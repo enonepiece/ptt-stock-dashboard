@@ -282,7 +282,6 @@ async function fetchStockFromYahoo(code) {
 
   return null;
 }
-}
 
 async function handleStock(request) {
   const url   = new URL(request.url);
