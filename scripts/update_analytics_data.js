@@ -81,14 +81,14 @@ async function handleTenDaysAnalytics(request) {
     success: true,
     category,
     dates,
-    totalArticlesCount: 20,
-    totalPushesAnalyzed: 29675,
+    totalArticlesCount: ${result.totalArticlesCount || 20},
+    totalPushesAnalyzed: ${result.totalPushesAnalyzed || 29675},
     top30,
     timestamp: Date.now(),
   });
 }`;
 
-      const regex = /const EMBEDDED_TOP30 = [\\s\\S]*?async function handleTenDaysAnalytics\\(request\\)[\\s\\S]*?timestamp:\\s*Date\\.now\\(\\),?\\s*\\}\\);\\s*\\}/;
+      const regex = /const EMBEDDED_TOP30 = [\s\S]*?async function handleTenDaysAnalytics\(request\)[\s\S]*?timestamp:\s*Date\.now\(\),?\s*\}\);\s*\}/;
       content = content.replace(regex, functionBody);
       fs.writeFileSync(filepath, content, 'utf8');
       console.log(`✅ 3. 已自動將最新數據編譯注入至 ${workerRelPath}`);
