@@ -98,6 +98,7 @@ async function handleTenDaysAnalytics(request) {
     updateWorkerFile('worker.js');
 
     console.log('🎉 數據全自動更新完畢！隨時可自動提交部署。');
+    process.exit(0);
   } catch (err) {
     console.error('❌ 數據自動更新失敗:', err);
     process.exit(1);

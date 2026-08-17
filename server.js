@@ -883,8 +883,6 @@ function scheduleMidnightCron() {
   }, msUntilMidnight);
 }
 
-scheduleMidnightCron();
-
 app.get('/api/analytics/ten-days', async (req, res) => {
   try {
     const category = req.query.category || 'all'; // all, intraday, afterHours
@@ -954,8 +952,6 @@ function connectPttBbsNative() {
   }
 }
 
-connectPttBbsNative();
-
 function broadcast(data) {
   const payload = JSON.stringify(data);
   wss.clients.forEach(client => {
@@ -1019,6 +1015,9 @@ wss.on('connection', ws => {
 
 // ── 啟動 ──────────────────────────────────────────────────
 if (require.main === module) {
+  scheduleMidnightCron();
+  connectPttBbsNative();
+
   server.listen(PORT, () => {
     console.log('');
     console.log('  ╔═══════════════════════════════════════════╗');
