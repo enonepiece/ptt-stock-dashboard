@@ -345,35 +345,75 @@ async function handleStock(request) {
 }
 
 async function handleMarketIndex(request) {
+  try {
+    const [twiiRes, twoiiRes] = await Promise.all([
+      fetch('https://query1.finance.yahoo.com/v8/finance/chart/%5ETWII?interval=1d&range=1d', { headers: { 'User-Agent': 'Mozilla/5.0' } }).then(r => r.json()).catch(() => null),
+      fetch('https://query1.finance.yahoo.com/v8/finance/chart/%5ETWOII?interval=1d&range=1d', { headers: { 'User-Agent': 'Mozilla/5.0' } }).then(r => r.json()).catch(() => null),
+    ]);
 
-  const cookie = await ensureTWSECookie();
-  const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=tse_t00.tw|otc_o00.tw&_=${Date.now()}`;
+    const indices = [];
 
-  const resp = await fetch(apiUrl, {
-    headers: {
-      'Cookie':     cookie,
-      'Referer':    'https://mis.twse.com.tw/stock/fibest.jsp',
-      'User-Agent': 'Mozilla/5.0',
-    },
-  });
+    if (twiiRes?.chart?.result?.[0]?.meta) {
+      const meta = twiiRes.chart.result[0].meta;
+      const price = meta.regularMarketPrice;
+      const prevClose = meta.chartPreviousClose || meta.previousClose || price;
+      if (price && price > 0) {
+        const change    = +(price - prevClose).toFixed(2);
+        const changePct = prevClose > 0 ? +((change / prevClose) * 100).toFixed(2) : 0;
+        indices.push({ key: 't00', name: '加權指數', price: +price.toFixed(2), prevClose: +prevClose.toFixed(2), change, changePct, isLive: true, tradeTime: '' });
+      }
+    }
 
-  const data     = await resp.json();
-  const msgArray = data.msgArray || [];
+    if (twoiiRes?.chart?.result?.[0]?.meta) {
+      const meta = twoiiRes.chart.result[0].meta;
+      const price = meta.regularMarketPrice;
+      const prevClose = meta.chartPreviousClose || meta.previousClose || price;
+      if (price && price > 0) {
+        const change    = +(price - prevClose).toFixed(2);
+        const changePct = prevClose > 0 ? +((change / prevClose) * 100).toFixed(2) : 0;
+        indices.push({ key: 'o00', name: '櫃買指數', price: +price.toFixed(2), prevClose: +prevClose.toFixed(2), change, changePct, isLive: true, tradeTime: '' });
+      }
+    }
 
-  const twseIndices = msgArray.map(s => {
-    const parsed = extractStockPrice(s);
+    if (indices.length > 0) {
+      return jsonResponse({ success: true, indices, timestamp: Date.now() });
+    }
+  } catch (err) {}
 
-    return {
-      key:       s.c || 't00',
-      name:      s.n || (s.c === 't00' ? '加權指數' : '櫃買指數'),
-      price:     parsed.price,
-      prevClose: parsed.prevClose,
-      change:    parsed.change,
-      changePct: parsed.changePct,
-    };
-  });
+  try {
+    const cookie = await ensureTWSECookie();
+    const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=tse_t00.tw|otc_o00.tw&_=${Date.now()}`;
 
-  return jsonResponse({ success: true, indices: twseIndices, timestamp: Date.now() });
+    const resp = await fetch(apiUrl, {
+      headers: {
+        'Cookie':     cookie,
+        'Referer':    'https://mis.twse.com.tw/stock/fibest.jsp',
+        'User-Agent': 'Mozilla/5.0',
+      },
+    });
+
+    const data     = await resp.json();
+    const msgArray = data.msgArray || [];
+
+    const twseIndices = msgArray.map(s => {
+      const parsed = extractStockPrice(s);
+
+      return {
+        key:       s.c || 't00',
+        name:      s.n || (s.c === 't00' ? '加權指數' : '櫃買指數'),
+        price:     parsed.price,
+        prevClose: parsed.prevClose,
+        change:    parsed.change,
+        changePct: parsed.changePct,
+        isLive:    parsed.isLive,
+        tradeTime: s.t || '',
+      };
+    });
+
+    return jsonResponse({ success: true, indices: twseIndices, timestamp: Date.now() });
+  } catch (e) {
+    return jsonResponse({ success: false, error: e.message, indices: [] }, 500);
+  }
 }
 
 async function handleStockChart(request) {

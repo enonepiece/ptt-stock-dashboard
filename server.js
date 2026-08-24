@@ -539,9 +539,21 @@ async function fetchIndexFromYahoo(symbol, name) {
   return null;
 }
 
-// ── 路由：TWSE 大盤指數 ──────────────────────────────────
+// ── 路由：大盤指數 (優先 Yahoo JSON API，失敗備援 TWSE) ────────
 // GET /api/market-index
 app.get('/api/market-index', async (req, res) => {
+  try {
+    const [twii, twoii] = await Promise.all([
+      fetchIndexFromYahoo('^TWII', '加權指數'),
+      fetchIndexFromYahoo('^TWOII', '櫃買指數'),
+    ]);
+
+    const indices = [twii, twoii].filter(Boolean);
+    if (indices.length > 0) {
+      return res.json({ success: true, indices, timestamp: Date.now() });
+    }
+  } catch (err) {}
+
   try {
     const cookie = await ensureTWSESession();
     const apiUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?json=1&delay=0&ex_ch=tse_t00.tw|otc_o00.tw&_=${Date.now()}`;
@@ -578,7 +590,7 @@ app.get('/api/market-index', async (req, res) => {
     res.json({ success: true, indices: twseIndices, timestamp: Date.now() });
   } catch (err) {
     console.error('[Market Index API Error]', err.message);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: err.message, indices: [] });
   }
 });
 
