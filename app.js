@@ -298,9 +298,9 @@ function bindEvents() {
     });
   }
 
-  $$('.tab-btn').forEach(btn => {
+  $$('.articles-subpanel .tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      $$('.tab-btn').forEach(b => b.classList.remove('active'));
+      $$('.articles-subpanel .tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       state.currentTabKeyword = btn.dataset.keyword;
       triggerArticleSearch();
