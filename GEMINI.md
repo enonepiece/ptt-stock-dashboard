@@ -16,6 +16,12 @@
 
 ---
 
+## 👤 作者 / 開發者資訊 (Developer Profile)
+- **Developer**: Andrew Chen
+- **LinkedIn**: [https://tw.linkedin.com/in/andrew-chen-a76900264](https://tw.linkedin.com/in/andrew-chen-a76900264)
+
+---
+
 ## 2. 核心業務邏輯與關鍵模組
 
 ### A. 近十日聲量大數據分析 (`/api/analytics/ten-days`)

@@ -83,6 +83,11 @@
 
 - 如果發現某些 PTT 新的股票綽號沒被抓到，您可以修改 `scratch/build_stock_dict.js` 裡的 `customNicknames` 物件，並重新執行 `node scratch/build_stock_dict.js` 來生成最新的 `stockDict.js`。
 
+## 👤 作者 (Author)
+
+- **Andrew Chen**
+- **LinkedIn**: [https://tw.linkedin.com/in/andrew-chen-a76900264](https://tw.linkedin.com/in/andrew-chen-a76900264)
+
 ## 📜 授權條款
 
 MIT License.
