@@ -22,10 +22,10 @@
           "rank": 1,
           "code": "2330",
           "name": "台積電",
-          "totalMentions": 466,
-          "avgMentions": 46.6,
+          "totalMentions": 457,
+          "avgMentions": 45.7,
           "dailyMentions": {
-            "2026/08/28": 52,
+            "2026/08/28": 43,
             "2026/08/27": 44,
             "2026/08/26": 46,
             "2026/08/25": 49,
@@ -75,69 +75,15 @@
             },
             {
               "date": "2026/08/28",
-              "tag": "→",
-              "userid": "omanorboyo",
-              "content": "瑤姊只會賣台積電"
+              "tag": "推",
+              "userid": "QQFU",
+              "content": "台股快跌到2萬，台積以為有AI很秋"
             },
             {
               "date": "2026/08/28",
               "tag": "推",
-              "userid": "l23l23",
-              "content": "之前不拉台積 就是怕崩盤要救太貴"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "l23l23",
-              "content": "明天GG漲5塊 大盤跌300差不多"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "excercang",
-              "content": "個股長期投資要投資也是2330這種穩定成長的"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "GODLP",
-              "content": "回防台積2330聖盔谷"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "eeeee118",
-              "content": "大盤有台積電在扛  不像猩猩戲劇化"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "s155260",
-              "content": "猩猩跌停跟GG跌1檔影響大盤點數差不多"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "zelda312",
-              "content": "好心人可以幫看現在暗台積暗大盤暗猩猩多少了嗎？"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "joyeszhang",
-              "content": "投信就要賣股 更狠一點外資也賣 猩猩GG"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "Riesz",
-              "content": "建議就  台韓:台積三星海力士  日本的味之素(柴犬)"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "GODLP",
-              "content": "回防2330聖盔谷"
+              "userid": "sp03154",
+              "content": "台GG已經螃蟹橫了走一個月了，今天給方向"
             },
             {
               "date": "2026/08/28",
@@ -636,20 +582,74 @@
               "tag": "推",
               "userid": "weiren6",
               "content": "J哥的GG怎麼沒看到"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "→",
+              "userid": "amig0123",
+              "content": "我看電視 輝達開財報 輝達+GG 後五日都會跌 我被騙?"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "eierom",
+              "content": "上次台積電就表演過了，財報好不好華爾街說了算"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "→",
+              "userid": "Benetnasch",
+              "content": "預言老蘇之後重新拿出殺台積圖卡"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "→",
+              "userid": "Benetnasch",
+              "content": "C波真的大跌要殺台積才行吧"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "eric32963296",
+              "content": "可惡 財報前把老黃換成台積了"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "PitzMan",
+              "content": "昨天買一張台積2405今天有便當錢篆嗎.."
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "molopo",
+              "content": "房貸 信貸 馬上貸 質押 0050 2330 正2 怎輸"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "cool189",
+              "content": "GG振作啊啊啊啊啊啊"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "→",
+              "userid": "omanorboyo",
+              "content": "輝達跟GG現在就是穩定大盤的功能 至少確定不會崩了"
             }
           ],
-          "price": 2420,
-          "change": 10,
-          "changePct": 0.41
+          "price": 2405,
+          "change": -15,
+          "changePct": -0.62
         },
         {
           "rank": 2,
           "code": "3037",
           "name": "欣興",
-          "totalMentions": 304,
-          "avgMentions": 30.4,
+          "totalMentions": 271,
+          "avgMentions": 27.1,
           "dailyMentions": {
-            "2026/08/28": 258,
+            "2026/08/28": 225,
             "2026/08/25": 3,
             "2026/08/21": 7,
             "2026/08/20": 3,
@@ -1259,9 +1259,9 @@
               "content": "可惜沒辦法聽老蘇分析欣興 要等下星期才能聽到了"
             }
           ],
-          "price": 1110,
-          "change": -70,
-          "changePct": -5.93
+          "price": 999,
+          "change": -111,
+          "changePct": -10
         },
         {
           "rank": 3,
@@ -1286,7 +1286,7 @@
               "date": "2026/08/28",
               "tag": "推",
               "userid": "Iponponman",
-              "content": "明天開盤買牙科送分題"
+              "content": "開盤撿牙科 送分題吧"
             },
             {
               "date": "2026/08/28",
@@ -1883,18 +1883,18 @@
               "content": "牙科昨天開完法說 外豬要倒貨了嗎"
             }
           ],
-          "price": 540,
-          "change": -1,
-          "changePct": -0.18
+          "price": 543,
+          "change": 3,
+          "changePct": 0.56
         },
         {
           "rank": 4,
           "code": "2327",
           "name": "國巨*",
-          "totalMentions": 190,
-          "avgMentions": 19,
+          "totalMentions": 185,
+          "avgMentions": 18.5,
           "dailyMentions": {
-            "2026/08/28": 56,
+            "2026/08/28": 51,
             "2026/08/27": 20,
             "2026/08/26": 19,
             "2026/08/25": 20,
@@ -1938,44 +1938,14 @@
             {
               "date": "2026/08/28",
               "tag": "推",
-              "userid": "dosiris",
-              "content": "國巨砍超過一半也不見踴躍上車"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "eeeee118",
-              "content": "猩猩大概還會佔據好幾天的熱度  類似前陣子國巨"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "Riesz",
-              "content": "相信國巨  來生再聚  相信欣興  寸草不興"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "eeeee118",
-              "content": "感覺燒起來會比國巨更刺激  認售權證要拚惹"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "eeeee118",
-              "content": "假設猩猩  接下來跌幅比照國巨  也許認售還真有肉"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "omanorboyo",
-              "content": "來看看瑤姊20000張會怎操作 上次她國巨一路放到腰斬"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
               "userid": "futley",
               "content": "上次國巨也是一堆人撿，然後就沒有然後了都跑路了"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "wolf215",
+              "content": "國巨2.0 猩風血雨～"
             },
             {
               "date": "2026/08/28",
@@ -2504,20 +2474,50 @@
               "tag": "→",
               "userid": "graciashola",
               "content": "老蘇即將殺爆國巨 大暴跌 這只是剛開始"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "czg",
+              "content": "雖然老蘇狂酸某檔,某檔過陣子會噴,但國巨我不敢買"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "BuzzerBeatBB",
+              "content": "988 最高1000國巨 瑤姊 買400國巨 誰強"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "opticalman",
+              "content": "空蛙這波空國巨賺翻了"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "MinJun5566",
+              "content": "國巨現在是底部嗎"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "shinobunodok",
+              "content": "在國巨山頂駐紮的 可能真要蹲很長一段時間了"
             }
           ],
-          "price": 597,
-          "change": 42,
-          "changePct": 7.57
+          "price": 545,
+          "change": -52,
+          "changePct": -8.71
         },
         {
           "rank": 5,
           "code": "0050",
           "name": "元大台灣50",
-          "totalMentions": 157,
-          "avgMentions": 15.7,
+          "totalMentions": 154,
+          "avgMentions": 15.4,
           "dailyMentions": {
-            "2026/08/28": 22,
+            "2026/08/28": 19,
             "2026/08/27": 9,
             "2026/08/26": 29,
             "2026/08/25": 17,
@@ -2552,24 +2552,6 @@
               "tag": "推",
               "userid": "holyvoice",
               "content": "主動式跟0050不知道會不會跑？"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "pikachu123",
-              "content": "0050應該無感啦 0050是看gg臉色"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "loveadu",
-              "content": "明天0050爽了，欣興跳水"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "cphe",
-              "content": "欣興才佔0050 1.42根本不痛不癢，明天要怕的是補跌"
             },
             {
               "date": "2026/08/28",
@@ -3128,20 +3110,38 @@
               "tag": "→",
               "userid": "HiuAnOP",
               "content": "Z神 我現在沒正二 都借錢買50‼"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "superamd",
+              "content": "重點是 買0050還可以說 你們在忙甚麼 好爽"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "stocktonty",
+              "content": "羨慕買0050賺爛"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "barryliou01",
+              "content": "他奶奶的歐硬0050"
             }
           ],
-          "price": 106.95,
-          "change": 0.9,
-          "changePct": 0.85
+          "price": 106.25,
+          "change": -0.7,
+          "changePct": -0.65
         },
         {
           "rank": 6,
           "code": "00632R",
           "name": "元大台灣50反1",
-          "totalMentions": 143,
-          "avgMentions": 14.3,
+          "totalMentions": 144,
+          "avgMentions": 14.4,
           "dailyMentions": {
-            "2026/08/28": 6,
+            "2026/08/28": 7,
             "2026/08/27": 11,
             "2026/08/26": 13,
             "2026/08/25": 12,
@@ -3170,6 +3170,12 @@
               "tag": "噓",
               "userid": "qwert1122",
               "content": "嘉偉老師救救我…滿手反一等c波 都快斷頭了"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "s454666",
+              "content": "載版資金通通進去反一 不要不信"
             },
             {
               "date": "2026/08/28",
@@ -3746,26 +3752,19 @@
               "tag": "推",
               "userid": "wwrand23",
               "content": "老蘇有說過，要下殺年線，還不趕緊all in 反1"
-            },
-            {
-              "date": "2026/08/18",
-              "tag": "推",
-              "userid": "OhMyGoose",
-              "content": "老蘇的反一大賺"
             }
           ],
-          "price": 9.89,
-          "change": -0.06,
-          "changePct": -0.6
+          "price": 9.95,
+          "change": 0.06,
+          "changePct": 0.61
         },
         {
           "rank": 7,
           "code": "2615",
           "name": "萬海",
-          "totalMentions": 138,
-          "avgMentions": 13.8,
+          "totalMentions": 137,
+          "avgMentions": 13.7,
           "dailyMentions": {
-            "2026/08/28": 1,
             "2026/08/27": 2,
             "2026/08/26": 33,
             "2026/08/25": 24,
@@ -3777,12 +3776,6 @@
             "2026/08/17": 3
           },
           "realPushes": [
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "eeeee118",
-              "content": "結果這次萬海  一樣拉到130幾就下課"
-            },
             {
               "date": "2026/08/27",
               "tag": "→",
@@ -4376,20 +4369,26 @@
               "tag": "推",
               "userid": "pkro12345",
               "content": "萬海來囉"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "yoshiki78529",
+              "content": "萬海再一個月超車長榮"
             }
           ],
-          "price": 111.5,
-          "change": -2,
-          "changePct": -1.76
+          "price": 114,
+          "change": 2.5,
+          "changePct": 2.24
         },
         {
           "rank": 8,
           "code": "2303",
           "name": "聯電",
-          "totalMentions": 124,
-          "avgMentions": 12.4,
+          "totalMentions": 125,
+          "avgMentions": 12.5,
           "dailyMentions": {
-            "2026/08/28": 33,
+            "2026/08/28": 34,
             "2026/08/27": 22,
             "2026/08/26": 1,
             "2026/08/25": 1,
@@ -4405,6 +4404,12 @@
               "tag": "→",
               "userid": "eno03",
               "content": "二哥 華崩 陽明 都差十塊解套 還真巧QQ"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "dosiris",
+              "content": "猩猩賣給聯電 這樣有救吧"
             },
             {
               "date": "2026/08/28",
@@ -4993,17 +4998,11 @@
               "tag": "推",
               "userid": "ms0286415",
               "content": "二哥一定是跳水台   片不了我=="
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "→",
-              "userid": "joyeszhang",
-              "content": "投信又賣飛 可憐啊 二哥準備200"
             }
           ],
-          "price": 130,
-          "change": 11.5,
-          "changePct": 9.7
+          "price": 129,
+          "change": -1,
+          "changePct": -0.77
         },
         {
           "rank": 9,
@@ -5625,9 +5624,9 @@
               "content": "正2融資都跑光了才在那殺 低能送錢主力"
             }
           ],
-          "price": 36.3,
-          "change": 0.35,
-          "changePct": 0.97
+          "price": 35.82,
+          "change": -0.48,
+          "changePct": -1.32
         },
         {
           "rank": 10,
@@ -6249,18 +6248,18 @@
               "content": "富士你聯茂把我踹下車 還我錢QQ"
             }
           ],
-          "price": 582,
-          "change": 19,
-          "changePct": 3.37
+          "price": 548,
+          "change": -34,
+          "changePct": -5.84
         },
         {
           "rank": 11,
           "code": "5347",
           "name": "世界",
-          "totalMentions": 103,
-          "avgMentions": 10.3,
+          "totalMentions": 104,
+          "avgMentions": 10.4,
           "dailyMentions": {
-            "2026/08/28": 20,
+            "2026/08/28": 21,
             "2026/08/27": 16,
             "2026/08/26": 13,
             "2026/08/25": 10,
@@ -6295,6 +6294,12 @@
               "tag": "推",
               "userid": "matlab1106",
               "content": "以台灣的產能要不貼牌供應全世界 可能嗎? XD"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "噓",
+              "userid": "s860703",
+              "content": "亞洲納斯達克藥帶噴還帶崩全世界？"
             },
             {
               "date": "2026/08/28",
@@ -6865,17 +6870,11 @@
               "tag": "→",
               "userid": "blueasoo",
               "content": "台股世界爛 帶崩亞股"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "→",
-              "userid": "searchroy",
-              "content": "全世界都碟 只有呆股向上"
             }
           ],
-          "price": 153,
-          "change": 2,
-          "changePct": 1.32
+          "price": 151.5,
+          "change": -1.5,
+          "changePct": -0.98
         },
         {
           "rank": 12,
@@ -7400,9 +7399,9 @@
               "content": "99 華崩電"
             }
           ],
-          "price": 181.5,
-          "change": -4.5,
-          "changePct": -2.42
+          "price": 182.5,
+          "change": 1,
+          "changePct": 0.55
         },
         {
           "rank": 13,
@@ -7868,9 +7867,9 @@
               "content": "龍哥今天只有撿包子嗎"
             }
           ],
-          "price": 48.6,
-          "change": 2.35,
-          "changePct": 5.08
+          "price": 49.85,
+          "change": 1.25,
+          "changePct": 2.57
         },
         {
           "rank": 14,
@@ -8318,9 +8317,9 @@
               "content": "聯發科在衝三小"
             }
           ],
-          "price": 3985,
-          "change": 120,
-          "changePct": 3.1
+          "price": 3925,
+          "change": -60,
+          "changePct": -1.51
         },
         {
           "rank": 15,
@@ -8742,9 +8741,9 @@
               "content": "老蘇的精材和台虹怎麼了"
             }
           ],
-          "price": 343.5,
-          "change": -9,
-          "changePct": -2.55
+          "price": 327,
+          "change": -16.5,
+          "changePct": -4.8
         },
         {
           "rank": 16,
@@ -9144,18 +9143,18 @@
               "content": "大立光又五千啦！！！"
             }
           ],
-          "price": 7065,
-          "change": 150,
-          "changePct": 2.17
+          "price": 7650,
+          "change": 585,
+          "changePct": 8.28
         },
         {
           "rank": 17,
           "code": "2603",
           "name": "長榮",
-          "totalMentions": 58,
-          "avgMentions": 5.8,
+          "totalMentions": 57,
+          "avgMentions": 5.7,
           "dailyMentions": {
-            "2026/08/28": 2,
+            "2026/08/28": 1,
             "2026/08/27": 2,
             "2026/08/26": 7,
             "2026/08/25": 2,
@@ -9167,12 +9166,6 @@
             "2026/08/17": 7
           },
           "realPushes": [
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "d0089145",
-              "content": "算PE的不要算過去式要算未來式 前幾年長榮你抱了嗎"
-            },
             {
               "date": "2026/08/28",
               "tag": "推",
@@ -9516,12 +9509,348 @@
               "content": "感謝師傅推薦長榮 25%了 >//<"
             }
           ],
-          "price": 231.5,
-          "change": -1,
-          "changePct": -0.43
+          "price": 233.5,
+          "change": 2,
+          "changePct": 0.86
         },
         {
           "rank": 18,
+          "code": "2301",
+          "name": "光寶科",
+          "totalMentions": 52,
+          "avgMentions": 5.2,
+          "dailyMentions": {
+            "2026/08/28": 13,
+            "2026/08/27": 2,
+            "2026/08/26": 1,
+            "2026/08/25": 8,
+            "2026/08/24": 9,
+            "2026/08/21": 5,
+            "2026/08/20": 1,
+            "2026/08/19": 1,
+            "2026/08/18": 3,
+            "2026/08/17": 9
+          },
+          "realPushes": [
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "maxman77",
+              "content": "又要點燈了嗎？@@"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "maxman77",
+              "content": "啾命啊！猩猩點燈！"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "newstar13579",
+              "content": "今天要猩猩點燈了"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "a5181036",
+              "content": "星星點燈"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "PeikangShin",
+              "content": "今天要唱猩猩點燈了啦  星星點燈 照亮我的家門  讓"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "zzzzzlss",
+              "content": "猩猩點燈"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "pttstock",
+              "content": "來~ 8:45 星星點燈 給他奏下去~"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "newstar13579",
+              "content": "本日最亮的仔：猩猩點燈"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "paericsson",
+              "content": "欣興點燈～"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "bear753951",
+              "content": "星星快點燈，我要買"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "→",
+              "userid": "XXXXCOW",
+              "content": "猩猩要點燈啦"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "jenchieh5",
+              "content": "星星點燈"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "jdlpings",
+              "content": "猩猩點燈嗎"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "推",
+              "userid": "a2080259",
+              "content": "陽光寶盆被嘎了"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "推",
+              "userid": "a2080259",
+              "content": "賺了一萬加菜金 謝謝陽光寶盒"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "lepidoptera",
+              "content": "光寶科300啦"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "ACDC69",
+              "content": "誰在買光寶科"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "Between1986",
+              "content": "星星點燈 不過是綠色的"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "antiSOC",
+              "content": "光寶科讓我買一下嘛"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "a1684114",
+              "content": "光寶從漲停搓成跌停 很會玩"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "cheedo",
+              "content": "做到光寶科了 下班"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "weeii4211",
+              "content": "我的光寶挖到石油了嗎"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "abanesic",
+              "content": "光寶好猛"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "TIPPK",
+              "content": "光寶科看起來像是跟大家不一樣"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "lepidoptera",
+              "content": "光寶衝啊…"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "house911",
+              "content": "2301 燈 ?"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "lepidoptera",
+              "content": "光寶科 鎖 舒服啦"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "Marshalkobe2",
+              "content": "光寶科好猛喔"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "Forcast",
+              "content": "光寶燈"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "tanchuchan",
+              "content": "光寶科太扯了"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "→",
+              "userid": "zzzzzzzzzzzy",
+              "content": "突然發現俺的光寶科漲停了"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "kidd085",
+              "content": "光寶科都燈了 台達電加油好嗎"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "hong92",
+              "content": "新勝利跌停，光寶漲停，這是什麼巫術"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "ccdrv",
+              "content": "光寶科 鎖  讚"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "nashfan",
+              "content": "光寶寶太棒了 主力我愛你"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "→",
+              "userid": "kings5515",
+              "content": "光寶科跟順德放了一個禮拜終於有回報"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "waynn1215",
+              "content": "2301太扯啦"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "→",
+              "userid": "z50502",
+              "content": "99光寶科"
+            },
+            {
+              "date": "2026/08/20",
+              "tag": "噓",
+              "userid": "takuya1",
+              "content": "到底是哪個白癡在賣光寶科"
+            },
+            {
+              "date": "2026/08/19",
+              "tag": "推",
+              "userid": "Forcast",
+              "content": "光寶會漲還是跌"
+            },
+            {
+              "date": "2026/08/18",
+              "tag": "推",
+              "userid": "KEDEN",
+              "content": "欣興要點燈了！？"
+            },
+            {
+              "date": "2026/08/18",
+              "tag": "推",
+              "userid": "ms0286415",
+              "content": "星星點燈"
+            },
+            {
+              "date": "2026/08/18",
+              "tag": "→",
+              "userid": "loom0et0bust",
+              "content": "光寶也太強，hold在那"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "→",
+              "userid": "Heyer",
+              "content": "光寶哥天下無敵"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "trogtor",
+              "content": "上週五炒光寶，賺爛了"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "min90129",
+              "content": "新興點燈"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "→",
+              "userid": "min90129",
+              "content": "景碩會跟上欣興點燈嗎？"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "ive0224",
+              "content": "欣興點燈了～真猛！"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "neo19",
+              "content": "星星點燈"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "Atheism",
+              "content": "欣興點燈 照亮我的家門 ～"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "→",
+              "userid": "trogtor",
+              "content": "還好光寶早盤就逃了"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "噓",
+              "userid": "wicer5566",
+              "content": "光寶科怎出貨了"
+            }
+          ],
+          "price": 305,
+          "change": -12.5,
+          "changePct": -3.94
+        },
+        {
+          "rank": 19,
           "code": "1303",
           "name": "南亞",
           "totalMentions": 48,
@@ -9826,609 +10155,12 @@
               "content": "南亞尾盤也大賣 上周漲停一堆可憐fomo慘套"
             }
           ],
-          "price": 220.5,
-          "change": -7,
-          "changePct": -3.08
-        },
-        {
-          "rank": 19,
-          "code": "2301",
-          "name": "光寶科",
-          "totalMentions": 46,
-          "avgMentions": 4.6,
-          "dailyMentions": {
-            "2026/08/28": 7,
-            "2026/08/27": 2,
-            "2026/08/26": 1,
-            "2026/08/25": 8,
-            "2026/08/24": 9,
-            "2026/08/21": 5,
-            "2026/08/20": 1,
-            "2026/08/19": 1,
-            "2026/08/18": 3,
-            "2026/08/17": 9
-          },
-          "realPushes": [
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "maxman77",
-              "content": "又要點燈了嗎？@@"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "IntoHebe",
-              "content": "星星點燈  照亮死門"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "噓",
-              "userid": "asas123sdsa",
-              "content": "星星點燈 點綠燈"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "bear753951",
-              "content": "星星快點燈，我要買"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "XXXXCOW",
-              "content": "猩猩要點燈啦"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "jenchieh5",
-              "content": "星星點燈"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "jdlpings",
-              "content": "猩猩點燈嗎"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "推",
-              "userid": "a2080259",
-              "content": "陽光寶盆被嘎了"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "推",
-              "userid": "a2080259",
-              "content": "賺了一萬加菜金 謝謝陽光寶盒"
-            },
-            {
-              "date": "2026/08/26",
-              "tag": "推",
-              "userid": "lepidoptera",
-              "content": "光寶科300啦"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "ACDC69",
-              "content": "誰在買光寶科"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "Between1986",
-              "content": "星星點燈 不過是綠色的"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "antiSOC",
-              "content": "光寶科讓我買一下嘛"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "a1684114",
-              "content": "光寶從漲停搓成跌停 很會玩"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "cheedo",
-              "content": "做到光寶科了 下班"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "weeii4211",
-              "content": "我的光寶挖到石油了嗎"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "abanesic",
-              "content": "光寶好猛"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "TIPPK",
-              "content": "光寶科看起來像是跟大家不一樣"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "lepidoptera",
-              "content": "光寶衝啊…"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "house911",
-              "content": "2301 燈 ?"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "lepidoptera",
-              "content": "光寶科 鎖 舒服啦"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "Marshalkobe2",
-              "content": "光寶科好猛喔"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "Forcast",
-              "content": "光寶燈"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "tanchuchan",
-              "content": "光寶科太扯了"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "→",
-              "userid": "zzzzzzzzzzzy",
-              "content": "突然發現俺的光寶科漲停了"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "kidd085",
-              "content": "光寶科都燈了 台達電加油好嗎"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "hong92",
-              "content": "新勝利跌停，光寶漲停，這是什麼巫術"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "推",
-              "userid": "ccdrv",
-              "content": "光寶科 鎖  讚"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "推",
-              "userid": "nashfan",
-              "content": "光寶寶太棒了 主力我愛你"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "→",
-              "userid": "kings5515",
-              "content": "光寶科跟順德放了一個禮拜終於有回報"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "推",
-              "userid": "waynn1215",
-              "content": "2301太扯啦"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "→",
-              "userid": "z50502",
-              "content": "99光寶科"
-            },
-            {
-              "date": "2026/08/20",
-              "tag": "噓",
-              "userid": "takuya1",
-              "content": "到底是哪個白癡在賣光寶科"
-            },
-            {
-              "date": "2026/08/19",
-              "tag": "推",
-              "userid": "Forcast",
-              "content": "光寶會漲還是跌"
-            },
-            {
-              "date": "2026/08/18",
-              "tag": "推",
-              "userid": "KEDEN",
-              "content": "欣興要點燈了！？"
-            },
-            {
-              "date": "2026/08/18",
-              "tag": "推",
-              "userid": "ms0286415",
-              "content": "星星點燈"
-            },
-            {
-              "date": "2026/08/18",
-              "tag": "→",
-              "userid": "loom0et0bust",
-              "content": "光寶也太強，hold在那"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "→",
-              "userid": "Heyer",
-              "content": "光寶哥天下無敵"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "trogtor",
-              "content": "上週五炒光寶，賺爛了"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "min90129",
-              "content": "新興點燈"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "→",
-              "userid": "min90129",
-              "content": "景碩會跟上欣興點燈嗎？"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "ive0224",
-              "content": "欣興點燈了～真猛！"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "neo19",
-              "content": "星星點燈"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "Atheism",
-              "content": "欣興點燈 照亮我的家門 ～"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "→",
-              "userid": "trogtor",
-              "content": "還好光寶早盤就逃了"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "噓",
-              "userid": "wicer5566",
-              "content": "光寶科怎出貨了"
-            }
-          ],
-          "price": 317.5,
-          "change": 16.5,
-          "changePct": 5.48
+          "price": 242.5,
+          "change": 22,
+          "changePct": 9.98
         },
         {
           "rank": 20,
-          "code": "00988A",
-          "name": "主動統一全球創新",
-          "totalMentions": 46,
-          "avgMentions": 4.6,
-          "dailyMentions": {
-            "2026/08/28": 12,
-            "2026/08/26": 1,
-            "2026/08/25": 20,
-            "2026/08/24": 6,
-            "2026/08/20": 2,
-            "2026/08/19": 4,
-            "2026/08/17": 1
-          },
-          "realPushes": [
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "excercang",
-              "content": "981 988 403規模都是千億，都持有猩猩"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "噓",
-              "userid": "BlueBird5566",
-              "content": "988A超爛的  哪些北七推薦的"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "jerrey",
-              "content": "988快點換經理人"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "jenchieh5",
-              "content": "988真的很誇張 幾乎是台股所有etf績效最爛的"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "Xration",
-              "content": "988超爛"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "socialloser",
-              "content": "乾你娘 988世界爛 19塊這輩子都解不了套"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "alpho",
-              "content": "我988在17塊吹風 怎麼美股都漲了今天988還能死魚"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "nightop",
-              "content": "988那個經理人神級操作才是導致股價不振的主因"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "nightop",
-              "content": "988完全是靠記憶體真的太猛撐起來的"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "chiangww",
-              "content": "99老輸 99988A"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "joker0903",
-              "content": "988a到底在爛什麼"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "Xration",
-              "content": "988跌三小"
-            },
-            {
-              "date": "2026/08/26",
-              "tag": "推",
-              "userid": "cookeeshop",
-              "content": "988你…"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "Xration",
-              "content": "我現在988 -20%  垃圾經理人"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "BuzzerBeatBB",
-              "content": "988 最爛的阿"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "showhere",
-              "content": "988之前被韓股拖垮吧..."
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "ccdrv",
-              "content": "988A最爛  崩最多  彈最少"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "BBKOX",
-              "content": "7月底把988換成正二"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "BuzzerBeatBB",
-              "content": "988 最高1000國巨 瑤姊 買400國巨 誰強"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "BBKOX",
-              "content": "988遇到回撤，操作太慢"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "BuzzerBeatBB",
-              "content": "988 記憶體回檔低點 砍MU 閃迪 完美錯過 反彈"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "Xration",
-              "content": "988凹單記憶體 結果拉回前賣出 有夠白癡"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "BuzzerBeatBB",
-              "content": "想完美股的 988 改買409 賭一波嚕"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "showhere",
-              "content": "其實00990A跟988A成分差不多，也是跌很慘"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "showhere",
-              "content": "988等美光回到7~800再補嚕?"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "mardy0422",
-              "content": "988真的很扯 都不知道該不該繼續攤平了"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "Xration",
-              "content": "去尼瑪的988"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "chiangww",
-              "content": "23的988A什麼時候可以解套？"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "→",
-              "userid": "hikari22",
-              "content": "23的988A喔，我18.5的988A都想認賠殺出了"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "Xration",
-              "content": "垃圾統一 垃圾988"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "Zyth",
-              "content": "00990A更慘 00988A在那叫什麼"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "Xration",
-              "content": "垃圾統一 爛貨988"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "Zyth",
-              "content": "00990A更慘 00988A在那叫什麼"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "Xration",
-              "content": "草泥馬的988"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "→",
-              "userid": "mardy0422",
-              "content": "99988A"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "showhere",
-              "content": "988該不會跌到12吧，嘻嘻"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "hidework",
-              "content": "988 19買 22賣，當初賺了一些，感謝"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "showhere",
-              "content": "下個月在抄底988，現在還不是買點"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "→",
-              "userid": "showhere",
-              "content": "988等12萬再抄底，大家說好不好"
-            },
-            {
-              "date": "2026/08/20",
-              "tag": "→",
-              "userid": "sim3000",
-              "content": "明天988 應該會漲吧 應該"
-            },
-            {
-              "date": "2026/08/20",
-              "tag": "推",
-              "userid": "sim3000",
-              "content": "988明天該漲了"
-            },
-            {
-              "date": "2026/08/19",
-              "tag": "推",
-              "userid": "htc88666",
-              "content": "988a買lite又吃虧損 婷姐在玩什麼"
-            },
-            {
-              "date": "2026/08/19",
-              "tag": "→",
-              "userid": "CreatorK",
-              "content": "有夠後悔買988A"
-            },
-            {
-              "date": "2026/08/19",
-              "tag": "推",
-              "userid": "sim3000",
-              "content": "988a 神操作太多 主動式比被動費心 唉"
-            },
-            {
-              "date": "2026/08/19",
-              "tag": "→",
-              "userid": "a11011788",
-              "content": "988是什麼垃圾啦 漲一點點 跌超級多"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "→",
-              "userid": "showhere",
-              "content": "988A明天又要噴惹   但偶要奶罩了?"
-            }
-          ],
-          "price": 16.39,
-          "change": -0.14,
-          "changePct": -0.85
-        },
-        {
-          "rank": 21,
           "code": "8299",
           "name": "群聯",
           "totalMentions": 45,
@@ -10716,9 +10448,300 @@
               "content": "整個周末脆上都在討論群聯,看來準備低接的人超多"
             }
           ],
-          "price": 2150,
-          "change": -5,
-          "changePct": -0.23
+          "price": 2165,
+          "change": 15,
+          "changePct": 0.7
+        },
+        {
+          "rank": 21,
+          "code": "00988A",
+          "name": "主動統一全球創新",
+          "totalMentions": 45,
+          "avgMentions": 4.5,
+          "dailyMentions": {
+            "2026/08/28": 11,
+            "2026/08/26": 1,
+            "2026/08/25": 20,
+            "2026/08/24": 6,
+            "2026/08/20": 2,
+            "2026/08/19": 4,
+            "2026/08/17": 1
+          },
+          "realPushes": [
+            {
+              "date": "2026/08/28",
+              "tag": "噓",
+              "userid": "BlueBird5566",
+              "content": "988A超爛的  哪些北七推薦的"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "jerrey",
+              "content": "988快點換經理人"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "jenchieh5",
+              "content": "988真的很誇張 幾乎是台股所有etf績效最爛的"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "Xration",
+              "content": "988超爛"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "→",
+              "userid": "socialloser",
+              "content": "乾你娘 988世界爛 19塊這輩子都解不了套"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "alpho",
+              "content": "我988在17塊吹風 怎麼美股都漲了今天988還能死魚"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "nightop",
+              "content": "988那個經理人神級操作才是導致股價不振的主因"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "→",
+              "userid": "nightop",
+              "content": "988完全是靠記憶體真的太猛撐起來的"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "chiangww",
+              "content": "99老輸 99988A"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "joker0903",
+              "content": "988a到底在爛什麼"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "Xration",
+              "content": "988跌三小"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "cookeeshop",
+              "content": "988你…"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "Xration",
+              "content": "我現在988 -20%  垃圾經理人"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "BuzzerBeatBB",
+              "content": "988 最爛的阿"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "showhere",
+              "content": "988之前被韓股拖垮吧..."
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "ccdrv",
+              "content": "988A最爛  崩最多  彈最少"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "BBKOX",
+              "content": "7月底把988換成正二"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "BuzzerBeatBB",
+              "content": "988 最高1000國巨 瑤姊 買400國巨 誰強"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "BBKOX",
+              "content": "988遇到回撤，操作太慢"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "BuzzerBeatBB",
+              "content": "988 記憶體回檔低點 砍MU 閃迪 完美錯過 反彈"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "Xration",
+              "content": "988凹單記憶體 結果拉回前賣出 有夠白癡"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "BuzzerBeatBB",
+              "content": "想完美股的 988 改買409 賭一波嚕"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "showhere",
+              "content": "其實00990A跟988A成分差不多，也是跌很慘"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "showhere",
+              "content": "988等美光回到7~800再補嚕?"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "mardy0422",
+              "content": "988真的很扯 都不知道該不該繼續攤平了"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "Xration",
+              "content": "去尼瑪的988"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "chiangww",
+              "content": "23的988A什麼時候可以解套？"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "hikari22",
+              "content": "23的988A喔，我18.5的988A都想認賠殺出了"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "Xration",
+              "content": "垃圾統一 垃圾988"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "Zyth",
+              "content": "00990A更慘 00988A在那叫什麼"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "Xration",
+              "content": "垃圾統一 爛貨988"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "Zyth",
+              "content": "00990A更慘 00988A在那叫什麼"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "Xration",
+              "content": "草泥馬的988"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "→",
+              "userid": "mardy0422",
+              "content": "99988A"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "showhere",
+              "content": "988該不會跌到12吧，嘻嘻"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "hidework",
+              "content": "988 19買 22賣，當初賺了一些，感謝"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "showhere",
+              "content": "下個月在抄底988，現在還不是買點"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "→",
+              "userid": "showhere",
+              "content": "988等12萬再抄底，大家說好不好"
+            },
+            {
+              "date": "2026/08/20",
+              "tag": "→",
+              "userid": "sim3000",
+              "content": "明天988 應該會漲吧 應該"
+            },
+            {
+              "date": "2026/08/20",
+              "tag": "推",
+              "userid": "sim3000",
+              "content": "988明天該漲了"
+            },
+            {
+              "date": "2026/08/19",
+              "tag": "推",
+              "userid": "htc88666",
+              "content": "988a買lite又吃虧損 婷姐在玩什麼"
+            },
+            {
+              "date": "2026/08/19",
+              "tag": "→",
+              "userid": "CreatorK",
+              "content": "有夠後悔買988A"
+            },
+            {
+              "date": "2026/08/19",
+              "tag": "推",
+              "userid": "sim3000",
+              "content": "988a 神操作太多 主動式比被動費心 唉"
+            },
+            {
+              "date": "2026/08/19",
+              "tag": "→",
+              "userid": "a11011788",
+              "content": "988是什麼垃圾啦 漲一點點 跌超級多"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "→",
+              "userid": "showhere",
+              "content": "988A明天又要噴惹   但偶要奶罩了?"
+            }
+          ],
+          "price": 15.99,
+          "change": -0.4,
+          "changePct": -2.44
         },
         {
           "rank": 22,
@@ -11003,18 +11026,18 @@
               "content": "海邊仔：這是閒鳥  不是..."
             }
           ],
-          "price": 253,
-          "change": 1,
-          "changePct": 0.4
+          "price": 250,
+          "change": -3,
+          "changePct": -1.19
         },
         {
           "rank": 23,
           "code": "2609",
           "name": "陽明",
-          "totalMentions": 42,
-          "avgMentions": 4.2,
+          "totalMentions": 43,
+          "avgMentions": 4.3,
           "dailyMentions": {
-            "2026/08/28": 4,
+            "2026/08/28": 5,
             "2026/08/27": 2,
             "2026/08/26": 6,
             "2026/08/25": 6,
@@ -11031,6 +11054,12 @@
               "tag": "→",
               "userid": "eno03",
               "content": "二哥 華崩 陽明 都差十塊解套 還真巧QQ"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "→",
+              "userid": "instill8",
+              "content": "快買陽明避險"
             },
             {
               "date": "2026/08/28",
@@ -11279,12 +11308,268 @@
               "content": "阿明的位階 都有湯喝。"
             }
           ],
-          "price": 56.2,
-          "change": -1.7,
-          "changePct": -2.94
+          "price": 59.5,
+          "change": 3.3,
+          "changePct": 5.87
         },
         {
           "rank": 24,
+          "code": "2059",
+          "name": "川湖",
+          "totalMentions": 39,
+          "avgMentions": 3.9,
+          "dailyMentions": {
+            "2026/08/28": 1,
+            "2026/08/25": 1,
+            "2026/08/24": 9,
+            "2026/08/21": 6,
+            "2026/08/20": 2,
+            "2026/08/19": 2,
+            "2026/08/18": 5,
+            "2026/08/17": 13
+          },
+          "realPushes": [
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "maxman77",
+              "content": "變川湖了"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "jody0113",
+              "content": "環球晶 未 來川湖 萬金股"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "butt1106",
+              "content": "今天緊盯川湖 嘻嘻"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "grass930",
+              "content": "川湖要追信驊嗎"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "Forcast",
+              "content": "川湖7%"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "grass930",
+              "content": "川湖要燈了"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "barry841120",
+              "content": "川湖真扯"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "clusis",
+              "content": "川湖今天要當股王了嗎？"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "Forcast",
+              "content": "川湖7%"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "grass930",
+              "content": "川湖"
+            },
+            {
+              "date": "2026/08/24",
+              "tag": "推",
+              "userid": "mecca",
+              "content": "我們仁德也川湖了QQ"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "butt1106",
+              "content": "除非川湖站回8/18爆量高點 不然不看多"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "→",
+              "userid": "butt1106",
+              "content": "川湖18號一千多張 跟19 20 21是誰賣的？"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "kmshy",
+              "content": "川湖買4510 在8/19賣出賺旅費 等回檔在來玩"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "→",
+              "userid": "zzzzzzzzzzzy",
+              "content": "川湖寶貝加油"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "zzooazsx",
+              "content": "川湖要當股王了？"
+            },
+            {
+              "date": "2026/08/21",
+              "tag": "推",
+              "userid": "abcd5136",
+              "content": "有人還有川湖的嗎"
+            },
+            {
+              "date": "2026/08/20",
+              "tag": "推",
+              "userid": "winston01",
+              "content": "有種放空台光電 川湖啊 你們連一張額度都不夠吧 呵"
+            },
+            {
+              "date": "2026/08/20",
+              "tag": "→",
+              "userid": "eierom",
+              "content": "信驊跟川湖都在跌看這兩個蠻準的"
+            },
+            {
+              "date": "2026/08/19",
+              "tag": "推",
+              "userid": "tatgg2007",
+              "content": "多蛙浮木看川湖"
+            },
+            {
+              "date": "2026/08/19",
+              "tag": "推",
+              "userid": "zzooazsx",
+              "content": "信驊太慘了吧 錢都去川湖了嗎"
+            },
+            {
+              "date": "2026/08/18",
+              "tag": "推",
+              "userid": "Tassatul",
+              "content": "川湖超好笑 一堆掛漲停買 但是賣單一張都沒有"
+            },
+            {
+              "date": "2026/08/18",
+              "tag": "→",
+              "userid": "macheal",
+              "content": "川湖試撮變成跌停了"
+            },
+            {
+              "date": "2026/08/18",
+              "tag": "推",
+              "userid": "jenchieh5",
+              "content": "川湖現在單純只是有錢人娛樂的玩具"
+            },
+            {
+              "date": "2026/08/18",
+              "tag": "→",
+              "userid": "tmdl",
+              "content": "哪個韭菜買川湖期貨1張7.09%"
+            },
+            {
+              "date": "2026/08/18",
+              "tag": "推",
+              "userid": "asws0808",
+              "content": "換川湖當股王"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "fim",
+              "content": "買不起川湖"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "bestbaseball",
+              "content": "川湖 我快fomo 了"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "blackpudding",
+              "content": "川湖買得到嗎"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "→",
+              "userid": "lovehan",
+              "content": "川湖期貨噴噴"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "kidd085",
+              "content": "川湖太強了吧"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "tigervirus",
+              "content": "川湖又發瘋啦"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "butt1106",
+              "content": "川湖太惡心了"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "willy0530",
+              "content": "川湖鎖死"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "loopdiuretic",
+              "content": "川湖直接鎖 群聯："
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "iuiuisme",
+              "content": "川湖猛猛"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "→",
+              "userid": "scgraph",
+              "content": "川湖超車成為股王的態勢很明顯了"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "asxu31",
+              "content": "川湖是鬼嗎？"
+            },
+            {
+              "date": "2026/08/17",
+              "tag": "推",
+              "userid": "tim121507",
+              "content": "川湖會幾根"
+            }
+          ],
+          "price": 14180,
+          "change": -120,
+          "changePct": -0.84
+        },
+        {
+          "rank": 25,
           "code": "6598",
           "name": "ABC-KY",
           "totalMentions": 38,
@@ -11529,258 +11814,9 @@
               "content": "老蘇：根據1930年波浪理論，現在就是ABC的C!"
             }
           ],
-          "price": 28.75,
-          "change": -0.25,
-          "changePct": -0.86
-        },
-        {
-          "rank": 25,
-          "code": "2059",
-          "name": "川湖",
-          "totalMentions": 38,
-          "avgMentions": 3.8,
-          "dailyMentions": {
-            "2026/08/25": 1,
-            "2026/08/24": 9,
-            "2026/08/21": 6,
-            "2026/08/20": 2,
-            "2026/08/19": 2,
-            "2026/08/18": 5,
-            "2026/08/17": 13
-          },
-          "realPushes": [
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "jody0113",
-              "content": "環球晶 未 來川湖 萬金股"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "butt1106",
-              "content": "今天緊盯川湖 嘻嘻"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "grass930",
-              "content": "川湖要追信驊嗎"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "Forcast",
-              "content": "川湖7%"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "grass930",
-              "content": "川湖要燈了"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "barry841120",
-              "content": "川湖真扯"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "clusis",
-              "content": "川湖今天要當股王了嗎？"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "Forcast",
-              "content": "川湖7%"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "grass930",
-              "content": "川湖"
-            },
-            {
-              "date": "2026/08/24",
-              "tag": "推",
-              "userid": "mecca",
-              "content": "我們仁德也川湖了QQ"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "推",
-              "userid": "butt1106",
-              "content": "除非川湖站回8/18爆量高點 不然不看多"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "→",
-              "userid": "butt1106",
-              "content": "川湖18號一千多張 跟19 20 21是誰賣的？"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "推",
-              "userid": "kmshy",
-              "content": "川湖買4510 在8/19賣出賺旅費 等回檔在來玩"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "→",
-              "userid": "zzzzzzzzzzzy",
-              "content": "川湖寶貝加油"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "推",
-              "userid": "zzooazsx",
-              "content": "川湖要當股王了？"
-            },
-            {
-              "date": "2026/08/21",
-              "tag": "推",
-              "userid": "abcd5136",
-              "content": "有人還有川湖的嗎"
-            },
-            {
-              "date": "2026/08/20",
-              "tag": "推",
-              "userid": "winston01",
-              "content": "有種放空台光電 川湖啊 你們連一張額度都不夠吧 呵"
-            },
-            {
-              "date": "2026/08/20",
-              "tag": "→",
-              "userid": "eierom",
-              "content": "信驊跟川湖都在跌看這兩個蠻準的"
-            },
-            {
-              "date": "2026/08/19",
-              "tag": "推",
-              "userid": "tatgg2007",
-              "content": "多蛙浮木看川湖"
-            },
-            {
-              "date": "2026/08/19",
-              "tag": "推",
-              "userid": "zzooazsx",
-              "content": "信驊太慘了吧 錢都去川湖了嗎"
-            },
-            {
-              "date": "2026/08/18",
-              "tag": "推",
-              "userid": "Tassatul",
-              "content": "川湖超好笑 一堆掛漲停買 但是賣單一張都沒有"
-            },
-            {
-              "date": "2026/08/18",
-              "tag": "→",
-              "userid": "macheal",
-              "content": "川湖試撮變成跌停了"
-            },
-            {
-              "date": "2026/08/18",
-              "tag": "推",
-              "userid": "jenchieh5",
-              "content": "川湖現在單純只是有錢人娛樂的玩具"
-            },
-            {
-              "date": "2026/08/18",
-              "tag": "→",
-              "userid": "tmdl",
-              "content": "哪個韭菜買川湖期貨1張7.09%"
-            },
-            {
-              "date": "2026/08/18",
-              "tag": "推",
-              "userid": "asws0808",
-              "content": "換川湖當股王"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "fim",
-              "content": "買不起川湖"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "bestbaseball",
-              "content": "川湖 我快fomo 了"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "blackpudding",
-              "content": "川湖買得到嗎"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "→",
-              "userid": "lovehan",
-              "content": "川湖期貨噴噴"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "kidd085",
-              "content": "川湖太強了吧"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "tigervirus",
-              "content": "川湖又發瘋啦"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "butt1106",
-              "content": "川湖太惡心了"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "willy0530",
-              "content": "川湖鎖死"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "loopdiuretic",
-              "content": "川湖直接鎖 群聯："
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "iuiuisme",
-              "content": "川湖猛猛"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "→",
-              "userid": "scgraph",
-              "content": "川湖超車成為股王的態勢很明顯了"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "asxu31",
-              "content": "川湖是鬼嗎？"
-            },
-            {
-              "date": "2026/08/17",
-              "tag": "推",
-              "userid": "tim121507",
-              "content": "川湖會幾根"
-            }
-          ],
-          "price": 14300,
-          "change": -40,
-          "changePct": -0.28
+          "price": 28.55,
+          "change": -0.2,
+          "changePct": -0.7
         },
         {
           "rank": 26,
@@ -12016,9 +12052,9 @@
               "content": "富喬 好屌"
             }
           ],
-          "price": 125.5,
-          "change": 9,
-          "changePct": 7.73
+          "price": 126.5,
+          "change": 1,
+          "changePct": 0.8
         },
         {
           "rank": 27,
@@ -12253,18 +12289,18 @@
               "content": "槓 精材這廢材 直接綠燈"
             }
           ],
-          "price": 386,
-          "change": 35,
-          "changePct": 9.97
+          "price": 422.5,
+          "change": 36.5,
+          "changePct": 9.46
         },
         {
           "rank": 28,
           "code": "1108",
           "name": "幸福",
-          "totalMentions": 28,
-          "avgMentions": 2.8,
+          "totalMentions": 27,
+          "avgMentions": 2.7,
           "dailyMentions": {
-            "2026/08/28": 3,
+            "2026/08/28": 2,
             "2026/08/27": 2,
             "2026/08/26": 2,
             "2026/08/25": 1,
@@ -12281,12 +12317,6 @@
               "tag": "推",
               "userid": "pai0306",
               "content": "怎麼這麼幸福一直漲"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "loveponpon",
-              "content": "那我這個卡哇可得太幸福了吧"
             },
             {
               "date": "2026/08/28",
@@ -12445,9 +12475,9 @@
               "content": "今天掀奶罩可以幸福嗎"
             }
           ],
-          "price": 11.75,
-          "change": 0,
-          "changePct": 0
+          "price": 11.7,
+          "change": -0.05,
+          "changePct": -0.43
         },
         {
           "rank": 29,
@@ -12624,9 +12654,9 @@
               "content": "旺宏好爛"
             }
           ],
-          "price": 126.5,
-          "change": -1,
-          "changePct": -0.78
+          "price": 126,
+          "change": -0.5,
+          "changePct": -0.4
         },
         {
           "rank": 30,
@@ -12794,12 +12824,12 @@
               "content": "技嘉99 99技嘉"
             }
           ],
-          "price": 349,
-          "change": 4,
-          "changePct": 1.16
+          "price": 358,
+          "change": 9,
+          "changePct": 2.58
         }
       ],
-      "timestamp": 1788117788186
+      "timestamp": 1788211981485
     },
     "intraday": {
       "success": true,
@@ -13945,5 +13975,5 @@
       "timestamp": 1786068781657
     }
   },
-  "fetchedAt": 1788117788186
+  "fetchedAt": 1788211981485
 }
