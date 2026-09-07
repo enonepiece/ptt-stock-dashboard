@@ -635,9 +635,9 @@
               "content": "pcb abf 就欣興有漲"
             }
           ],
-          "price": 902,
-          "change": -21,
-          "changePct": -2.28
+          "price": 949,
+          "change": 47,
+          "changePct": 5.21
         },
         {
           "rank": 2,
@@ -693,12 +693,6 @@
               "tag": "噓",
               "userid": "ct788",
               "content": "下週GG領漲"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "LIGI1983",
-              "content": "用完Astra 我決定明天加碼台積"
             },
             {
               "date": "2026/09/04",
@@ -759,6 +753,12 @@
               "tag": "推",
               "userid": "HiuAnOP",
               "content": "美積電有綠卡可以拿再去吧"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "molopo",
+              "content": "借錢 0050+2330+正2 躺平等複利"
             },
             {
               "date": "2026/09/04",
@@ -1259,9 +1259,9 @@
               "content": "老蘇今天忘了講台積電了"
             }
           ],
-          "price": 2410,
-          "change": 20,
-          "changePct": 0.84
+          "price": 2460,
+          "change": 50,
+          "changePct": 2.07
         },
         {
           "rank": 3,
@@ -1882,18 +1882,18 @@
               "content": "只剩國巨能讓老蘇鞭屍了"
             }
           ],
-          "price": 562,
-          "change": 51,
-          "changePct": 9.98
+          "price": 589,
+          "change": 27,
+          "changePct": 4.8
         },
         {
           "rank": 4,
           "code": "2408",
           "name": "南亞科",
-          "totalMentions": 233,
-          "avgMentions": 23.3,
+          "totalMentions": 232,
+          "avgMentions": 23.2,
           "dailyMentions": {
-            "2026/09/04": 26,
+            "2026/09/04": 25,
             "2026/09/03": 45,
             "2026/09/02": 22,
             "2026/09/01": 20,
@@ -1985,15 +1985,9 @@
             },
             {
               "date": "2026/09/04",
-              "tag": "推",
-              "userid": "asws0808",
-              "content": "暗DRAM那麼噴 牙科華崩會不會逆勢往下殺？"
-            },
-            {
-              "date": "2026/09/04",
               "tag": "→",
-              "userid": "Iponponman",
-              "content": "牙科華崩有DRAM ETF被動買盤 不會下殺啦"
+              "userid": "sosoana",
+              "content": "台股的話就牙科"
             },
             {
               "date": "2026/09/04",
@@ -2504,11 +2498,17 @@
               "tag": "噓",
               "userid": "s910612",
               "content": "牙科正常啊msci這段本來就是比其他記憶體多噴了"
+            },
+            {
+              "date": "2026/09/01",
+              "tag": "推",
+              "userid": "s155260",
+              "content": "老蘇牙科430就空了 尾黑都有記"
             }
           ],
-          "price": 496,
-          "change": 18.5,
-          "changePct": 3.87
+          "price": 517,
+          "change": 21,
+          "changePct": 4.23
         },
         {
           "rank": 5,
@@ -3130,18 +3130,18 @@
               "content": "發哥戳漲停"
             }
           ],
-          "price": 4415,
-          "change": 75,
-          "changePct": 1.73
+          "price": 4760,
+          "change": 345,
+          "changePct": 7.81
         },
         {
           "rank": 6,
           "code": "5347",
           "name": "世界",
-          "totalMentions": 149,
-          "avgMentions": 14.9,
+          "totalMentions": 148,
+          "avgMentions": 14.8,
           "dailyMentions": {
-            "2026/09/04": 13,
+            "2026/09/04": 12,
             "2026/09/03": 16,
             "2026/09/02": 24,
             "2026/09/01": 27,
@@ -3174,14 +3174,8 @@
             {
               "date": "2026/09/04",
               "tag": "推",
-              "userid": "metallolly",
-              "content": "勇敢的人先賠光世界（？"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "→",
-              "userid": "joe2",
-              "content": "這世界真的要超級通縮了！ 美國還能升息嗎！？"
+              "userid": "saihao",
+              "content": "台股撐盤狗拉到世界強"
             },
             {
               "date": "2026/09/04",
@@ -3752,20 +3746,26 @@
               "tag": "推",
               "userid": "tony81456200",
               "content": "世界失火才噴 笑死"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "→",
+              "userid": "harkk2001",
+              "content": "今天大戶狂買二哥，因為世界發爐的關係嗎？"
             }
           ],
-          "price": 150,
-          "change": 3,
-          "changePct": 2.04
+          "price": 156,
+          "change": 6,
+          "changePct": 4
         },
         {
           "rank": 7,
           "code": "0050",
           "name": "元大台灣50",
-          "totalMentions": 149,
-          "avgMentions": 14.9,
+          "totalMentions": 146,
+          "avgMentions": 14.6,
           "dailyMentions": {
-            "2026/09/04": 17,
+            "2026/09/04": 14,
             "2026/09/03": 7,
             "2026/09/02": 3,
             "2026/09/01": 22,
@@ -3810,38 +3810,20 @@
             {
               "date": "2026/09/04",
               "tag": "推",
-              "userid": "kaohsiung999",
-              "content": "看到f2就想到被嘎的50反"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "BBKOX",
-              "content": "878這個價位應該是去年四月買進，0050同樣時間點逼"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "randystock",
-              "content": "折折哪有說要賣，6萬點賣0050目標不變"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "bin199308",
-              "content": "暗0050大噴特噴"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "chenazen",
-              "content": "鬼叫半天 事實上台灣有一大群人0050死抱著不放"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
               "userid": "macheal",
               "content": "我問了三間，年薪50就是談都沒得談..."
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "molopo",
+              "content": "借錢 0050+2330+正2 躺平等複利"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "molopo",
+              "content": "為什麼0050都賺錢 你還賺輸它"
             },
             {
               "date": "2026/09/04",
@@ -4376,20 +4358,38 @@
               "tag": "→",
               "userid": "HiuAnOP",
               "content": "怎麼可能要買別人施捨的0050嗎？"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "→",
+              "userid": "Gipmydanger",
+              "content": "玩股票這麼多年屌輸0050，超迷惑行為"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "molopo",
+              "content": "房貸 信貸 馬上貸 質押 0050 2330 正2 怎輸"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "cool189",
+              "content": "99GG啊啊啊啊啊啊 跌50是三小"
             }
           ],
-          "price": 107.9,
-          "change": 1.7,
-          "changePct": 1.6
+          "price": 109.9,
+          "change": 2,
+          "changePct": 1.85
         },
         {
           "rank": 8,
           "code": "00631L",
           "name": "元大台灣50正2",
-          "totalMentions": 111,
-          "avgMentions": 11.1,
+          "totalMentions": 106,
+          "avgMentions": 10.6,
           "dailyMentions": {
-            "2026/09/04": 18,
+            "2026/09/04": 13,
             "2026/09/03": 7,
             "2026/09/02": 14,
             "2026/09/01": 19,
@@ -4416,38 +4416,8 @@
             {
               "date": "2026/09/04",
               "tag": "推",
-              "userid": "onekoni",
-              "content": "把牛極蟹存起來 投正二"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "metallolly",
-              "content": "正2教 忠誠！"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "superamd",
-              "content": "正二教團結！！"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "噓",
-              "userid": "faye52520",
-              "content": "媽媽都正二了"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "metallolly",
-              "content": "感覺好像就這樣了欸。懶得做啥 丟了正2我生活就這樣"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "richardc277",
-              "content": "正二教會不會太不忠誠。怎麼跑光了呢？"
+              "userid": "molopo",
+              "content": "借錢 0050+2330+正2 躺平等複利"
             },
             {
               "date": "2026/09/04",
@@ -5000,11 +4970,41 @@
               "tag": "推",
               "userid": "shyshyan",
               "content": "正2上一波27 現在還在33 還好吧 正2無敵"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "piece1",
+              "content": "金正二....忠誠！"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "→",
+              "userid": "dosiris",
+              "content": "反一還是漲輸黃金正2"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "smilestupid",
+              "content": "老蘇11點買正二吧？"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "nofear2101",
+              "content": "正2拉到變紅的 笑死"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "una2136",
+              "content": "正二 忠誠！"
             }
           ],
-          "price": 36.64,
-          "change": 1.23,
-          "changePct": 3.47
+          "price": 37.84,
+          "change": 1.2,
+          "changePct": 3.28
         },
         {
           "rank": 9,
@@ -5625,9 +5625,9 @@
               "content": "光寶科好猛喔"
             }
           ],
-          "price": 308,
-          "change": 9,
-          "changePct": 3.01
+          "price": 299,
+          "change": -9,
+          "changePct": -2.92
         },
         {
           "rank": 10,
@@ -6248,9 +6248,9 @@
               "content": "聯電+7%"
             }
           ],
-          "price": 130,
-          "change": 5,
-          "changePct": 4
+          "price": 143,
+          "change": 13,
+          "changePct": 10
         },
         {
           "rank": 11,
@@ -6838,7 +6838,7 @@
               "content": "萬海爆大量平盤 看來還有戲"
             }
           ],
-          "price": 115,
+          "price": 114.5,
           "change": -0.5,
           "changePct": -0.43
         },
@@ -7406,9 +7406,9 @@
               "content": "https://reurl.cc/Z8Wn76 南電這次MSCI不會動"
             }
           ],
-          "price": 1055,
-          "change": -25,
-          "changePct": -2.31
+          "price": 1050,
+          "change": -5,
+          "changePct": -0.47
         },
         {
           "rank": 13,
@@ -7880,9 +7880,9 @@
               "content": "老蘇空的標的其實都被嘎，不敢空台指買反一笑死"
             }
           ],
-          "price": 9.81,
-          "change": -0.19,
-          "changePct": -1.9
+          "price": 9.64,
+          "change": -0.17,
+          "changePct": -1.73
         },
         {
           "rank": 14,
@@ -8328,9 +8328,9 @@
               "content": "南亞倒貨倒得真扯，週五我看都買高，今天怎麼全倒"
             }
           ],
-          "price": 225.5,
-          "change": 4.5,
-          "changePct": 2.04
+          "price": 230.5,
+          "change": 5,
+          "changePct": 2.22
         },
         {
           "rank": 15,
@@ -8753,9 +8753,9 @@
               "content": "華崩電今天跌三小"
             }
           ],
-          "price": 174,
-          "change": 5,
-          "changePct": 2.96
+          "price": 180,
+          "change": 6,
+          "changePct": 3.45
         },
         {
           "rank": 16,
@@ -9149,9 +9149,9 @@
               "content": "包子突然又上去"
             }
           ],
-          "price": 48.5,
-          "change": 0.4,
-          "changePct": 0.83
+          "price": 49.95,
+          "change": 1.45,
+          "changePct": 2.99
         },
         {
           "rank": 17,
@@ -9527,9 +9527,9 @@
               "content": "川湖今天要當股王了嗎？"
             }
           ],
-          "price": 7400,
-          "change": 250,
-          "changePct": 3.5
+          "price": 6660,
+          "change": -740,
+          "changePct": -10
         },
         {
           "rank": 18,
@@ -9886,9 +9886,9 @@
               "content": "好羨慕持有台虹的人 主力會一直偷嘎"
             }
           ],
-          "price": 297.5,
-          "change": 4.5,
-          "changePct": 1.54
+          "price": 327,
+          "change": 29.5,
+          "changePct": 9.92
         },
         {
           "rank": 19,
@@ -10234,9 +10234,9 @@
               "content": "聯茂四分之一"
             }
           ],
-          "price": 517,
-          "change": 5,
-          "changePct": 0.98
+          "price": 513,
+          "change": -4,
+          "changePct": -0.77
         },
         {
           "rank": 20,
@@ -10568,9 +10568,9 @@
               "content": "988等12萬再抄底，大家說好不好"
             }
           ],
-          "price": 15.99,
-          "change": 0.46,
-          "changePct": 2.96
+          "price": 16.26,
+          "change": 0.27,
+          "changePct": 1.69
         },
         {
           "rank": 21,
@@ -10861,9 +10861,9 @@
               "content": "群聯也不演了嗎~~~"
             }
           ],
-          "price": 2015,
-          "change": 15,
-          "changePct": 0.75
+          "price": 2095,
+          "change": 80,
+          "changePct": 3.97
         },
         {
           "rank": 22,
@@ -11130,8 +11130,8 @@
             }
           ],
           "price": 233,
-          "change": -6,
-          "changePct": -2.51
+          "change": 0,
+          "changePct": 0
         },
         {
           "rank": 23,
@@ -11386,9 +11386,9 @@
               "content": "老蘇說富喬之下是報這支嗎"
             }
           ],
-          "price": 118.5,
-          "change": -1.5,
-          "changePct": -1.25
+          "price": 130,
+          "change": 11.5,
+          "changePct": 9.7
         },
         {
           "rank": 24,
@@ -11646,10 +11646,10 @@
           "rank": 25,
           "code": "0056",
           "name": "元大高股息",
-          "totalMentions": 36,
-          "avgMentions": 3.6,
+          "totalMentions": 35,
+          "avgMentions": 3.5,
           "dailyMentions": {
-            "2026/09/04": 12,
+            "2026/09/04": 11,
             "2026/09/03": 7,
             "2026/09/02": 3,
             "2026/09/01": 4,
@@ -11676,12 +11676,6 @@
               "tag": "推",
               "userid": "XdXdQQQ",
               "content": "笑死 某56"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "ericjean7",
-              "content": "暗0056已漲停板"
             },
             {
               "date": "2026/09/04",
@@ -11876,12 +11870,244 @@
               "content": "這個月沒買到翻倍股的 建議以後買0050+0056就好"
             }
           ],
-          "price": 55.4,
-          "change": 0.9,
-          "changePct": 1.65
+          "price": 55.85,
+          "change": 0.45,
+          "changePct": 0.81
         },
         {
           "rank": 26,
+          "code": "2317",
+          "name": "鴻海",
+          "totalMentions": 35,
+          "avgMentions": 3.5,
+          "dailyMentions": {
+            "2026/09/04": 3,
+            "2026/09/03": 3,
+            "2026/09/02": 4,
+            "2026/09/01": 4,
+            "2026/08/28": 5,
+            "2026/08/27": 5,
+            "2026/08/26": 3,
+            "2026/08/25": 8
+          },
+          "realPushes": [
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "dosiris",
+              "content": "NV砸4100億收購Hugging Face 公公肉鬆緯創受惠"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "cecret123",
+              "content": "拆拆的海公公出場了嗎？_？"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "daqn1125",
+              "content": "垃圾公公"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "噓",
+              "userid": "daqn1125",
+              "content": "99公公阿幹"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "噓",
+              "userid": "daqn1125",
+              "content": "垃圾爛公公"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "噓",
+              "userid": "daqn1125",
+              "content": "海公公好慘幹"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "→",
+              "userid": "nowitzkixd",
+              "content": "鴻海到底能不能動一下啊 240~250卡多久了"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "eierom",
+              "content": "鴻海應該會漲喔，有在這波供應鏈裡"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "waynesnow",
+              "content": "99公公"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "brainpowered",
+              "content": "公公又死了"
+            },
+            {
+              "date": "2026/09/01",
+              "tag": "推",
+              "userid": "daqn1125",
+              "content": "99公公"
+            },
+            {
+              "date": "2026/09/01",
+              "tag": "推",
+              "userid": "CCH2022",
+              "content": "可憐鴻海，輝達不認個400元，還什麼不可或缺"
+            },
+            {
+              "date": "2026/09/01",
+              "tag": "→",
+              "userid": "appledick",
+              "content": "鴻海不做一堆搶著做 低端毛利代工就是這樣"
+            },
+            {
+              "date": "2026/09/01",
+              "tag": "推",
+              "userid": "e04x8",
+              "content": "gg公公要射了"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "→",
+              "userid": "Csir",
+              "content": "台積發哥鴻海台達一隻都沒跌這盤會跌到哪裡"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "daqn1125",
+              "content": "99公公"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "vivirinka",
+              "content": "過氣海公公"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "keyringg",
+              "content": "公公釣到一批韭菜"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "jeffofpower1",
+              "content": "99公公"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "推",
+              "userid": "showhere",
+              "content": "以前NV噴是跟鴻海連動，但現在我不豬到"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "推",
+              "userid": "keyringg",
+              "content": "公公繼續出貨"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "→",
+              "userid": "asws0808",
+              "content": "公公250 真的假的"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "推",
+              "userid": "kevin05233",
+              "content": "公公不忍了嗎！"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "推",
+              "userid": "tony81456200",
+              "content": "公公公公公公"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "waynesnow",
+              "content": "99公公"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "keyringg",
+              "content": "公公又釣到一批"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "推",
+              "userid": "CCH2022",
+              "content": "鴻海殺尾盤，不想收上247就沒得彈，有夠落後"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "keyringg",
+              "content": "買公公送韭菜"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "keyringg",
+              "content": "買公公送折磨"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "keyringg",
+              "content": "公公外資成本200，韭菜趕快買。"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "cecret123",
+              "content": "公公 繼續咕嚕咕嚕"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "Tom0320",
+              "content": "公公快接刀"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "jeffofpower1",
+              "content": "99公公"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "mapleblvd",
+              "content": "公公年線見？"
+            },
+            {
+              "date": "2026/08/25",
+              "tag": "推",
+              "userid": "keyringg",
+              "content": "公公可以買了嗎？不可以。"
+            }
+          ],
+          "price": 256,
+          "change": 0,
+          "changePct": 0
+        },
+        {
+          "rank": 27,
           "code": "2609",
           "name": "陽明",
           "totalMentions": 35,
@@ -12109,451 +12335,12 @@
               "content": "陽明啟航 萬海靠岸 長榮沉船"
             }
           ],
-          "price": 58.2,
-          "change": 0.4,
-          "changePct": 0.69
-        },
-        {
-          "rank": 27,
-          "code": "2317",
-          "name": "鴻海",
-          "totalMentions": 34,
-          "avgMentions": 3.4,
-          "dailyMentions": {
-            "2026/09/04": 2,
-            "2026/09/03": 3,
-            "2026/09/02": 4,
-            "2026/09/01": 4,
-            "2026/08/28": 5,
-            "2026/08/27": 5,
-            "2026/08/26": 3,
-            "2026/08/25": 8
-          },
-          "realPushes": [
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "cecret123",
-              "content": "拆拆的海公公出場了嗎？_？"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "daqn1125",
-              "content": "垃圾公公"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "噓",
-              "userid": "daqn1125",
-              "content": "99公公阿幹"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "噓",
-              "userid": "daqn1125",
-              "content": "垃圾爛公公"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "噓",
-              "userid": "daqn1125",
-              "content": "海公公好慘幹"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "→",
-              "userid": "nowitzkixd",
-              "content": "鴻海到底能不能動一下啊 240~250卡多久了"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "eierom",
-              "content": "鴻海應該會漲喔，有在這波供應鏈裡"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "waynesnow",
-              "content": "99公公"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "brainpowered",
-              "content": "公公又死了"
-            },
-            {
-              "date": "2026/09/01",
-              "tag": "推",
-              "userid": "daqn1125",
-              "content": "99公公"
-            },
-            {
-              "date": "2026/09/01",
-              "tag": "推",
-              "userid": "CCH2022",
-              "content": "可憐鴻海，輝達不認個400元，還什麼不可或缺"
-            },
-            {
-              "date": "2026/09/01",
-              "tag": "→",
-              "userid": "appledick",
-              "content": "鴻海不做一堆搶著做 低端毛利代工就是這樣"
-            },
-            {
-              "date": "2026/09/01",
-              "tag": "推",
-              "userid": "e04x8",
-              "content": "gg公公要射了"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "Csir",
-              "content": "台積發哥鴻海台達一隻都沒跌這盤會跌到哪裡"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "daqn1125",
-              "content": "99公公"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "vivirinka",
-              "content": "過氣海公公"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "keyringg",
-              "content": "公公釣到一批韭菜"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "jeffofpower1",
-              "content": "99公公"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "推",
-              "userid": "showhere",
-              "content": "以前NV噴是跟鴻海連動，但現在我不豬到"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "推",
-              "userid": "keyringg",
-              "content": "公公繼續出貨"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "→",
-              "userid": "asws0808",
-              "content": "公公250 真的假的"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "推",
-              "userid": "kevin05233",
-              "content": "公公不忍了嗎！"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "推",
-              "userid": "tony81456200",
-              "content": "公公公公公公"
-            },
-            {
-              "date": "2026/08/26",
-              "tag": "推",
-              "userid": "waynesnow",
-              "content": "99公公"
-            },
-            {
-              "date": "2026/08/26",
-              "tag": "推",
-              "userid": "keyringg",
-              "content": "公公又釣到一批"
-            },
-            {
-              "date": "2026/08/26",
-              "tag": "推",
-              "userid": "CCH2022",
-              "content": "鴻海殺尾盤，不想收上247就沒得彈，有夠落後"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "keyringg",
-              "content": "買公公送韭菜"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "keyringg",
-              "content": "買公公送折磨"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "keyringg",
-              "content": "公公外資成本200，韭菜趕快買。"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "cecret123",
-              "content": "公公 繼續咕嚕咕嚕"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "Tom0320",
-              "content": "公公快接刀"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "jeffofpower1",
-              "content": "99公公"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "mapleblvd",
-              "content": "公公年線見？"
-            },
-            {
-              "date": "2026/08/25",
-              "tag": "推",
-              "userid": "keyringg",
-              "content": "公公可以買了嗎？不可以。"
-            }
-          ],
-          "price": 256,
-          "change": 8.5,
-          "changePct": 3.43
+          "price": 58.1,
+          "change": -0.1,
+          "changePct": -0.17
         },
         {
           "rank": 28,
-          "code": "2801",
-          "name": "彰銀",
-          "totalMentions": 32,
-          "avgMentions": 3.2,
-          "dailyMentions": {
-            "2026/09/04": 4,
-            "2026/09/03": 12,
-            "2026/09/02": 7,
-            "2026/08/31": 1,
-            "2026/08/28": 2,
-            "2026/08/27": 5,
-            "2026/08/26": 1
-          },
-          "realPushes": [
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "f204137",
-              "content": "joe鴿安 看見joe鴿就想起彰銀 彰銀新寶貝 謝謝你"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "dowcher",
-              "content": "存彰銀早就寫入家訓了，10年報酬250%，年化25%，穩"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "→",
-              "userid": "dowcher",
-              "content": "科技股不能存到老，彰銀可以"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "→",
-              "userid": "f204137",
-              "content": "彰銀A下來 線仙看5日線嗎?  cc"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "dowcher",
-              "content": "彰銀爸爸變飆股"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "dowcher",
-              "content": "彰銀爸爸兩個月漲了幾十%了，你還在台積電"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "joe2",
-              "content": "彰銀是彈藥包~  有漲就要賣!"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "dowcher",
-              "content": "彰銀爸爸都不用看 一直買一直爽"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "s832015825",
-              "content": "彰銀以後也會這樣嗎"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "dowcher",
-              "content": "彰銀成本不到10元 真舒服"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "dowcher",
-              "content": "彰銀每年一定配股，股本一直膨脹一直漲不停"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "dowcher",
-              "content": "滿手9成9都在彰銀爸爸"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "dowcher",
-              "content": "彰銀每年都在漲 沒有停過，到底是棒到何年何月"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "dowcher",
-              "content": "彰銀存了10年以上，爸媽存了超過20年，沒有失望過"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "dowcher",
-              "content": "彰銀配息10年一張都快要配半張了"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "gtaped05550",
-              "content": "台積電存十年比較強還是彰銀存十年比較強"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "dowcher",
-              "content": "彰銀秒填息 一直漲"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "→",
-              "userid": "dowcher",
-              "content": "彰銀漲不停一直漲"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "dowcher",
-              "content": "彰銀快速填息，一直漲"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "→",
-              "userid": "dowcher",
-              "content": "抱緊彰銀不放"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "dowcher",
-              "content": "彰銀配股又配息，股本每年一直膨脹股價又一直創高"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "→",
-              "userid": "dowcher",
-              "content": "謝謝彰銀爸爸讓我天天沾枕頭就睡"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "→",
-              "userid": "kevingo0215",
-              "content": "看到現在只有彰銀王睡的最安穩"
-            },
-            {
-              "date": "2026/08/31",
-              "tag": "→",
-              "userid": "f204137",
-              "content": "彰銀繼續追合庫的股價  cc"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "推",
-              "userid": "f204137",
-              "content": "我大彰銀要超車合庫了呢  賺比合庫多 股價更低  恩"
-            },
-            {
-              "date": "2026/08/28",
-              "tag": "→",
-              "userid": "f204137",
-              "content": "你各位 CF預言又成真了   彰銀超車合庫"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "→",
-              "userid": "f204137",
-              "content": "阿 我大彰銀  要 直追合庫金了  笑死"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "→",
-              "userid": "f204137",
-              "content": "根本就不用追高  彰銀17~18元 你還會嫌 買它幹嘛。"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "推",
-              "userid": "a92320140",
-              "content": "2801"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "推",
-              "userid": "f204137",
-              "content": "你們不要吹彰銀阿  一吹會有事的 ~  低調看"
-            },
-            {
-              "date": "2026/08/27",
-              "tag": "→",
-              "userid": "ntpukid",
-              "content": "FJ的2801追上合庫要換嗎？還是要等到彰化金完全體"
-            },
-            {
-              "date": "2026/08/26",
-              "tag": "→",
-              "userid": "f204137",
-              "content": "國票也要開法說了 彰銀動作越來越明顯囉"
-            }
-          ],
-          "price": 26.6,
-          "change": 0,
-          "changePct": 0
-        },
-        {
-          "rank": 29,
           "code": "3189",
           "name": "景碩",
           "totalMentions": 30,
@@ -12748,9 +12535,204 @@
               "content": "景碩收最高舒服"
             }
           ],
-          "price": 819,
-          "change": 44,
-          "changePct": 5.68
+          "price": 813,
+          "change": -6,
+          "changePct": -0.73
+        },
+        {
+          "rank": 29,
+          "code": "2801",
+          "name": "彰銀",
+          "totalMentions": 29,
+          "avgMentions": 2.9,
+          "dailyMentions": {
+            "2026/09/04": 1,
+            "2026/09/03": 12,
+            "2026/09/02": 7,
+            "2026/08/31": 1,
+            "2026/08/28": 2,
+            "2026/08/27": 5,
+            "2026/08/26": 1
+          },
+          "realPushes": [
+            {
+              "date": "2026/09/04",
+              "tag": "→",
+              "userid": "f204137",
+              "content": "彰銀A下來 線仙看5日線嗎?  cc"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "dowcher",
+              "content": "彰銀爸爸變飆股"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "dowcher",
+              "content": "彰銀爸爸兩個月漲了幾十%了，你還在台積電"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "joe2",
+              "content": "彰銀是彈藥包~  有漲就要賣!"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "dowcher",
+              "content": "彰銀爸爸都不用看 一直買一直爽"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "s832015825",
+              "content": "彰銀以後也會這樣嗎"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "dowcher",
+              "content": "彰銀成本不到10元 真舒服"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "dowcher",
+              "content": "彰銀每年一定配股，股本一直膨脹一直漲不停"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "dowcher",
+              "content": "滿手9成9都在彰銀爸爸"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "dowcher",
+              "content": "彰銀每年都在漲 沒有停過，到底是棒到何年何月"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "dowcher",
+              "content": "彰銀存了10年以上，爸媽存了超過20年，沒有失望過"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "dowcher",
+              "content": "彰銀配息10年一張都快要配半張了"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "gtaped05550",
+              "content": "台積電存十年比較強還是彰銀存十年比較強"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "dowcher",
+              "content": "彰銀秒填息 一直漲"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "→",
+              "userid": "dowcher",
+              "content": "彰銀漲不停一直漲"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "dowcher",
+              "content": "彰銀快速填息，一直漲"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "→",
+              "userid": "dowcher",
+              "content": "抱緊彰銀不放"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "dowcher",
+              "content": "彰銀配股又配息，股本每年一直膨脹股價又一直創高"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "→",
+              "userid": "dowcher",
+              "content": "謝謝彰銀爸爸讓我天天沾枕頭就睡"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "→",
+              "userid": "kevingo0215",
+              "content": "看到現在只有彰銀王睡的最安穩"
+            },
+            {
+              "date": "2026/08/31",
+              "tag": "→",
+              "userid": "f204137",
+              "content": "彰銀繼續追合庫的股價  cc"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "推",
+              "userid": "f204137",
+              "content": "我大彰銀要超車合庫了呢  賺比合庫多 股價更低  恩"
+            },
+            {
+              "date": "2026/08/28",
+              "tag": "→",
+              "userid": "f204137",
+              "content": "你各位 CF預言又成真了   彰銀超車合庫"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "→",
+              "userid": "f204137",
+              "content": "阿 我大彰銀  要 直追合庫金了  笑死"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "→",
+              "userid": "f204137",
+              "content": "根本就不用追高  彰銀17~18元 你還會嫌 買它幹嘛。"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "推",
+              "userid": "a92320140",
+              "content": "2801"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "推",
+              "userid": "f204137",
+              "content": "你們不要吹彰銀阿  一吹會有事的 ~  低調看"
+            },
+            {
+              "date": "2026/08/27",
+              "tag": "→",
+              "userid": "ntpukid",
+              "content": "FJ的2801追上合庫要換嗎？還是要等到彰化金完全體"
+            },
+            {
+              "date": "2026/08/26",
+              "tag": "→",
+              "userid": "f204137",
+              "content": "國票也要開法說了 彰銀動作越來越明顯囉"
+            }
+          ],
+          "price": 26.5,
+          "change": -0.1,
+          "changePct": -0.38
         },
         {
           "rank": 30,
@@ -12939,12 +12921,12 @@
               "content": "還有人在玩大象啊 笑死 0050都屌打"
             }
           ],
-          "price": 709,
-          "change": 6,
-          "changePct": 0.85
+          "price": 710,
+          "change": 1,
+          "changePct": 0.14
         }
       ],
-      "timestamp": 1788719390667
+      "timestamp": 1788811479497
     },
     "intraday": {
       "success": true,
@@ -14090,5 +14072,5 @@
       "timestamp": 1786068781657
     }
   },
-  "fetchedAt": 1788719390667
+  "fetchedAt": 1788811479497
 }
