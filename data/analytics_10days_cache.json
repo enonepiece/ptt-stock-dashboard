@@ -645,10 +645,10 @@
           "rank": 2,
           "code": "2330",
           "name": "台積電",
-          "totalMentions": 562,
-          "avgMentions": 56.2,
+          "totalMentions": 564,
+          "avgMentions": 56.4,
           "dailyMentions": {
-            "2026/09/11": 38,
+            "2026/09/11": 40,
             "2026/09/10": 102,
             "2026/09/09": 70,
             "2026/09/08": 70,
@@ -705,26 +705,38 @@
             {
               "date": "2026/09/11",
               "tag": "推",
-              "userid": "GOU1331",
-              "content": "GG3:0 下週宣布升三次息"
+              "userid": "chin78909",
+              "content": "暗台積2230"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "chin78909",
+              "content": "台積2500就是歷史高點了"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "噓",
+              "userid": "chiayigo",
+              "content": "台積利多新聞出來了==好害怕"
             },
             {
               "date": "2026/09/11",
               "tag": "→",
-              "userid": "b9513227",
-              "content": "本魯手上有錢只會忍不住買GG跟0052"
+              "userid": "squallhung",
+              "content": "就是在硬撐 泡泡早就該爆 OpenAI延後IPO 微軟GG"
             },
             {
               "date": "2026/09/11",
-              "tag": "→",
-              "userid": "luke0407123",
-              "content": "照樣熱銷照樣搶爆 台積電上看五千"
+              "tag": "推",
+              "userid": "alex910381",
+              "content": "反正 不可能崩 台灣有台積"
             },
             {
               "date": "2026/09/11",
-              "tag": "→",
-              "userid": "sp03154",
-              "content": "台GG跟金龍族群一起敲，是有可能5萬多"
+              "tag": "噓",
+              "userid": "olderone",
+              "content": "明天台積電跌停怎麼辦 在線等"
             },
             {
               "date": "2026/09/11",
@@ -1247,18 +1259,6 @@
               "tag": "噓",
               "userid": "tzjjkonuj",
               "content": "大盤守不住4萬7，之前拉金融拉台積拉權值原因是？"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "噓",
-              "userid": "sunbox",
-              "content": "買台積電不如去挑大糞 可悲至極"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "→",
-              "userid": "b9513227",
-              "content": "有種跌多一點 週五買GG 下週三買正二"
             }
           ],
           "price": 2410,
@@ -1269,10 +1269,10 @@
           "rank": 3,
           "code": "2454",
           "name": "聯發科",
-          "totalMentions": 277,
-          "avgMentions": 27.7,
+          "totalMentions": 279,
+          "avgMentions": 27.9,
           "dailyMentions": {
-            "2026/09/11": 7,
+            "2026/09/11": 9,
             "2026/09/10": 13,
             "2026/09/09": 10,
             "2026/09/08": 21,
@@ -1284,6 +1284,18 @@
             "2026/08/31": 22
           },
           "realPushes": [
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "waitrop",
+              "content": "v9有兩個版本,一個是v9i發哥做,另一個是v9博通做"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "waitrop",
+              "content": "所以沒有下一代全部給發哥,只有1/3-1/2給發哥"
+            },
             {
               "date": "2026/09/11",
               "tag": "噓",
@@ -1871,18 +1883,6 @@
               "tag": "→",
               "userid": "clusis",
               "content": "發哥能追嗎？"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "噓",
-              "userid": "lesterc",
-              "content": "今天發哥，大量黑K"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "→",
-              "userid": "alex910381",
-              "content": "發哥跟一堆還要再鎖 你跟我說-1000？"
             }
           ],
           "price": 4585,
@@ -2517,10 +2517,10 @@
           "rank": 5,
           "code": "2408",
           "name": "南亞科",
-          "totalMentions": 203,
-          "avgMentions": 20.3,
+          "totalMentions": 202,
+          "avgMentions": 20.2,
           "dailyMentions": {
-            "2026/09/11": 3,
+            "2026/09/11": 2,
             "2026/09/10": 10,
             "2026/09/09": 10,
             "2026/09/08": 32,
@@ -2532,12 +2532,6 @@
             "2026/08/31": 24
           },
           "realPushes": [
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "ohbu",
-              "content": "我買過跌深的華邦電、南亞科、緯穎，雖然我後來被洗"
-            },
             {
               "date": "2026/09/11",
               "tag": "推",
@@ -3131,6 +3125,12 @@
               "tag": "推",
               "userid": "jack91315",
               "content": "我牙科已經腳麻了 幹救救我"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "asws0808",
+              "content": "牙科真的假的要嘎空老蘇？"
             }
           ],
           "price": 493,
@@ -3139,636 +3139,12 @@
         },
         {
           "rank": 6,
-          "code": "5347",
-          "name": "世界",
+          "code": "00631L",
+          "name": "元大台灣50正2",
           "totalMentions": 145,
           "avgMentions": 14.5,
           "dailyMentions": {
-            "2026/09/11": 19,
-            "2026/09/10": 14,
-            "2026/09/09": 9,
-            "2026/09/08": 15,
-            "2026/09/07": 5,
-            "2026/09/04": 12,
-            "2026/09/03": 16,
-            "2026/09/02": 24,
-            "2026/09/01": 27,
-            "2026/08/31": 4
-          },
-          "realPushes": [
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "NgJovi",
-              "content": "全世界的手部都抄馬斯克"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "marginalFeng",
-              "content": "ldpc大 一切都是6月你在房板發文 世界線變了"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "ThreekRoger",
-              "content": "每個人都活在自己的世界"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "aaaaaaa1",
-              "content": "全世界就只有台股最強 你不開心?"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "liocorno",
-              "content": "美國是世界毒瘤"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "redsoxortiz",
-              "content": "V給世界看"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "PeikangShin",
-              "content": "這世界沒有人可以跟油挖對做  奉勸你收手吧  不然"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "LDPC",
-              "content": "@@a08 你快去當廚師吧 廚師是ai世界的聖職業"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "a0808996",
-              "content": "想太多了 以後就有炒菜機器人了 內建全世界食譜"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "ly102530",
-              "content": "台股世界強 感覺頂多-1000"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "ly102530",
-              "content": "台股世界強 甭害怕"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "ly102530",
-              "content": "跌不到1000？？？台股果然世界強"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "ly102530",
-              "content": "台股真的世界強 底給他抄下去就對了"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "EIngXuan",
-              "content": "台股世界強 跌不下去就是還有人抄底"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "rbelldandy",
-              "content": "超底囉,台股世界強"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "噓",
-              "userid": "zaqqaz",
-              "content": "全世界看好惹...台股只示範一次～尾盤翻紅 ^^"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "konril",
-              "content": "我抽到床的世界"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "house911",
-              "content": "黑手死守月線   台股位階屌打 廢半 日韓股 世界第一"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "MoneyDay5566",
-              "content": "只有金融噴出的世界"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "amig0123",
-              "content": "美國缺錢了 川普要跟全世界要錢"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "→",
-              "userid": "joe2",
-              "content": "全世界只剩下半導體在吸收資金   等泡沫破裂就知道!"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "→",
-              "userid": "rbelldandy",
-              "content": "台股世界強,變人跌我們漲,別人漲我們繼續漲"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "opcomtt",
-              "content": "這叫世界第一，連伊朗都搞不定，笑死"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "mardy0422",
-              "content": "台股世界強 等等開一個平盤嚇嚇大家 看看實力"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "→",
-              "userid": "ly102530",
-              "content": "亞納等等就開紅盤了 怕啥 台股世界強"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "→",
-              "userid": "macheal",
-              "content": "4/29 漲到118，世界有毀滅嗎?"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "wlaga1234",
-              "content": "台股世界強"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "house911",
-              "content": "台股世界一  位階屌打費半跟日韓股   別怕   ?"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "min90129",
-              "content": "全世界都在等某個世界指標開盤"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "trueclamp",
-              "content": "世界線收束了、奶罩都被撿走囉！"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "→",
-              "userid": "PeikangShin",
-              "content": "誰會關心不幸的G. 現在是油挖說話的世界"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "MoneyDay5566",
-              "content": "鬼指獨崩盤    帶崩全世界"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "→",
-              "userid": "rexwis",
-              "content": "是DUO 不是DIOU啦"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "→",
-              "userid": "Benetnasch",
-              "content": "從1號講到9號QQ台股真的世界強"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "推",
-              "userid": "showhere",
-              "content": "有人知道為啥這波台股完全跟費半兩個世界嗎XDD"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "→",
-              "userid": "aaaaaaa1",
-              "content": "這世界還有公平可言嗎 多多連贏1050天 空軍沒贏過"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "→",
-              "userid": "b9513227",
-              "content": "全世界果粉都要賣股票買折疊機 崩了"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "噓",
-              "userid": "BBBC64",
-              "content": "亞股(X)  日韓(0)   亞洲拉屎達克只會帶賽全世界"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "推",
-              "userid": "UKaiBro",
-              "content": "全世界都在等亞那開盤"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "推",
-              "userid": "house911",
-              "content": "台股好猛  位階屌打廢半 日韓     世界一  ?"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "→",
-              "userid": "f204137",
-              "content": "川普去年關稅影響全世界 搭配燈號 多完美的劇本..."
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "噓",
-              "userid": "BBBC64",
-              "content": "台積2500是不是有其他世界的朋友卡住??"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "→",
-              "userid": "twfrank159",
-              "content": "全世界都在說川普話!甚麼都不懂的外資誤嘎老蘇!"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "→",
-              "userid": "aaaaaaa1",
-              "content": "全世界就只有台灣人最有錢 可以剃除全世界股市嗎"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "→",
-              "userid": "aaaaaaa1",
-              "content": "全世界只有台股準備創新高 其他都線下"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "推",
-              "userid": "PeikangShin",
-              "content": "多挖終於想起這世界只有油挖能大聲  不只沒解套"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "推",
-              "userid": "guitarotaku",
-              "content": "再說一次！台股世界強！抄底正二、正五蛙會贏！V啊"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "推",
-              "userid": "waynn1215",
-              "content": "TSM 台指 世界強！"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "推",
-              "userid": "Cger",
-              "content": "只有輝達受傷的世界"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "推",
-              "userid": "Riyar",
-              "content": "貝森特一人硬剛全世界日元空軍 太猛了"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "推",
-              "userid": "calqlus",
-              "content": "G拔......大家的....世界樹之心......yyds...."
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "推",
-              "userid": "vearnking",
-              "content": "日圓升值，油價漲，台幣貶值對世界強台股都沒影響啦"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "推",
-              "userid": "mardy0422",
-              "content": "台股都快前高了 位階世界第一"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "→",
-              "userid": "jing0607",
-              "content": "種策略，在金融爾虞我詐的世界裡，所有掌握話語權"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "→",
-              "userid": "c1951",
-              "content": "https://reurl.cc/QNaG9o  現在的世界地圖不準確的?"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "噓",
-              "userid": "kakacon",
-              "content": "台股帶崩全世界?"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "→",
-              "userid": "goodplace212",
-              "content": "看閒聊還以為世界末日了…"
-            },
-            {
-              "date": "2026/09/07",
-              "tag": "推",
-              "userid": "NgJovi",
-              "content": "世界之王情勒你 不用理嗎"
-            },
-            {
-              "date": "2026/09/07",
-              "tag": "噓",
-              "userid": "CDA2",
-              "content": "台股世界強 大爆噴"
-            },
-            {
-              "date": "2026/09/07",
-              "tag": "推",
-              "userid": "M2Z588",
-              "content": "早安，今天又又要賺錢了，台股世界強！"
-            },
-            {
-              "date": "2026/09/07",
-              "tag": "→",
-              "userid": "dashoun",
-              "content": "呆股全世界領先"
-            },
-            {
-              "date": "2026/09/07",
-              "tag": "推",
-              "userid": "guitarotaku",
-              "content": "再說一次！台股世界強！抄底正二、正五蛙會贏！噴"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "BHooo",
-              "content": "毀滅吧 世界！！！"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "→",
-              "userid": "JBryant",
-              "content": "大爆噴 大爆V 台股世界強"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "maxweel",
-              "content": "股票跟動物世界一樣，強者是滿口血肉"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "saihao",
-              "content": "台股撐盤狗拉到世界強"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "→",
-              "userid": "Gipmydanger",
-              "content": "，我的世界更美好。"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "Stellvia",
-              "content": "鬼指又要世界爛了嗎"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "chejrk",
-              "content": "台股世界強 別忘了"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "噓",
-              "userid": "autoexecbat",
-              "content": "美債殖利率就夠世界末日了 不用看到日圓"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "guitarotaku",
-              "content": "再說一次！台股世界強！抄底正二、正五蛙會贏！噴"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "phoenixcx",
-              "content": "一定又是GG扛揍的世界"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "guitarotaku",
-              "content": "再說一次！台股世界強！抄底正二、正五蛙會贏！噴"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "gtaped05550",
-              "content": "是不是在搞台股啊 全世界都在A"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "a71085",
-              "content": "2024是突襲升啊 這次全世界升息預期都打滿了是想崩"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "qazwsx13579",
-              "content": "爸爸又出手解救世界了"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "eierom",
-              "content": "有沒有一種可能美國沒升世界升"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "ms0286415",
-              "content": "黃金井噴欸   這世界到底是怎樣"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "lovemonkey03",
-              "content": "台股世界強 安心睡"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "deangogi",
-              "content": "這世界如果剩阿根廷股市漲 台股也會跟漲"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "gg03033",
-              "content": "台股世界強還不敢進場 定存算了 我要歐印多單"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "drcula",
-              "content": "噴噴噴，台股世界強"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "chejrk",
-              "content": "台股世界強"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "gtaped05550",
-              "content": "全世界都在爛 只有台股強 怪怪的"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "JBryant",
-              "content": "大爆噴 台股世界強 其他人被拖累我們台股"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "quann",
-              "content": "只有台股受傷的世界"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "win8719",
-              "content": "全世界在等台股收盤V我會笑死"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "baseken",
-              "content": "全世界一起弄台股喔"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "ayufly",
-              "content": "台股世界強！！！都是騙人的！！！"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "tigerzz3",
-              "content": "全世界記憶體股只有牙科還在創高 就是主力拉給MSCI"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "House23",
-              "content": "其實夜盤黑手就別當小丑偷點，全世界都在往下，能"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "→",
-              "userid": "JBryant",
-              "content": "小兒大賣近千E 也賣不下去 台股世界強"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "drcula",
-              "content": "台股世界強，只會漲不會跌，不用怕等著噴噴"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "gg03033",
-              "content": "揪命 又噴又崩 台股世界強"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "klwei",
-              "content": "台股又回到世界強的節奏，根本不用怕"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "qwert1122",
-              "content": "台股真的世界最強 全球崩盤 台股也不會跌"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "opcomtt",
-              "content": "跟我一起喊，台股不會跌，台股世界勇，台股棒棒棒"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "moses801",
-              "content": "台股世界強 不要不信"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "kusorpg",
-              "content": "台股世界強 等等v回4.7萬"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "csgowen",
-              "content": "呆股世界強"
-            }
-          ],
-          "price": 157.5,
-          "change": -4,
-          "changePct": -2.48
-        },
-        {
-          "rank": 7,
-          "code": "00631L",
-          "name": "元大台灣50正2",
-          "totalMentions": 144,
-          "avgMentions": 14.4,
-          "dailyMentions": {
-            "2026/09/11": 25,
+            "2026/09/11": 26,
             "2026/09/10": 15,
             "2026/09/09": 10,
             "2026/09/08": 14,
@@ -3807,14 +3183,20 @@
             {
               "date": "2026/09/11",
               "tag": "推",
-              "userid": "onekoni",
-              "content": "雙螢幕融資正二=正10？"
+              "userid": "HiuAnOP",
+              "content": "週一正二跌20%！貪狗IS OVER！"
             },
             {
               "date": "2026/09/11",
-              "tag": "→",
-              "userid": "b9513227",
-              "content": "下週三買完正二就可以繼續躺平了"
+              "tag": "推",
+              "userid": "HiuAnOP",
+              "content": "你以為你買的是正二？錯！那叫負二！"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "cps80655",
+              "content": "明天台股跌10%，正2跌20%，貪狗壽司"
             },
             {
               "date": "2026/09/11",
@@ -4373,12 +3755,6 @@
               "tag": "推",
               "userid": "BY1326",
               "content": "滿手正二算電子股還是金融股？"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "sunday0913",
-              "content": "腦大鳩我 我的正2被殺爛了"
             }
           ],
           "price": 35.98,
@@ -4386,13 +3762,637 @@
           "changePct": -3.15
         },
         {
+          "rank": 7,
+          "code": "5347",
+          "name": "世界",
+          "totalMentions": 143,
+          "avgMentions": 14.3,
+          "dailyMentions": {
+            "2026/09/11": 17,
+            "2026/09/10": 14,
+            "2026/09/09": 9,
+            "2026/09/08": 15,
+            "2026/09/07": 5,
+            "2026/09/04": 12,
+            "2026/09/03": 16,
+            "2026/09/02": 24,
+            "2026/09/01": 27,
+            "2026/08/31": 4
+          },
+          "realPushes": [
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "NgJovi",
+              "content": "全世界的手部都抄馬斯克"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "marginalFeng",
+              "content": "ldpc大 一切都是6月你在房板發文 世界線變了"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "ThreekRoger",
+              "content": "每個人都活在自己的世界"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "aaaaaaa1",
+              "content": "全世界就只有台股最強 你不開心?"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "liocorno",
+              "content": "美國是世界毒瘤"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "redsoxortiz",
+              "content": "V給世界看"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "sakukio",
+              "content": "為何一堆人覺得明天世界末日？"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "ly102530",
+              "content": "台股世界強 感覺頂多-1000"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "ly102530",
+              "content": "台股世界強 甭害怕"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "ly102530",
+              "content": "跌不到1000？？？台股果然世界強"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "ly102530",
+              "content": "台股真的世界強 底給他抄下去就對了"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "EIngXuan",
+              "content": "台股世界強 跌不下去就是還有人抄底"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "rbelldandy",
+              "content": "超底囉,台股世界強"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "噓",
+              "userid": "zaqqaz",
+              "content": "全世界看好惹...台股只示範一次～尾盤翻紅 ^^"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "konril",
+              "content": "我抽到床的世界"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "house911",
+              "content": "黑手死守月線   台股位階屌打 廢半 日韓股 世界第一"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "MoneyDay5566",
+              "content": "只有金融噴出的世界"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "推",
+              "userid": "amig0123",
+              "content": "美國缺錢了 川普要跟全世界要錢"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "→",
+              "userid": "joe2",
+              "content": "全世界只剩下半導體在吸收資金   等泡沫破裂就知道!"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "→",
+              "userid": "rbelldandy",
+              "content": "台股世界強,變人跌我們漲,別人漲我們繼續漲"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "推",
+              "userid": "opcomtt",
+              "content": "這叫世界第一，連伊朗都搞不定，笑死"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "推",
+              "userid": "mardy0422",
+              "content": "台股世界強 等等開一個平盤嚇嚇大家 看看實力"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "→",
+              "userid": "ly102530",
+              "content": "亞納等等就開紅盤了 怕啥 台股世界強"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "→",
+              "userid": "macheal",
+              "content": "4/29 漲到118，世界有毀滅嗎?"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "推",
+              "userid": "wlaga1234",
+              "content": "台股世界強"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "推",
+              "userid": "house911",
+              "content": "台股世界一  位階屌打費半跟日韓股   別怕   ?"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "推",
+              "userid": "min90129",
+              "content": "全世界都在等某個世界指標開盤"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "推",
+              "userid": "trueclamp",
+              "content": "世界線收束了、奶罩都被撿走囉！"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "→",
+              "userid": "PeikangShin",
+              "content": "誰會關心不幸的G. 現在是油挖說話的世界"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "推",
+              "userid": "MoneyDay5566",
+              "content": "鬼指獨崩盤    帶崩全世界"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "→",
+              "userid": "rexwis",
+              "content": "是DUO 不是DIOU啦"
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "→",
+              "userid": "Benetnasch",
+              "content": "從1號講到9號QQ台股真的世界強"
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "推",
+              "userid": "showhere",
+              "content": "有人知道為啥這波台股完全跟費半兩個世界嗎XDD"
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "→",
+              "userid": "aaaaaaa1",
+              "content": "這世界還有公平可言嗎 多多連贏1050天 空軍沒贏過"
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "→",
+              "userid": "b9513227",
+              "content": "全世界果粉都要賣股票買折疊機 崩了"
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "噓",
+              "userid": "BBBC64",
+              "content": "亞股(X)  日韓(0)   亞洲拉屎達克只會帶賽全世界"
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "推",
+              "userid": "UKaiBro",
+              "content": "全世界都在等亞那開盤"
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "推",
+              "userid": "house911",
+              "content": "台股好猛  位階屌打廢半 日韓     世界一  ?"
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "→",
+              "userid": "f204137",
+              "content": "川普去年關稅影響全世界 搭配燈號 多完美的劇本..."
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "噓",
+              "userid": "BBBC64",
+              "content": "台積2500是不是有其他世界的朋友卡住??"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "→",
+              "userid": "twfrank159",
+              "content": "全世界都在說川普話!甚麼都不懂的外資誤嘎老蘇!"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "→",
+              "userid": "aaaaaaa1",
+              "content": "全世界就只有台灣人最有錢 可以剃除全世界股市嗎"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "→",
+              "userid": "aaaaaaa1",
+              "content": "全世界只有台股準備創新高 其他都線下"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "推",
+              "userid": "PeikangShin",
+              "content": "多挖終於想起這世界只有油挖能大聲  不只沒解套"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "推",
+              "userid": "guitarotaku",
+              "content": "再說一次！台股世界強！抄底正二、正五蛙會贏！V啊"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "推",
+              "userid": "waynn1215",
+              "content": "TSM 台指 世界強！"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "推",
+              "userid": "Cger",
+              "content": "只有輝達受傷的世界"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "推",
+              "userid": "Riyar",
+              "content": "貝森特一人硬剛全世界日元空軍 太猛了"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "推",
+              "userid": "calqlus",
+              "content": "G拔......大家的....世界樹之心......yyds...."
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "推",
+              "userid": "vearnking",
+              "content": "日圓升值，油價漲，台幣貶值對世界強台股都沒影響啦"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "推",
+              "userid": "mardy0422",
+              "content": "台股都快前高了 位階世界第一"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "→",
+              "userid": "jing0607",
+              "content": "種策略，在金融爾虞我詐的世界裡，所有掌握話語權"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "→",
+              "userid": "c1951",
+              "content": "https://reurl.cc/QNaG9o  現在的世界地圖不準確的?"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "噓",
+              "userid": "kakacon",
+              "content": "台股帶崩全世界?"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "→",
+              "userid": "goodplace212",
+              "content": "看閒聊還以為世界末日了…"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "推",
+              "userid": "NgJovi",
+              "content": "世界之王情勒你 不用理嗎"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "噓",
+              "userid": "CDA2",
+              "content": "台股世界強 大爆噴"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "推",
+              "userid": "M2Z588",
+              "content": "早安，今天又又要賺錢了，台股世界強！"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "→",
+              "userid": "dashoun",
+              "content": "呆股全世界領先"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "推",
+              "userid": "guitarotaku",
+              "content": "再說一次！台股世界強！抄底正二、正五蛙會贏！噴"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "BHooo",
+              "content": "毀滅吧 世界！！！"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "→",
+              "userid": "JBryant",
+              "content": "大爆噴 大爆V 台股世界強"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "maxweel",
+              "content": "股票跟動物世界一樣，強者是滿口血肉"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "saihao",
+              "content": "台股撐盤狗拉到世界強"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "→",
+              "userid": "Gipmydanger",
+              "content": "，我的世界更美好。"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "Stellvia",
+              "content": "鬼指又要世界爛了嗎"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "chejrk",
+              "content": "台股世界強 別忘了"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "噓",
+              "userid": "autoexecbat",
+              "content": "美債殖利率就夠世界末日了 不用看到日圓"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "guitarotaku",
+              "content": "再說一次！台股世界強！抄底正二、正五蛙會贏！噴"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "phoenixcx",
+              "content": "一定又是GG扛揍的世界"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "guitarotaku",
+              "content": "再說一次！台股世界強！抄底正二、正五蛙會贏！噴"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "gtaped05550",
+              "content": "是不是在搞台股啊 全世界都在A"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "a71085",
+              "content": "2024是突襲升啊 這次全世界升息預期都打滿了是想崩"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "qazwsx13579",
+              "content": "爸爸又出手解救世界了"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "eierom",
+              "content": "有沒有一種可能美國沒升世界升"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "ms0286415",
+              "content": "黃金井噴欸   這世界到底是怎樣"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "lovemonkey03",
+              "content": "台股世界強 安心睡"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "deangogi",
+              "content": "這世界如果剩阿根廷股市漲 台股也會跟漲"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "gg03033",
+              "content": "台股世界強還不敢進場 定存算了 我要歐印多單"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "drcula",
+              "content": "噴噴噴，台股世界強"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "chejrk",
+              "content": "台股世界強"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "gtaped05550",
+              "content": "全世界都在爛 只有台股強 怪怪的"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "JBryant",
+              "content": "大爆噴 台股世界強 其他人被拖累我們台股"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "quann",
+              "content": "只有台股受傷的世界"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "win8719",
+              "content": "全世界在等台股收盤V我會笑死"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "baseken",
+              "content": "全世界一起弄台股喔"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "ayufly",
+              "content": "台股世界強！！！都是騙人的！！！"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "tigerzz3",
+              "content": "全世界記憶體股只有牙科還在創高 就是主力拉給MSCI"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "House23",
+              "content": "其實夜盤黑手就別當小丑偷點，全世界都在往下，能"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "→",
+              "userid": "JBryant",
+              "content": "小兒大賣近千E 也賣不下去 台股世界強"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "drcula",
+              "content": "台股世界強，只會漲不會跌，不用怕等著噴噴"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "gg03033",
+              "content": "揪命 又噴又崩 台股世界強"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "klwei",
+              "content": "台股又回到世界強的節奏，根本不用怕"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "qwert1122",
+              "content": "台股真的世界最強 全球崩盤 台股也不會跌"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "opcomtt",
+              "content": "跟我一起喊，台股不會跌，台股世界勇，台股棒棒棒"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "moses801",
+              "content": "台股世界強 不要不信"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "kusorpg",
+              "content": "台股世界強 等等v回4.7萬"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "csgowen",
+              "content": "呆股世界強"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "噓",
+              "userid": "deangogi",
+              "content": "我草 台指期真的世界最強"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "k1222",
+              "content": "台股世界強"
+            }
+          ],
+          "price": 157.5,
+          "change": -4,
+          "changePct": -2.48
+        },
+        {
           "rank": 8,
           "code": "0050",
           "name": "元大台灣50",
-          "totalMentions": 118,
-          "avgMentions": 11.8,
+          "totalMentions": 119,
+          "avgMentions": 11.9,
           "dailyMentions": {
-            "2026/09/11": 13,
+            "2026/09/11": 14,
             "2026/09/10": 9,
             "2026/09/09": 8,
             "2026/09/08": 14,
@@ -4437,20 +4437,26 @@
             {
               "date": "2026/09/11",
               "tag": "推",
-              "userid": "sp03154",
-              "content": "偶的老婆是呆丸50(0050)，不離不棄"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "sp03154",
-              "content": "5000萬買高股息，5000萬買呆丸50。雙贏"
+              "userid": "mavs2kidd",
+              "content": "基本上確定台股要2030才破五萬，趕快把0050賣光換定"
             },
             {
               "date": "2026/09/11",
               "tag": "推",
-              "userid": "sp03154",
-              "content": "大概不用3個月，就從40兆鎂金，變50兆鎂金"
+              "userid": "budaixi",
+              "content": "https://i.verb.tw/C2nXTO50.jpg"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "budaixi",
+              "content": "https://i.verb.tw/C2nXTO50.jpg"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "budaixi",
+              "content": "https://i.verb.tw/C2nXTO50.jpg"
             },
             {
               "date": "2026/09/11",
@@ -4997,12 +5003,6 @@
               "tag": "→",
               "userid": "dosiris",
               "content": "0050都能+2% 持股漲輸的通通砍掉"
-            },
-            {
-              "date": "2026/09/01",
-              "tag": "噓",
-              "userid": "CDA2",
-              "content": "記住那個喊C波下看31117停損反一0050套20年的分析師"
             }
           ],
           "price": 107.7,
@@ -6106,10 +6106,10 @@
           "rank": 11,
           "code": "2344",
           "name": "華邦電",
-          "totalMentions": 71,
-          "avgMentions": 7.1,
+          "totalMentions": 70,
+          "avgMentions": 7,
           "dailyMentions": {
-            "2026/09/11": 2,
+            "2026/09/11": 1,
             "2026/09/10": 8,
             "2026/09/09": 6,
             "2026/09/08": 19,
@@ -6121,12 +6121,6 @@
             "2026/08/31": 12
           },
           "realPushes": [
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "ohbu",
-              "content": "我買過跌深的華邦電、南亞科、緯穎，雖然我後來被洗"
-            },
             {
               "date": "2026/09/11",
               "tag": "推",
@@ -6604,8 +6598,8 @@
             {
               "date": "2026/09/11",
               "tag": "推",
-              "userid": "HiuAnOP",
-              "content": "鴿滿手反一怎麼輸！"
+              "userid": "IUOIUOIUO",
+              "content": "暗台50反1 +6%"
             },
             {
               "date": "2026/09/11",
@@ -10764,12 +10758,256 @@
         },
         {
           "rank": 25,
-          "code": "0056",
-          "name": "元大高股息",
+          "code": "1595",
+          "name": "川寶",
           "totalMentions": 37,
           "avgMentions": 3.7,
           "dailyMentions": {
-            "2026/09/11": 2,
+            "2026/09/11": 6,
+            "2026/09/10": 4,
+            "2026/09/09": 1,
+            "2026/09/07": 7,
+            "2026/09/04": 3,
+            "2026/09/03": 6,
+            "2026/09/02": 4,
+            "2026/09/01": 4,
+            "2026/08/31": 2
+          },
+          "realPushes": [
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "trogtor",
+              "content": "川寶只關心他的油價吧"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "House23",
+              "content": "相信川寶利空不跌"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "JBryant",
+              "content": "不用荒 川寶剛剛出來信心喊話惹 禮拜一準時噴"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "JBryant",
+              "content": "偷偷在V了啦 期中選舉前 川寶不會讓股市崩盤的"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "sp03154",
+              "content": "握猜~~川寶的CPI 可能還低於預期"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "推",
+              "userid": "sp03154",
+              "content": "㊣日圓的莊家是貝師傅㊣油價的莊家是川寶㊣"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "噓",
+              "userid": "mecca",
+              "content": "川寶差不多是時候要端出和平協議惹QQ"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "→",
+              "userid": "LipaCat5566",
+              "content": "川寶說過 為了救美債不惜動用軍隊 多蛙小心"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "→",
+              "userid": "appledick",
+              "content": "我早就預言了 川寶 no card"
+            },
+            {
+              "date": "2026/09/10",
+              "tag": "噓",
+              "userid": "calqlus",
+              "content": "川寶除了幫忙壓石油就只是個228公園沒人要幹的老頭"
+            },
+            {
+              "date": "2026/09/09",
+              "tag": "推",
+              "userid": "LipaCat5566",
+              "content": "川寶大勢已去 華許會全聽川寶的嗎…"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "推",
+              "userid": "fajita",
+              "content": "老蘇不要把鍋甩給川寶跟華許啦,自己看錯邊硬拗"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "→",
+              "userid": "fajita",
+              "content": "我聽懂了,老蘇的意思是川寶也拉不動了"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "推",
+              "userid": "ama75128",
+              "content": "老蘇：川寶幫我坦個20分鐘"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "推",
+              "userid": "sakano",
+              "content": "老蘇明顯比川寶還急"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "推",
+              "userid": "sp03154",
+              "content": "CPI開多少，還不是川寶說了算"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "推",
+              "userid": "LipaCat5566",
+              "content": "川寶說只會漲 不信川寶信老蘇嗎…"
+            },
+            {
+              "date": "2026/09/07",
+              "tag": "噓",
+              "userid": "jason168",
+              "content": "川寶是真的放推期中選舉了嗎？..."
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "→",
+              "userid": "metallolly",
+              "content": "川寶 川寶。你有看到一個台灣粉絲在哭哭掙扎嗎"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "metallolly",
+              "content": "川寶 救我好嗎。我的股票跟桃園公車不一樣啊"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "AndyMAX",
+              "content": "空蛙跟著老蘇走 我們多蛙要跟著川寶撈錢去"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "噓",
+              "userid": "mecca",
+              "content": "昨天川寶才剛出來說股市將要大漲 隨即就有人出來"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "House23",
+              "content": "川寶：華許幹得不錯，一下鴿一下鷹"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "→",
+              "userid": "House23",
+              "content": "川寶：我都發call 訊了，還在看數據？"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "jokem",
+              "content": "布油96 謝謝川寶"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "AndyMAX",
+              "content": "禿子跟著月亮走 多蛙跟著川寶走"
+            },
+            {
+              "date": "2026/09/03",
+              "tag": "推",
+              "userid": "House23",
+              "content": "川寶：華許不錯唷，一下鴿一下鷹"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "sp03154",
+              "content": "伊朗跟川寶都嘛選在亞股開盤搞事"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "推",
+              "userid": "antiSOC",
+              "content": "供鏈China+1 川寶寧願管玩具反斗城也沒管你PCB啦"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "→",
+              "userid": "appledick",
+              "content": "泥沼川寶都說了 大的要來了"
+            },
+            {
+              "date": "2026/09/02",
+              "tag": "→",
+              "userid": "mamorui",
+              "content": "川寶自己就頻繁交易 七八月肯定更頻繁"
+            },
+            {
+              "date": "2026/09/01",
+              "tag": "推",
+              "userid": "mamorui",
+              "content": "哇 川寶彈藥補滿了？"
+            },
+            {
+              "date": "2026/09/01",
+              "tag": "→",
+              "userid": "mamorui",
+              "content": "川寶不得不補彈藥？"
+            },
+            {
+              "date": "2026/09/01",
+              "tag": "→",
+              "userid": "appledick",
+              "content": "川寶又泥沼啦"
+            },
+            {
+              "date": "2026/09/01",
+              "tag": "→",
+              "userid": "fanter77",
+              "content": "油價等川寶隨時taco就好，完全不慌"
+            },
+            {
+              "date": "2026/08/31",
+              "tag": "→",
+              "userid": "kevingo0215",
+              "content": "我昨晚也跟我乾哥川寶吃飯，他說要炒高油價"
+            },
+            {
+              "date": "2026/08/31",
+              "tag": "推",
+              "userid": "jeremylai",
+              "content": "川寶董玩"
+            }
+          ],
+          "price": 62.4,
+          "change": -0.9,
+          "changePct": -1.42
+        },
+        {
+          "rank": 26,
+          "code": "0056",
+          "name": "元大高股息",
+          "totalMentions": 35,
+          "avgMentions": 3.5,
+          "dailyMentions": {
             "2026/09/10": 1,
             "2026/09/08": 2,
             "2026/09/07": 2,
@@ -10780,18 +11018,6 @@
             "2026/08/31": 5
           },
           "realPushes": [
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "sp03154",
-              "content": "5000萬買高股息，5000萬買呆丸50。雙贏"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "potionx",
-              "content": "https://youtu.be/DsMOFvWy56Y 商學院厲害了"
-            },
             {
               "date": "2026/09/10",
               "tag": "→",
@@ -11008,252 +11234,235 @@
           "changePct": -0.72
         },
         {
-          "rank": 26,
-          "code": "1595",
-          "name": "川寶",
-          "totalMentions": 36,
-          "avgMentions": 3.6,
+          "rank": 27,
+          "code": "1259",
+          "name": "安心",
+          "totalMentions": 33,
+          "avgMentions": 3.3,
           "dailyMentions": {
-            "2026/09/11": 5,
-            "2026/09/10": 4,
-            "2026/09/09": 1,
-            "2026/09/07": 7,
-            "2026/09/04": 3,
-            "2026/09/03": 6,
+            "2026/09/11": 4,
+            "2026/09/10": 3,
+            "2026/09/09": 6,
+            "2026/09/08": 2,
+            "2026/09/07": 1,
+            "2026/09/04": 6,
+            "2026/09/03": 2,
             "2026/09/02": 4,
             "2026/09/01": 4,
-            "2026/08/31": 2
+            "2026/08/31": 1
           },
           "realPushes": [
             {
               "date": "2026/09/11",
-              "tag": "推",
-              "userid": "trogtor",
-              "content": "川寶只關心他的油價吧"
+              "tag": "噓",
+              "userid": "kevingo0215",
+              "content": "暗盤假的，融資套蛙安心睡吧"
             },
             {
               "date": "2026/09/11",
               "tag": "推",
-              "userid": "sp03154",
-              "content": "川寶：這2個月助選到處開支票.就幾兆鎂金了"
+              "userid": "venvendoggy",
+              "content": "大家都這麼恐慌  那我就安心了"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "PeikangShin",
+              "content": "上課不用錢。又不會套牢賠錢。好安心"
             },
             {
               "date": "2026/09/11",
               "tag": "推",
-              "userid": "aloness",
-              "content": "川寶(1595)：不干我的事啊！"
+              "userid": "pttstock",
+              "content": "看到龍哥這樣講 空軍可以安心睡了"
             },
             {
-              "date": "2026/09/11",
+              "date": "2026/09/10",
               "tag": "推",
-              "userid": "sp03154",
-              "content": "握猜~~川寶的CPI 可能還低於預期"
+              "userid": "WSLai",
+              "content": "台股有黑手好安心"
             },
             {
-              "date": "2026/09/11",
+              "date": "2026/09/10",
               "tag": "推",
-              "userid": "sp03154",
-              "content": "㊣日圓的莊家是貝師傅㊣油價的莊家是川寶㊣"
+              "userid": "PeikangShin",
+              "content": "看到一堆套挖VV叫  我就安心了"
             },
             {
               "date": "2026/09/10",
               "tag": "噓",
-              "userid": "mecca",
-              "content": "川寶差不多是時候要端出和平協議惹QQ"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "→",
-              "userid": "LipaCat5566",
-              "content": "川寶說過 為了救美債不惜動用軍隊 多蛙小心"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "→",
-              "userid": "appledick",
-              "content": "我早就預言了 川寶 no card"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "噓",
-              "userid": "calqlus",
-              "content": "川寶除了幫忙壓石油就只是個228公園沒人要幹的老頭"
+              "userid": "psc531",
+              "content": "才回多少點 根本安心0.0"
             },
             {
               "date": "2026/09/09",
               "tag": "推",
-              "userid": "LipaCat5566",
-              "content": "川寶大勢已去 華許會全聽川寶的嗎…"
+              "userid": "w22519352",
+              "content": "看到空恐蛙還在鬼叫，就知道能安心買進"
             },
             {
-              "date": "2026/09/07",
-              "tag": "推",
-              "userid": "fajita",
-              "content": "老蘇不要把鍋甩給川寶跟華許啦,自己看錯邊硬拗"
-            },
-            {
-              "date": "2026/09/07",
+              "date": "2026/09/09",
               "tag": "→",
-              "userid": "fajita",
-              "content": "我聽懂了,老蘇的意思是川寶也拉不動了"
+              "userid": "flydy",
+              "content": "下午fookafook有上線歐，大家可以安心了...."
             },
             {
-              "date": "2026/09/07",
-              "tag": "推",
-              "userid": "ama75128",
-              "content": "老蘇：川寶幫我坦個20分鐘"
+              "date": "2026/09/09",
+              "tag": "→",
+              "userid": "flydy",
+              "content": "04:58fookafook出來叫囂，大家今天可以安心了..."
             },
             {
-              "date": "2026/09/07",
+              "date": "2026/09/09",
               "tag": "推",
-              "userid": "sakano",
-              "content": "老蘇明顯比川寶還急"
+              "userid": "f204137",
+              "content": "fook早 看到你 好安心"
             },
             {
-              "date": "2026/09/07",
+              "date": "2026/09/09",
               "tag": "推",
-              "userid": "sp03154",
-              "content": "CPI開多少，還不是川寶說了算"
+              "userid": "miowkiki",
+              "content": "哈哈，看到fook好安心"
             },
             {
-              "date": "2026/09/07",
+              "date": "2026/09/09",
+              "tag": "→",
+              "userid": "ms0286415",
+              "content": "富喬有大人顧真的好安心"
+            },
+            {
+              "date": "2026/09/08",
+              "tag": "→",
+              "userid": "flydy",
+              "content": "7:23 fookafook出來叫囂，大家可以安心了...."
+            },
+            {
+              "date": "2026/09/08",
               "tag": "推",
-              "userid": "LipaCat5566",
-              "content": "川寶說只會漲 不信川寶信老蘇嗎…"
+              "userid": "zergtide",
+              "content": "買金金真安心"
             },
             {
               "date": "2026/09/07",
               "tag": "噓",
-              "userid": "jason168",
-              "content": "川寶是真的放推期中選舉了嗎？..."
+              "userid": "zaqqaz",
+              "content": "戰爭.升息 有窩們三普擋著～大家安心做多辣 ^^"
             },
             {
               "date": "2026/09/04",
               "tag": "→",
-              "userid": "metallolly",
-              "content": "川寶 川寶。你有看到一個台灣粉絲在哭哭掙扎嗎"
+              "userid": "wang56",
+              "content": "老蘇至少可以安心放假，沒賣的就保重"
             },
             {
               "date": "2026/09/04",
               "tag": "推",
-              "userid": "metallolly",
-              "content": "川寶 救我好嗎。我的股票跟桃園公車不一樣啊"
+              "userid": "g0t24568",
+              "content": "有fook 喊空 做多安心"
             },
             {
               "date": "2026/09/04",
               "tag": "推",
-              "userid": "AndyMAX",
-              "content": "空蛙跟著老蘇走 我們多蛙要跟著川寶撈錢去"
+              "userid": "w22519352",
+              "content": "看到一堆空恐蛙還在鬼叫，那就安心了"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "→",
+              "userid": "richardc277",
+              "content": "空手就是安心"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "→",
+              "userid": "f204137",
+              "content": "fook出來喊了 看到我就安心了"
+            },
+            {
+              "date": "2026/09/04",
+              "tag": "推",
+              "userid": "lobster1688",
+              "content": "都有套到吧 這樣我就安心了"
             },
             {
               "date": "2026/09/03",
-              "tag": "噓",
-              "userid": "mecca",
-              "content": "昨天川寶才剛出來說股市將要大漲 隨即就有人出來"
+              "tag": "推",
+              "userid": "lovemonkey03",
+              "content": "台股世界強 安心睡"
             },
             {
               "date": "2026/09/03",
               "tag": "→",
-              "userid": "House23",
-              "content": "川寶：華許幹得不錯，一下鴿一下鷹"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "House23",
-              "content": "川寶：我都發call 訊了，還在看數據？"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "jokem",
-              "content": "布油96 謝謝川寶"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "AndyMAX",
-              "content": "禿子跟著月亮走 多蛙跟著川寶走"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "House23",
-              "content": "川寶：華許不錯唷，一下鴿一下鷹"
+              "userid": "luke0407123",
+              "content": "今天尾盤有買 舒服安心睡"
             },
             {
               "date": "2026/09/02",
               "tag": "推",
-              "userid": "sp03154",
-              "content": "伊朗跟川寶都嘛選在亞股開盤搞事"
+              "userid": "flash789",
+              "content": "多蛙可以安心睡了？"
             },
             {
               "date": "2026/09/02",
               "tag": "推",
-              "userid": "antiSOC",
-              "content": "供鏈China+1 川寶寧願管玩具反斗城也沒管你PCB啦"
+              "userid": "PeikangShin",
+              "content": "空挖安心去睡 好嗎  睡醒  鐮刀老蘇照樣割到體無丸"
             },
             {
               "date": "2026/09/02",
-              "tag": "→",
-              "userid": "appledick",
-              "content": "泥沼川寶都說了 大的要來了"
+              "tag": "推",
+              "userid": "waynesnow",
+              "content": "有老權值E罐好安心"
             },
             {
               "date": "2026/09/02",
-              "tag": "→",
-              "userid": "mamorui",
-              "content": "川寶自己就頻繁交易 七八月肯定更頻繁"
+              "tag": "推",
+              "userid": "Cadd",
+              "content": "昨天+19今天-6, 市值高股息配置就是每天安心睡"
             },
             {
               "date": "2026/09/01",
               "tag": "推",
-              "userid": "mamorui",
-              "content": "哇 川寶彈藥補滿了？"
+              "userid": "asws0808",
+              "content": "看到猩猩8千張跌停單就安心了"
             },
             {
               "date": "2026/09/01",
-              "tag": "→",
-              "userid": "mamorui",
-              "content": "川寶不得不補彈藥？"
+              "tag": "推",
+              "userid": "forfree99",
+              "content": "有猩猩 好安心 顧眼睛 開盤即休息"
             },
             {
               "date": "2026/09/01",
-              "tag": "→",
-              "userid": "appledick",
-              "content": "川寶又泥沼啦"
+              "tag": "推",
+              "userid": "opcomtt",
+              "content": "台股不會跌，台股世界強，有政府好安心"
             },
             {
               "date": "2026/09/01",
-              "tag": "→",
-              "userid": "fanter77",
-              "content": "油價等川寶隨時taco就好，完全不慌"
+              "tag": "推",
+              "userid": "waynesnow",
+              "content": "賣的沒有很漂亮 但安心了"
             },
             {
               "date": "2026/08/31",
               "tag": "→",
-              "userid": "kevingo0215",
-              "content": "我昨晚也跟我乾哥川寶吃飯，他說要炒高油價"
-            },
-            {
-              "date": "2026/08/31",
-              "tag": "推",
-              "userid": "jeremylai",
-              "content": "川寶董玩"
+              "userid": "searchroy",
+              "content": "安心上路"
             }
           ],
-          "price": 62.4,
-          "change": -0.9,
-          "changePct": -1.42
+          "price": 64.4,
+          "change": -0.8,
+          "changePct": -1.23
         },
         {
-          "rank": 27,
+          "rank": 28,
           "code": "2308",
           "name": "台達電",
-          "totalMentions": 35,
-          "avgMentions": 3.5,
+          "totalMentions": 33,
+          "avgMentions": 3.3,
           "dailyMentions": {
-            "2026/09/11": 3,
+            "2026/09/11": 1,
             "2026/09/10": 11,
             "2026/09/09": 2,
             "2026/09/04": 1,
@@ -11262,18 +11471,6 @@
             "2026/08/31": 1
           },
           "realPushes": [
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "ohbu",
-              "content": "台達電可以買，雖然我只能買1股"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "holyvoice",
-              "content": "台達電目前仍空頭，目前不太合適吧"
-            },
             {
               "date": "2026/09/11",
               "tag": "→",
@@ -11476,234 +11673,6 @@
           "price": 1620,
           "change": -55,
           "changePct": -3.28
-        },
-        {
-          "rank": 28,
-          "code": "1259",
-          "name": "安心",
-          "totalMentions": 34,
-          "avgMentions": 3.4,
-          "dailyMentions": {
-            "2026/09/11": 5,
-            "2026/09/10": 3,
-            "2026/09/09": 6,
-            "2026/09/08": 2,
-            "2026/09/07": 1,
-            "2026/09/04": 6,
-            "2026/09/03": 2,
-            "2026/09/02": 4,
-            "2026/09/01": 4,
-            "2026/08/31": 1
-          },
-          "realPushes": [
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "nicexd",
-              "content": "安心上路 再見惹A7Z 且推且珍惜"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "JMSDF",
-              "content": "這種時候還追買，就真的是傻了，空手自在安心"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "venvendoggy",
-              "content": "大家都這麼恐慌  那我就安心了"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "→",
-              "userid": "PeikangShin",
-              "content": "上課不用錢。又不會套牢賠錢。好安心"
-            },
-            {
-              "date": "2026/09/11",
-              "tag": "推",
-              "userid": "pttstock",
-              "content": "看到龍哥這樣講 空軍可以安心睡了"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "WSLai",
-              "content": "台股有黑手好安心"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "推",
-              "userid": "PeikangShin",
-              "content": "看到一堆套挖VV叫  我就安心了"
-            },
-            {
-              "date": "2026/09/10",
-              "tag": "噓",
-              "userid": "psc531",
-              "content": "才回多少點 根本安心0.0"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "推",
-              "userid": "w22519352",
-              "content": "看到空恐蛙還在鬼叫，就知道能安心買進"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "→",
-              "userid": "flydy",
-              "content": "下午fookafook有上線歐，大家可以安心了...."
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "→",
-              "userid": "flydy",
-              "content": "04:58fookafook出來叫囂，大家今天可以安心了..."
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "推",
-              "userid": "f204137",
-              "content": "fook早 看到你 好安心"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "推",
-              "userid": "miowkiki",
-              "content": "哈哈，看到fook好安心"
-            },
-            {
-              "date": "2026/09/09",
-              "tag": "→",
-              "userid": "ms0286415",
-              "content": "富喬有大人顧真的好安心"
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "→",
-              "userid": "flydy",
-              "content": "7:23 fookafook出來叫囂，大家可以安心了...."
-            },
-            {
-              "date": "2026/09/08",
-              "tag": "推",
-              "userid": "zergtide",
-              "content": "買金金真安心"
-            },
-            {
-              "date": "2026/09/07",
-              "tag": "噓",
-              "userid": "zaqqaz",
-              "content": "戰爭.升息 有窩們三普擋著～大家安心做多辣 ^^"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "→",
-              "userid": "wang56",
-              "content": "老蘇至少可以安心放假，沒賣的就保重"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "g0t24568",
-              "content": "有fook 喊空 做多安心"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "w22519352",
-              "content": "看到一堆空恐蛙還在鬼叫，那就安心了"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "→",
-              "userid": "richardc277",
-              "content": "空手就是安心"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "→",
-              "userid": "f204137",
-              "content": "fook出來喊了 看到我就安心了"
-            },
-            {
-              "date": "2026/09/04",
-              "tag": "推",
-              "userid": "lobster1688",
-              "content": "都有套到吧 這樣我就安心了"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "推",
-              "userid": "lovemonkey03",
-              "content": "台股世界強 安心睡"
-            },
-            {
-              "date": "2026/09/03",
-              "tag": "→",
-              "userid": "luke0407123",
-              "content": "今天尾盤有買 舒服安心睡"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "flash789",
-              "content": "多蛙可以安心睡了？"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "PeikangShin",
-              "content": "空挖安心去睡 好嗎  睡醒  鐮刀老蘇照樣割到體無丸"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "waynesnow",
-              "content": "有老權值E罐好安心"
-            },
-            {
-              "date": "2026/09/02",
-              "tag": "推",
-              "userid": "Cadd",
-              "content": "昨天+19今天-6, 市值高股息配置就是每天安心睡"
-            },
-            {
-              "date": "2026/09/01",
-              "tag": "推",
-              "userid": "asws0808",
-              "content": "看到猩猩8千張跌停單就安心了"
-            },
-            {
-              "date": "2026/09/01",
-              "tag": "推",
-              "userid": "forfree99",
-              "content": "有猩猩 好安心 顧眼睛 開盤即休息"
-            },
-            {
-              "date": "2026/09/01",
-              "tag": "推",
-              "userid": "opcomtt",
-              "content": "台股不會跌，台股世界強，有政府好安心"
-            },
-            {
-              "date": "2026/09/01",
-              "tag": "推",
-              "userid": "waynesnow",
-              "content": "賣的沒有很漂亮 但安心了"
-            },
-            {
-              "date": "2026/08/31",
-              "tag": "→",
-              "userid": "searchroy",
-              "content": "安心上路"
-            }
-          ],
-          "price": 64.4,
-          "change": -0.8,
-          "changePct": -1.23
         },
         {
           "rank": 29,
@@ -11917,10 +11886,10 @@
           "rank": 30,
           "code": "1108",
           "name": "幸福",
-          "totalMentions": 27,
-          "avgMentions": 2.7,
+          "totalMentions": 28,
+          "avgMentions": 2.8,
           "dailyMentions": {
-            "2026/09/11": 4,
+            "2026/09/11": 5,
             "2026/09/10": 2,
             "2026/09/09": 1,
             "2026/09/08": 1,
@@ -11942,6 +11911,12 @@
               "tag": "推",
               "userid": "hidework",
               "content": "今天開始撿群聯，希望可以幸福"
+            },
+            {
+              "date": "2026/09/11",
+              "tag": "→",
+              "userid": "ms0286415",
+              "content": "明天開低直接進會幸福哦"
             },
             {
               "date": "2026/09/11",
@@ -12099,7 +12074,7 @@
           "changePct": -1.32
         }
       ],
-      "timestamp": 1789238030570
+      "timestamp": 1789325517839
     },
     "intraday": {
       "success": true,
@@ -13245,5 +13220,5 @@
       "timestamp": 1786068781657
     }
   },
-  "fetchedAt": 1789238030570
+  "fetchedAt": 1789325517839
 }
